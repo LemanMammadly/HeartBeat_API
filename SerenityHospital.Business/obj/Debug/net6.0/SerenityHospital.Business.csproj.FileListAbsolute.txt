@@ -1,0 +1,17 @@
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/bin/Debug/net6.0/SerenityHospital.Business.deps.json
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/bin/Debug/net6.0/SerenityHospital.Business.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/bin/Debug/net6.0/ref/SerenityHospital.Business.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/bin/Debug/net6.0/SerenityHospital.Business.pdb
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/bin/Debug/net6.0/SerenityHospital.DAL.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/bin/Debug/net6.0/SerenityHospital.DAL.pdb
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/obj/Debug/net6.0/SerenityHospital.Business.csproj.AssemblyReference.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/obj/Debug/net6.0/SerenityHospital.Business.GeneratedMSBuildEditorConfig.editorconfig
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/obj/Debug/net6.0/SerenityHospital.Business.AssemblyInfoInputs.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/obj/Debug/net6.0/SerenityHospital.Business.AssemblyInfo.cs
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/obj/Debug/net6.0/SerenityHospital.Business.csproj.CoreCompileInputs.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/obj/Debug/net6.0/SerenityHospital.Business.csproj.CopyComplete
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/obj/Debug/net6.0/SerenityHospital.Business.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/obj/Debug/net6.0/ref/SerenityHospital.Business.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/obj/Debug/net6.0/SerenityHospital.Business.pdb
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/bin/Debug/net6.0/SerenityHospital.Core.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/bin/Debug/net6.0/SerenityHospital.Core.pdb

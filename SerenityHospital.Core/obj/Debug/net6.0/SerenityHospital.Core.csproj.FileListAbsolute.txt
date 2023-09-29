@@ -1,0 +1,14 @@
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/bin/Debug/net6.0/SerenityHospital.Core.deps.json
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/bin/Debug/net6.0/SerenityHospital.Core.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/bin/Debug/net6.0/ref/SerenityHospital.Core.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/bin/Debug/net6.0/SerenityHospital.Core.pdb
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/obj/Debug/net6.0/SerenityHospital.Core.csproj.AssemblyReference.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/obj/Debug/net6.0/SerenityHospital.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/obj/Debug/net6.0/SerenityHospital.Core.AssemblyInfoInputs.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/obj/Debug/net6.0/SerenityHospital.Core.AssemblyInfo.cs
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/obj/Debug/net6.0/SerenityHospital.Core.csproj.CoreCompileInputs.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/obj/Debug/net6.0/SerenityHospital.Core.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/obj/Debug/net6.0/ref/SerenityHospital.Core.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/obj/Debug/net6.0/SerenityHospital.Core.pdb
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/bin/Debug/net6.0/SerenityHospital.Core.runtimeconfig.json
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.Core/obj/Debug/net6.0/SerenityHospital.Core.genruntimeconfig.cache

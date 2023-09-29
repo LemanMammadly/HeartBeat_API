@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "RqPvTh1ywwMcXH1xMbCWSFdRW2Z1CaGueWzf/lxHAYg=",
+  "Source": "SerenityHospital.API",
+  "BasePath": "_content/SerenityHospital.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

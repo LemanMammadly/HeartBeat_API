@@ -1,0 +1,30 @@
+﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.DAL/Repositories/Implements/Repository.cs">
+    <Files>
+      <File FileName="SerenityHospital.DAL/Repositories/Implements/Repository.cs" Line="10" Column="2" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="SerenityHospital" expanded="True">
+            <Node name="SerenityHospital.DAL" expanded="True">
+              <Node name="Repositories" expanded="True">
+                <Node name="Implements" expanded="True">
+                  <Node name="Repository.cs" selected="True" />
+                </Node>
+                <Node name="Interfaces" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+</Properties>

@@ -1,0 +1,17 @@
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/bin/Debug/net6.0/SerenityHospital.DAL.deps.json
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/bin/Debug/net6.0/SerenityHospital.DAL.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/bin/Debug/net6.0/ref/SerenityHospital.DAL.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/bin/Debug/net6.0/SerenityHospital.DAL.pdb
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/bin/Debug/net6.0/SerenityHospital.Core.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/bin/Debug/net6.0/SerenityHospital.Core.pdb
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/SerenityHospital.DAL.csproj.AssemblyReference.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/SerenityHospital.DAL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/SerenityHospital.DAL.AssemblyInfoInputs.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/SerenityHospital.DAL.AssemblyInfo.cs
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/SerenityHospital.DAL.csproj.CoreCompileInputs.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/SerenityHospital.DAL.csproj.CopyComplete
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/SerenityHospital.DAL.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/ref/SerenityHospital.DAL.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/SerenityHospital.DAL.pdb
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/bin/Debug/net6.0/SerenityHospital.DAL.runtimeconfig.json
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.DAL/obj/Debug/net6.0/SerenityHospital.DAL.genruntimeconfig.cache

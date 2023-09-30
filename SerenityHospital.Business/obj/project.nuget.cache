@@ -1,10 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "n6PoVeZwtSqh0Mb9F2Y0xixFn5vY82i6o3QQ3TgMH95oVQIabeOUlX+Yr7w3uk1H1IGfoJ9Mc5fV94xMPwliVA==",
+  "dgSpecHash": "WyXbbOLZE0sm1cAbCijMHG+nri5aNh1wnR/R7xPkx+UzXvvzAldV3RcGPI9onD5HlzjrqSwXR3e36hGT2x/jYQ==",
   "success": true,
   "projectFilePath": "/Users/imac/Desktop/SerenityHospital/SerenityHospital.Business/SerenityHospital.Business.csproj",
   "expectedPackageFiles": [
-    "/Users/imac/.nuget/packages/microsoft.csharp/4.5.0/microsoft.csharp.4.5.0.nupkg.sha512",
+    "/Users/imac/.nuget/packages/automapper/12.0.1/automapper.12.0.1.nupkg.sha512",
+    "/Users/imac/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.1/automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
+    "/Users/imac/.nuget/packages/fluentvalidation/11.7.1/fluentvalidation.11.7.1.nupkg.sha512",
+    "/Users/imac/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.7.1/fluentvalidation.dependencyinjectionextensions.11.7.1.nupkg.sha512",
+    "/Users/imac/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/Users/imac/.nuget/packages/microsoft.data.sqlclient/2.1.4/microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "/Users/imac/.nuget/packages/microsoft.data.sqlclient.sni.runtime/2.1.1/microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "/Users/imac/.nuget/packages/microsoft.entityframeworkcore/6.0.22/microsoft.entityframeworkcore.6.0.22.nupkg.sha512",

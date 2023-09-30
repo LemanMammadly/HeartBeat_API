@@ -14,12 +14,14 @@
     <None Remove="Repositories\" />
     <None Remove="Repositories\Implements\" />
     <None Remove="Repositories\Interfaces\" />
+    <None Remove="Configurations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contexts\" />
     <Folder Include="Repositories\" />
     <Folder Include="Repositories\Implements\" />
     <Folder Include="Repositories\Interfaces\" />
+    <Folder Include="Configurations\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.22" />

@@ -67,3 +67,7 @@
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/SerenityHospital.DAL.dll
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/SerenityHospital.Core.pdb
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/SerenityHospital.DAL.pdb
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/FluentValidation.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/FluentValidation.DependencyInjectionExtensions.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/AutoMapper.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll

@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SerenityHospital.DAL.Contexts;
+using SerenityHospital.DAL;
+using SerenityHospital.Business.Profiles;
+using SerenityHospital.API.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,10 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration["ConnectionStrings:Default"]);
 });
 
+builder.Services.AddAutoMapper(typeof(HospitalMappingProfile).Assembly);
+
+builder.Services.AddRepositories();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +34,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+//app.UseCustomExceptionHandler();
 
 app.MapControllers();
 

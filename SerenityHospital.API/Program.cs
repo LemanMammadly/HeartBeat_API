@@ -3,12 +3,21 @@ using SerenityHospital.DAL.Contexts;
 using SerenityHospital.DAL;
 using SerenityHospital.Business.Profiles;
 using SerenityHospital.API.Helpers;
+using SerenityHospital.Business;
+using FluentValidation.AspNetCore;
+using SerenityHospital.Business.Services.Implements;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidation(opt =>
+{
+    opt.RegisterValidatorsFromAssemblyContaining<HospitalService>();
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,6 +30,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.AddAutoMapper(typeof(HospitalMappingProfile).Assembly);
 
 builder.Services.AddRepositories();
+builder.Services.AddServices();
 
 var app = builder.Build();
 

@@ -71,3 +71,4 @@
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/FluentValidation.DependencyInjectionExtensions.dll
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/AutoMapper.dll
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/FluentValidation.AspNetCore.dll

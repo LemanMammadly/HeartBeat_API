@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SerenityHospital.Business.Dtos.HospitalDtos;
+using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
 using SerenityHospital.DAL.Repositories.Interfaces;
@@ -22,9 +23,14 @@ public class HospitalService : IHospitalService
         return _mapper.Map<IEnumerable<HospitalDetailItemDto>>(_repo.GetAll());
     }
 
-    public Task UpdateAsync(int id, HospitalUpdateDto dto)
+    public async Task UpdateAsync(int id, HospitalUpdateDto dto)
     {
-        throw new NotImplementedException();
+        if (id <= 0) throw new NegativeIdException<Hospital>();
+        var entity =await _repo.GetByIdAsync(id);
+        if (entity == null) throw new NotFoundException<Hospital>();
+
+        _mapper.Map(dto, entity);
+        await _repo.SaveAsync();
     }
 }
 

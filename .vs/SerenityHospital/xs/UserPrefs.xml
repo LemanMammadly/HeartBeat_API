@@ -1,13 +1,17 @@
 ﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.API/Helpers/CustomExceptionHandler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.API/Controllers/HospitalsController.cs">
     <Files>
-      <File FileName="SerenityHospital.API/Helpers/CustomExceptionHandler.cs" Line="9" Column="49" />
+      <File FileName="SerenityHospital.API/Controllers/HospitalsController.cs" Line="34" Column="25" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="SerenityHospital" expanded="True" />
+          <Node name="SerenityHospital" expanded="True">
+            <Node name="SerenityHospital.API" expanded="True">
+              <Node name="Controllers" expanded="True" />
+            </Node>
+          </Node>
         </State>
       </Pad>
     </Pads>

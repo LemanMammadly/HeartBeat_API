@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using SerenityHospital.Core.Entities;
 using SerenityHospital.Core.Entities.Common;
 
 namespace SerenityHospital.DAL.Repositories.Interfaces;
@@ -12,6 +13,7 @@ public interface IRepository<T> where T: BaseEntity,new()
     Task<T> GetByIdAsync(int id, params string[] includes);
     Task<T> GetSingleAsync(Expression<Func<T, bool>> expression, params string[] includes);
     Task<bool> IsExistAsync(Expression<Func<T, bool>> expression);
+    Task<T> GetFirstAsync();
     Task CreateAsync(T entity);
     void Delete(T entity);
     void SoftDelete(T entity);

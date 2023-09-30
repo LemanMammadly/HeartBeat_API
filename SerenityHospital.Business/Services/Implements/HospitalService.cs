@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SerenityHospital.Business.Dtos.HospitalDtos;
 using SerenityHospital.Business.Exceptions.Common;
+using SerenityHospital.Business.Exceptions.HospitalExceptions;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
 using SerenityHospital.DAL.Repositories.Interfaces;
@@ -16,6 +17,16 @@ public class HospitalService : IHospitalService
     {
         _repo = repo;
         _mapper = mapper;
+    }
+
+    public async Task CreateAsync(HospitalCreateDto dto)
+    {
+        var existHospital = await _repo.GetFirstAsync();
+        if (existHospital != null) throw new HospitalIsExistException();
+
+        var hospital = _mapper.Map<Hospital>(dto);
+        await _repo.CreateAsync(hospital);
+        await _repo.SaveAsync();
     }
 
     public async Task<IEnumerable<HospitalDetailItemDto>> GetAllAsync()

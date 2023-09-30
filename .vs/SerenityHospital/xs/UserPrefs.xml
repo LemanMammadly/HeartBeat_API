@@ -1,25 +1,32 @@
 ﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.API/Controllers/HospitalsController.cs">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/HospitalService.cs">
     <Files>
-      <File FileName="SerenityHospital.API/Controllers/HospitalsController.cs" Line="34" Column="25" />
+      <File FileName="SerenityHospital.Business/Services/Implements/HospitalService.cs" Line="29" Column="33" />
+      <File FileName="SerenityHospital.Business/Services/Interfaces/IHospitalService.cs" />
+      <File FileName="SerenityHospital.DAL/Repositories/Interfaces/IRepository.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/SettingService.cs" Line="36" Column="49" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.API" expanded="True">
-              <Node name="Controllers" expanded="True" />
+            <Node name="SerenityHospital.Business">
+              <Node name="Services" expanded="True">
+                <Node name="Implements" expanded="True">
+                  <Node name="HospitalService.cs" selected="True" />
+                </Node>
+              </Node>
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
 </Properties>

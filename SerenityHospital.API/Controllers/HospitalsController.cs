@@ -27,6 +27,13 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetAllAsync());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post([FromForm]HospitalCreateDto dto)
+        {
+            await _service.CreateAsync(dto);
+            return NoContent();
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]HospitalUpdateDto dto)
         {

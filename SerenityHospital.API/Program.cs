@@ -6,6 +6,7 @@ using SerenityHospital.API.Helpers;
 using SerenityHospital.Business;
 using FluentValidation.AspNetCore;
 using SerenityHospital.Business.Services.Implements;
+using SerenityHospital.Business.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,8 @@ app.UseAuthorization();
 //app.UseCustomExceptionHandler();
 
 app.MapControllers();
+
+RootConstant.Root = builder.Environment.WebRootPath;
 
 app.Run();
 

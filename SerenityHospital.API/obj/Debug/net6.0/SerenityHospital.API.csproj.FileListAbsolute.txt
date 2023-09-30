@@ -72,3 +72,9 @@
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/AutoMapper.dll
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/FluentValidation.AspNetCore.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/SerenityHospital.API.staticwebassets.runtime.json
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.Extensions.Hosting.Abstractions.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.Extensions.Primitives.dll

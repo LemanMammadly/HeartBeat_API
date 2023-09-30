@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using SerenityHospital.Core.Entities;
 using SerenityHospital.Core.Entities.Common;
 using SerenityHospital.DAL.Contexts;
 using SerenityHospital.DAL.Repositories.Interfaces;
@@ -55,6 +56,11 @@ public class Repository<T> : IRepository<T> where T : BaseEntity,new()
         return await _getIncludes(query, includes).SingleOrDefaultAsync(t => t.Id == id);
     }
 
+    public async Task<T> GetFirstAsync()
+    {
+        return await Table.FirstOrDefaultAsync();
+    }
+
     public async Task<T> GetSingleAsync(Expression<Func<T, bool>> expression, params string[] includes)
     {
         var query = Table.AsQueryable();
@@ -80,6 +86,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity,new()
     {
         entity.IsDeleted = true;
     }
+
 
     IQueryable<T> _getIncludes(IQueryable<T> query, params string[] includes)
     {

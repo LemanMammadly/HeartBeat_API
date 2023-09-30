@@ -13,6 +13,7 @@ public class HospitalConfiguration : IEntityTypeConfiguration<Hospital>
             .HasMaxLength(64);
         builder.Property(h => h.Description)
             .IsRequired();
+        builder.Ignore(s => s.IsDeleted);
     }
 }
 

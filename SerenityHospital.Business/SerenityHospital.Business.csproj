@@ -19,6 +19,15 @@
     <None Remove="Exceptions\" />
     <None Remove="Exceptions\Common\" />
     <None Remove="Exceptions\HospitalExceptions\" />
+    <None Remove="ExternalServices\" />
+    <None Remove="ExternalServices\Implements\" />
+    <None Remove="ExternalServices\Interfaces\" />
+    <None Remove="Constants\" />
+    <None Remove="Exceptions\Images\" />
+    <None Remove="Extensions\" />
+    <None Remove="Validators\" />
+    <None Remove="Dtos\SettingDtos\" />
+    <None Remove="Exceptions\Settings\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -30,10 +39,20 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Exceptions\Common\" />
     <Folder Include="Exceptions\HospitalExceptions\" />
+    <Folder Include="ExternalServices\" />
+    <Folder Include="ExternalServices\Implements\" />
+    <Folder Include="ExternalServices\Interfaces\" />
+    <Folder Include="Constants\" />
+    <Folder Include="Exceptions\Images\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Dtos\SettingDtos\" />
+    <Folder Include="Exceptions\Settings\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
   </ItemGroup>
 </Project>

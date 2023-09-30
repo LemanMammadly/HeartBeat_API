@@ -33,5 +33,9 @@
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Helpers\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\" />
   </ItemGroup>
 </Project>

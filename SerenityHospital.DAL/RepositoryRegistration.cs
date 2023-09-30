@@ -9,6 +9,7 @@ public static class RepositoryRegistration
     public static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IHospitalRepository, HospitalRepository>();
+        services.AddScoped<ISettingRepository, SettingRepository>();
     }
 }
 

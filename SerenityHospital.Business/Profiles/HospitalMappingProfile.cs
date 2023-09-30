@@ -9,6 +9,7 @@ public class HospitalMappingProfile:Profile
     public HospitalMappingProfile()
     {
         CreateMap<HospitalUpdateDto, Hospital>().ReverseMap();
+        CreateMap<HospitalCreateDto, Hospital>().ReverseMap();
         CreateMap<Hospital, HospitalDetailItemDto>().ReverseMap();
     }
 }

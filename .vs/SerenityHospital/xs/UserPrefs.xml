@@ -2,20 +2,22 @@
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/HospitalService.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Implements/HospitalService.cs" Line="29" Column="33" />
+      <File FileName="SerenityHospital.Business/Services/Implements/HospitalService.cs" Line="24" Column="29" />
       <File FileName="SerenityHospital.Business/Services/Interfaces/IHospitalService.cs" />
       <File FileName="SerenityHospital.DAL/Repositories/Interfaces/IRepository.cs" />
       <File FileName="SerenityHospital.Business/Services/Implements/SettingService.cs" Line="36" Column="49" />
+      <File FileName="SerenityHospital.API/Controllers/HospitalsController.cs" Line="34" Column="32" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.Business">
+          <Node name="SerenityHospital">
+            <Node name="SerenityHospital.API" expanded="True">
+              <Node name="Controllers" expanded="True" />
+            </Node>
+            <Node name="SerenityHospital.Business" expanded="True">
               <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True">
-                  <Node name="HospitalService.cs" selected="True" />
-                </Node>
+                <Node name="Implements" expanded="True" />
               </Node>
             </Node>
           </Node>

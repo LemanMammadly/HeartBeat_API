@@ -8,6 +8,8 @@ public class AppDbContext:DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public DbSet<Hospital> Hospitals { get; set; }
+    public DbSet<Setting> Settings { get; set; }
+    public DbSet<Service> Services { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -15,5 +17,7 @@ public class AppDbContext:DbContext
         base.OnModelCreating(modelBuilder);
     }
 }
+
+
 
 

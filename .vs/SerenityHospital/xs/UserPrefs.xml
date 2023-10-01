@@ -6,19 +6,30 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Core/Entities/Department.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Dtos/ServiceDtos/ServiceUpdateDto.cs">
     <Files>
-      <File FileName="SerenityHospital.Core/Entities/Department.cs" Line="15" Column="1" />
-      <File FileName="SerenityHospital.Core/Entities/Service.cs" Line="18" Column="1" />
+      <File FileName="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentCreateDto.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentUpdateDto.cs" />
+      <File FileName="SerenityHospital.Core/Entities/Department.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/ServiceDtos/ServiceCreateDto.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/ServiceDtos/ServiceDetailItemDto.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/ServiceDtos/ServiceListItemDto.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/ServiceDtos/ServiceUpdateDto.cs" Line="58" Column="36" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.Core">
-              <Node name="Entities">
-                <Node name="Department.cs" selected="True" />
+            <Node name="SerenityHospital.Business">
+              <Node name="Dtos" expanded="True">
+                <Node name="DepartmentDtos" expanded="True" />
+                <Node name="ServiceDtos" expanded="True">
+                  <Node name="ServiceUpdateDto.cs" selected="True" />
+                </Node>
               </Node>
+            </Node>
+            <Node name="SerenityHospital.Core">
+              <Node name="Entities" expanded="True" />
             </Node>
           </Node>
         </State>

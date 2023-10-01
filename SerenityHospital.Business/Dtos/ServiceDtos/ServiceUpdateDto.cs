@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using SerenityHospital.Business.Dtos.DepartmentDtos;
 
 namespace SerenityHospital.Business.Dtos.ServiceDtos;
 
@@ -10,6 +11,7 @@ public record ServiceUpdateDto
     public DateTime ServiceEnding { get; set; }
     public decimal MinPrice { get; set; }
     public decimal MaxPrice { get; set; }
+    public IEnumerable<int> DepartmentIds { get; set; }
 }
 
 public class ServiceUpdateDtoValidator:AbstractValidator<ServiceUpdateDto>
@@ -52,6 +54,27 @@ public class ServiceUpdateDtoValidator:AbstractValidator<ServiceUpdateDto>
                 .WithMessage("MaxPrice dont be null")
             .GreaterThan(s => s.MinPrice)
                 .WithMessage("MaxPrice must be greater than MinPrice");
+        RuleFor(s => s.DepartmentIds)
+            .Must(s=>IsDistinct(s))
+                .WithMessage("You cannot add a department with the same id");
+    }
+
+    private bool IsDistinct(IEnumerable<int> ids)
+    {
+        var encounteredIds = new HashSet<int>();
+
+        foreach (var id in ids)
+        {
+            if (!encounteredIds.Contains(id))
+            {
+                encounteredIds.Add(id);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
 

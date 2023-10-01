@@ -30,6 +30,7 @@
     <None Remove="Exceptions\Settings\" />
     <None Remove="Dtos\ServiceDtos\" />
     <None Remove="Exceptions\Services\" />
+    <None Remove="Dtos\DepartmentDtos\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -52,6 +53,7 @@
     <Folder Include="Exceptions\Settings\" />
     <Folder Include="Dtos\ServiceDtos\" />
     <Folder Include="Exceptions\Services\" />
+    <Folder Include="Dtos\DepartmentDtos\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />

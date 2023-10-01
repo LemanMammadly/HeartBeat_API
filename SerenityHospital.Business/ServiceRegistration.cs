@@ -13,6 +13,7 @@ public static class ServiceRegistration
         services.AddScoped<IHospitalService, HospitalService>();
         services.AddScoped<ISettingService, SettingService>();
         services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IServiceService, ServiceService>();
     }
 }
 

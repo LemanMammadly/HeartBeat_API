@@ -28,6 +28,8 @@
     <None Remove="Validators\" />
     <None Remove="Dtos\SettingDtos\" />
     <None Remove="Exceptions\Settings\" />
+    <None Remove="Dtos\ServiceDtos\" />
+    <None Remove="Exceptions\Services\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -48,6 +50,8 @@
     <Folder Include="Validators\" />
     <Folder Include="Dtos\SettingDtos\" />
     <Folder Include="Exceptions\Settings\" />
+    <Folder Include="Dtos\ServiceDtos\" />
+    <Folder Include="Exceptions\Services\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />

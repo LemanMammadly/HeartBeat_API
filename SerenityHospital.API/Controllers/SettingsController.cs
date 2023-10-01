@@ -34,7 +34,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]SettingUpdateDto dto)
         {
             await _service.UpdateAsync(id, dto);

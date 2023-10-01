@@ -10,6 +10,7 @@ public static class RepositoryRegistration
     {
         services.AddScoped<IHospitalRepository, HospitalRepository>();
         services.AddScoped<ISettingRepository, SettingRepository>();
+        services.AddScoped<IServiceRepository, ServiceRepository>();
     }
 }
 

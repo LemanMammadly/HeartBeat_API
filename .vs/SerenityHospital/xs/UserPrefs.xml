@@ -6,20 +6,25 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/DepartmentService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/HospitalService.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Implements/DepartmentService.cs" Line="38" Column="71" />
+      <File FileName="SerenityHospital.Business/Services/Implements/HospitalService.cs" Line="1" Column="1" />
+      <File FileName="SerenityHospital.Business/Services/Implements/ServiceService.cs" Line="14" Column="2" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DepartmentService.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="SerenityHospital">
-            <Node name="SerenityHospital.Business" expanded="True">
+          <Node name="SerenityHospital" expanded="True">
+            <Node name="SerenityHospital.API" expanded="True" />
+            <Node name="SerenityHospital.Business">
+              <Node name="Exceptions" expanded="True">
+                <Node name="Departments" expanded="True" />
+              </Node>
               <Node name="Services" expanded="True">
                 <Node name="Implements" expanded="True">
-                  <Node name="DepartmentService.cs" selected="True" />
+                  <Node name="HospitalService.cs" selected="True" />
                 </Node>
-                <Node name="Interfaces" expanded="True" />
               </Node>
             </Node>
           </Node>

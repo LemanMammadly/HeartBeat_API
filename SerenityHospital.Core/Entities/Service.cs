@@ -10,6 +10,8 @@ public class Service:BaseEntity
     public DateTime ServiceEnding { get; set; }
     public decimal MinPrice { get; set; }
     public decimal MaxPrice { get; set; }
+    public ICollection<Department> Departments { get; set; }
 }
+
 
 

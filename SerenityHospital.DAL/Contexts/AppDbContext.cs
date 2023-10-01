@@ -10,6 +10,7 @@ public class AppDbContext:DbContext
     public DbSet<Hospital> Hospitals { get; set; }
     public DbSet<Setting> Settings { get; set; }
     public DbSet<Service> Services { get; set; }
+    public DbSet<Department> Departments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

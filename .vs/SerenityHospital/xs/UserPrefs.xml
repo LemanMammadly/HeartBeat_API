@@ -6,24 +6,18 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/ServiceService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Core/Entities/Department.cs">
     <Files>
-      <File FileName="SerenityHospital.API/Controllers/ServicesController.cs" Line="44" Column="62" />
-      <File FileName="SerenityHospital.API/Controllers/HospitalsController.cs" />
-      <File FileName="SerenityHospital.Business/Services/Implements/ServiceService.cs" Line="1" Column="1" />
+      <File FileName="SerenityHospital.Core/Entities/Department.cs" Line="15" Column="1" />
+      <File FileName="SerenityHospital.Core/Entities/Service.cs" Line="18" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.API">
-              <Node name="Controllers" expanded="True" />
-            </Node>
-            <Node name="SerenityHospital.Business" expanded="True">
-              <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True">
-                  <Node name="ServiceService.cs" selected="True" />
-                </Node>
+            <Node name="SerenityHospital.Core">
+              <Node name="Entities">
+                <Node name="Department.cs" selected="True" />
               </Node>
             </Node>
           </Node>

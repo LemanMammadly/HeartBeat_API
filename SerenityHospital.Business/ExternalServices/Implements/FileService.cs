@@ -28,6 +28,7 @@ public class FileService:IFileService
     public async Task SaveAsync(IFormFile file, string path)
     {
         using FileStream fs = new FileStream(Path.Combine(RootConstant.Root, path), FileMode.Create);
+        await file.CopyToAsync(fs);
     }
 
     private string _renameFile(IFormFile file)

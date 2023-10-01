@@ -5,6 +5,7 @@ namespace SerenityHospital.Business.Constants
 	{
         public static string Root = String.Empty;
         public static string SettingImageRoot = Path.Combine("imgs", "setting");
+        public static string DepartmentImageRoot = Path.Combine("imgs", "department");
     }
 }
 

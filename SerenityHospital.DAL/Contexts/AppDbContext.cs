@@ -12,6 +12,7 @@ public class AppDbContext:DbContext
     public DbSet<Service> Services { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<Position> Positions { get; set; }
+    public DbSet<PatientRoom> PatientRooms { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

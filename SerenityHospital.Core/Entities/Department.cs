@@ -9,6 +9,8 @@ public class Department:BaseEntity
     public string IconUrl { get; set; }
     public Service Service { get; set; }
     public int ServiceId { get; set; }
+    public ICollection<PatientRoom> PatientRooms { get; set; }
 }
+
 
 

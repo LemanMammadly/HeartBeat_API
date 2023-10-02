@@ -21,9 +21,11 @@
   <ItemGroup>
     <None Remove="Entities\" />
     <None Remove="Entities\Common\" />
+    <None Remove="Enums\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Entities\Common\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 </Project>

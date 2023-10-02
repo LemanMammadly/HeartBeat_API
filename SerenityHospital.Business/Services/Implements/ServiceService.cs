@@ -37,7 +37,7 @@ public class ServiceService : IServiceService
         var entity = await _repo.GetByIdAsync(id,"Departments");
         if (entity is null) throw new NotFoundException<Service>();
 
-        if (entity.Departments.Count() > 0) throw new DepartmentIsNotEmptyException();
+        if (entity.Departments.Count() > 0) throw new ServiceIsNotEmptyException();
 
         _repo.Delete(entity);
         await _repo.SaveAsync();
@@ -82,7 +82,7 @@ public class ServiceService : IServiceService
         if (entity is null) throw new NotFoundException<Service>();
 
 
-        if (entity.Departments.Count() > 0) throw new DepartmentIsNotEmptyException();
+        if (entity.Departments.Count() > 0) throw new ServiceIsNotEmptyException();
 
         _repo.RevertSoftDelete(entity);
         await _repo.SaveAsync();
@@ -95,7 +95,7 @@ public class ServiceService : IServiceService
         if (entity is null) throw new NotFoundException<Service>();
 
 
-        if (entity.Departments.Count() > 0) throw new DepartmentIsNotEmptyException();
+        if (entity.Departments.Count() > 0) throw new ServiceIsNotEmptyException();
 
         _repo.SoftDelete(entity);
         await _repo.SaveAsync();

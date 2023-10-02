@@ -11,6 +11,7 @@ public class AppDbContext:DbContext
     public DbSet<Setting> Settings { get; set; }
     public DbSet<Service> Services { get; set; }
     public DbSet<Department> Departments { get; set; }
+    public DbSet<Position> Positions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -18,6 +19,7 @@ public class AppDbContext:DbContext
         base.OnModelCreating(modelBuilder);
     }
 }
+
 
 
 

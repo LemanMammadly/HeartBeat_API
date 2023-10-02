@@ -124,7 +124,7 @@ public class PatientRoomService : IPatientRoomService
             entity.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.PatientRoomtImageRoot);
         }
 
-        var department = _depRepo.GetByIdAsync(dto.DepartmentId);
+        var department =await _depRepo.GetByIdAsync(dto.DepartmentId);
         if (department is null) throw new NotFoundException<Department>();
 
         entity.DepartmentId = dto.DepartmentId;

@@ -62,7 +62,7 @@ public class PositionService : IPositionService
         }
         else
         {
-            entity = await _repo.GetSingleAsync(p => p.IsDeleted == false);
+            entity = await _repo.GetSingleAsync(p => p.IsDeleted == false && p.Id==id);
             if (entity is null) throw new NotFoundException<Position>();
         }
 

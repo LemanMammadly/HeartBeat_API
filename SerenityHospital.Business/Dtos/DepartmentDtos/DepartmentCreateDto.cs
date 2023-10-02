@@ -28,6 +28,10 @@ public class DepartmentCreateDtoValidator:AbstractValidator<DepartmentCreateDto>
             .NotEmpty()
                  .WithMessage("Department Description dont be null");
         RuleFor(d => d.IconFile)
+            .NotNull()
+                .WithMessage("Icon file dont be null")
+            .NotEmpty()
+                 .WithMessage("Icon file dont be null")
             .SetValidator(new FileValidator());
         RuleFor(d => d.ServiceId)
             .NotNull()

@@ -1,4 +1,5 @@
-﻿using SerenityHospital.Core.Entities;
+﻿using SerenityHospital.Business.Dtos.PatientRoomDtos;
+using SerenityHospital.Core.Entities;
 
 namespace SerenityHospital.Business.Dtos.DepartmentDtos;
 
@@ -10,6 +11,7 @@ public record DepartmentListItemDto
     public string IconUrl { get; set; }
     public int ServiceId { get; set; }
     public bool IsDeleted { get; set; }
+    public IEnumerable<PatientRoomListItemDto> PatientRooms { get; set; }
 }
 
 

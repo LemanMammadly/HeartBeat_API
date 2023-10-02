@@ -122,7 +122,7 @@ public class DepartmentService : IDepartmentService
         var service = await _serviceRepo.GetByIdAsync(dto.ServiceId);
         if (service == null) throw new NotFoundException<Service>();
 
-        entity.ServiceId = service.Id;
+        entity.ServiceId = dto.ServiceId;
 
         _mapper.Map(dto, entity);
         await _repo.SaveAsync();

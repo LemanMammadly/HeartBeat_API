@@ -10,6 +10,7 @@ public record DepartmentUpdateDto
     public string Description { get; set; }
     public IFormFile? IconFile { get; set; }
     public int ServiceId { get; set; }
+    public IEnumerable<int> PatientRoomIds { get; set; }
 }
 
 public class DepartmentUpdateDtoValidator:AbstractValidator<DepartmentUpdateDto>
@@ -35,5 +36,26 @@ public class DepartmentUpdateDtoValidator:AbstractValidator<DepartmentUpdateDto>
                  .WithMessage("ServiceId dont be null")
             .GreaterThan(0)
                 .WithMessage("ServiceId must be greater than 0");
+        RuleFor(d => d.PatientRoomIds)
+            .Must(d => IsDistinct(d))
+                .WithMessage("You cannot add same patient room ids in same department");
+    }
+
+    private bool IsDistinct(IEnumerable<int> ids)
+    {
+        var encounteredIds = new HashSet<int>();
+
+        foreach (var id in ids)
+        {
+            if (!encounteredIds.Contains(id))
+            {
+                encounteredIds.Add(id);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

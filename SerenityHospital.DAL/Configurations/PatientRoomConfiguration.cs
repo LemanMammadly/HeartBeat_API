@@ -8,8 +8,8 @@ public class PatientRoomConfiguration : IEntityTypeConfiguration<PatientRoom>
 {
     public void Configure(EntityTypeBuilder<PatientRoom> builder)
     {
-        builder.Property(pr => pr.Number)
-             .IsRequired();
+        builder.HasIndex(pr => pr.Number)
+             .IsUnique();
         builder.Property(pr => pr.Type)
             .IsRequired();
         builder.Property(pr => pr.Status)

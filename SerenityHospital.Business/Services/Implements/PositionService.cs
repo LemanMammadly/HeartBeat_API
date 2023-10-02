@@ -21,6 +21,10 @@ public class PositionService : IPositionService
     public async Task CreateAsync(PositionCreateDto dto)
     {
         if(await _repo.IsExistAsync(p=>p.Name==dto.Name)) throw new NameIsAlreadyExistException<Position>();
+
+        var position = _mapper.Map<Position>(dto);
+        await _repo.CreateAsync(position);
+        await _repo.SaveAsync();
     }
 
     public async Task DeleteAsync(int id)

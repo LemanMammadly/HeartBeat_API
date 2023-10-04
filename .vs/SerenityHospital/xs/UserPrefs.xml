@@ -6,22 +6,14 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.DAL/Configurations/AdminstratorConfiguration.cs">
-    <Files>
-      <File FileName="SerenityHospital.Core/Entities/Adminstrator.cs" />
-      <File FileName="SerenityHospital.DAL/Configurations/AdminstratorConfiguration.cs" Line="23" Column="1" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.Core" expanded="True">
-              <Node name="Entities" expanded="True" />
-            </Node>
-            <Node name="SerenityHospital.DAL">
-              <Node name="Configurations" expanded="True">
-                <Node name="AdminstratorConfiguration.cs" selected="True" />
-              </Node>
+            <Node name="SerenityHospital.Business" expanded="True">
+              <Node name="Dtos" expanded="True" />
+              <Node name="Profiles" expanded="True" />
             </Node>
           </Node>
         </State>

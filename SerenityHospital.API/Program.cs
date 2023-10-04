@@ -7,6 +7,9 @@ using SerenityHospital.Business;
 using FluentValidation.AspNetCore;
 using SerenityHospital.Business.Services.Implements;
 using SerenityHospital.Business.Constants;
+using Microsoft.AspNetCore.Identity;
+using System.Numerics;
+using SerenityHospital.Core.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,13 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration["ConnectionStrings:Default"]);
 });
+
+
+builder.Services.AddIdentity<Adminstrator, IdentityRole>(opt =>
+{
+    opt.Password.RequireNonAlphanumeric = false;
+}).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
+
 
 builder.Services.AddAutoMapper(typeof(HospitalMappingProfile).Assembly);
 

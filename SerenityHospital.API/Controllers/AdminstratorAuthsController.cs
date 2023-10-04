@@ -28,6 +28,12 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login([FromForm] LoginAdminstratorDto dto)
+        {
+            return Ok(await _service.LoginAsync(dto));
+        }
+
         [HttpPatch("[action]/{id}")]
         public async Task<IActionResult> SoftDelete(string id)
         {

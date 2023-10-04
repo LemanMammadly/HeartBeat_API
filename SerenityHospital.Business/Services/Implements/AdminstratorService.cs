@@ -1,9 +1,14 @@
-﻿using System.Text;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.AdminstratorDtos;
+using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Images;
 using SerenityHospital.Business.Extensions;
@@ -21,13 +26,15 @@ public class AdminstratorService : IAdminstratorService
     readonly IMapper _mapper;
     readonly IFileService _fileService;
     readonly IHospitalRepository _hospitalRepository;
+    readonly ITokenService _tokenService;
 
-    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository)
+    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService)
     {
         this.userManager = userManager;
         _mapper = mapper;
         _fileService = fileService;
         _hospitalRepository = hospitalRepository;
+        _tokenService = tokenService;
     }
 
     public async Task CreateAsync(CreateAdminstratorDto dto)
@@ -95,6 +102,17 @@ public class AdminstratorService : IAdminstratorService
         adminstrator.HospitalId = hospital.Id;
 
         await userManager.UpdateAsync(adminstrator);
+    }
+
+    public async Task<TokenResponseDto> LoginAsync(LoginAdminstratorDto dto)
+    {
+        var adminstrator = await userManager.FindByNameAsync(dto.UserName);
+        if (adminstrator == null) throw new LoginFailedException<Adminstrator>("Username or password is wrong");
+
+        var result = await userManager.CheckPasswordAsync(adminstrator, dto.Password);
+        if (!result) throw new LoginFailedException<Adminstrator>("Username or password is wrong");
+
+        return _tokenService.CreateToken(adminstrator);
     }
 }
 

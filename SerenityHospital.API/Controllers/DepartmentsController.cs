@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Dtos.DepartmentDtos;
 using SerenityHospital.Business.Services.Interfaces;
@@ -12,6 +13,7 @@ namespace SerenityHospital.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DepartmentsController : ControllerBase
     {
         readonly IDepartmentService _service;

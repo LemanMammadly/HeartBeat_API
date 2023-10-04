@@ -6,14 +6,10 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.DAL/Configurations/AppUserConfiguration.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.DAL/Configurations/AdminstratorConfiguration.cs">
     <Files>
-      <File FileName="SerenityHospital.Core/Entities/AppUser.cs" Line="16" Column="1" />
-      <File FileName="SerenityHospital.DAL/Configurations/AppUserConfiguration.cs" Line="18" Column="27" />
-      <File FileName="SerenityHospital.DAL/Configurations/PositionConfiguration.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.DAL/Configurations/ServiceConfiguration.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.DAL/Configurations/SettingConfiguration.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.DAL/Configurations/PatientRoomConfiguration.cs" Line="1" Column="1" />
+      <File FileName="SerenityHospital.Core/Entities/Adminstrator.cs" />
+      <File FileName="SerenityHospital.DAL/Configurations/AdminstratorConfiguration.cs" Line="23" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -24,7 +20,7 @@
             </Node>
             <Node name="SerenityHospital.DAL">
               <Node name="Configurations" expanded="True">
-                <Node name="AppUserConfiguration.cs" selected="True" />
+                <Node name="AdminstratorConfiguration.cs" selected="True" />
               </Node>
             </Node>
           </Node>

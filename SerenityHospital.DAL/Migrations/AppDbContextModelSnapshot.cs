@@ -449,8 +449,11 @@ namespace SerenityHospital.DAL.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("HospitalId")
+                    b.Property<int?>("HospitalId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
@@ -547,9 +550,7 @@ namespace SerenityHospital.DAL.Migrations
                 {
                     b.HasOne("SerenityHospital.Core.Entities.Hospital", "Hospital")
                         .WithOne("Adminstrator")
-                        .HasForeignKey("SerenityHospital.Core.Entities.Adminstrator", "HospitalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SerenityHospital.Core.Entities.Adminstrator", "HospitalId");
 
                     b.Navigation("Hospital");
                 });

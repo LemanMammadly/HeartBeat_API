@@ -6,14 +6,18 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.API/Controllers/AdminstratorsController.cs">
+    <Files>
+      <File FileName="SerenityHospital.API/Controllers/AdminstratorsController.cs" Line="28" Column="32" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.Business" expanded="True">
-              <Node name="Dtos" expanded="True" />
-              <Node name="Profiles" expanded="True" />
+            <Node name="SerenityHospital.API">
+              <Node name="Controllers" expanded="True">
+                <Node name="AdminstratorsController.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>

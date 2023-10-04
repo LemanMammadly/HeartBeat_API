@@ -34,6 +34,12 @@ namespace SerenityHospital.DAL.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.AddColumn<bool>(
+                name: "IsDeleted",
+                table: "AspNetUsers",
+                type: "bit",
+                nullable: true);
+
             migrationBuilder.AddColumn<decimal>(
                 name: "Salary",
                 table: "AspNetUsers",
@@ -65,8 +71,7 @@ namespace SerenityHospital.DAL.Migrations
                 table: "AspNetUsers",
                 column: "HospitalId",
                 principalTable: "Hospitals",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -93,6 +98,10 @@ namespace SerenityHospital.DAL.Migrations
 
             migrationBuilder.DropColumn(
                 name: "HospitalId",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "IsDeleted",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(

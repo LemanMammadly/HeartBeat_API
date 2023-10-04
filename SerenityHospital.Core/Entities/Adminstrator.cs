@@ -9,8 +9,9 @@ public class Adminstrator:AppUser
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public WorkStatus Status { get; set; }
-    public Hospital Hospital { get; set; }
-    public int HospitalId { get; set; }
+    public Hospital? Hospital { get; set; }
+    public int? HospitalId { get; set; }
+    public bool IsDeleted { get; set; }
 }
 
 

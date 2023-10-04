@@ -22,7 +22,7 @@ public class AdminstratorConfiguration : IEntityTypeConfiguration<Adminstrator>
         builder.HasOne(a => a.Hospital)
             .WithOne(h => h.Adminstrator)
             .HasForeignKey<Adminstrator>(a => a.HospitalId)
-            .IsRequired();
+            .IsRequired(false);
     }
 }
 

@@ -1,29 +1,4 @@
 ﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Dtos/PatientRoomDtos/PatientRoomCreateDto.cs">
-    <Files>
-      <File FileName="SerenityHospital.Business/Dtos/PatientRoomDtos/PatientRoomCreateDto.cs" Line="29" Column="61" />
-    </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.Business">
-              <Node name="Dtos" expanded="True">
-                <Node name="PatientRoomDtos" expanded="True" />
-              </Node>
-            </Node>
-            <Node name="SerenityHospital.Core">
-              <Node name="Entities" expanded="True" />
-            </Node>
-            <Node name="SerenityHospital.DAL" expanded="True">
-              <Node name="Configurations" expanded="True" />
-              <Node name="Repositories" expanded="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
-  </MonoDevelop.Ide.Workbench>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
@@ -31,4 +6,30 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.DAL/Configurations/AppUserConfiguration.cs">
+    <Files>
+      <File FileName="SerenityHospital.Core/Entities/AppUser.cs" Line="16" Column="1" />
+      <File FileName="SerenityHospital.DAL/Configurations/AppUserConfiguration.cs" Line="18" Column="27" />
+      <File FileName="SerenityHospital.DAL/Configurations/PositionConfiguration.cs" Line="1" Column="1" />
+      <File FileName="SerenityHospital.DAL/Configurations/ServiceConfiguration.cs" Line="1" Column="1" />
+      <File FileName="SerenityHospital.DAL/Configurations/SettingConfiguration.cs" Line="1" Column="1" />
+      <File FileName="SerenityHospital.DAL/Configurations/PatientRoomConfiguration.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="SerenityHospital" expanded="True">
+            <Node name="SerenityHospital.Core" expanded="True">
+              <Node name="Entities" expanded="True" />
+            </Node>
+            <Node name="SerenityHospital.DAL">
+              <Node name="Configurations" expanded="True">
+                <Node name="AppUserConfiguration.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
 </Properties>

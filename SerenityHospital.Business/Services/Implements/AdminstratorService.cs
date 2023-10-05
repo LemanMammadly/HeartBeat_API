@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,14 +28,18 @@ public class AdminstratorService : IAdminstratorService
 {
     readonly UserManager<Adminstrator> userManager;
     readonly RoleManager<IdentityRole> _roleManager;
+    readonly IHttpContextAccessor _context;
+    readonly string? userId;
     readonly IMapper _mapper;
     readonly IFileService _fileService;
     readonly IHospitalRepository _hospitalRepository;
     readonly ITokenService _tokenService;
 
-    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager)
+    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context)
     {
         this.userManager = userManager;
+        _context = context;
+        userId = _context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _mapper = mapper;
         _fileService = fileService;
         _hospitalRepository = hospitalRepository;
@@ -140,9 +145,24 @@ public class AdminstratorService : IAdminstratorService
         }
     }
 
-    public Task RemoveRoleAsync(RemoveRoleDto dto)
+    public async Task RemoveRoleAsync(RemoveRoleDto dto)
     {
-        throw new NotImplementedException();
+        var user = await userManager.FindByNameAsync(dto.userName);
+        if (user == null) throw new NotFoundException<AppUser>();
+
+        if (!await _roleManager.RoleExistsAsync(dto.roleName)) throw new NotFoundException<IdentityRole>();
+
+        var result = await userManager.RemoveFromRoleAsync(user, dto.roleName);
+
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new RoleRemoveFailedException(a);
+        }
     }
 
     public async Task<ICollection<AdminstratorListItemDto>> GetAllAsync()
@@ -170,6 +190,39 @@ public class AdminstratorService : IAdminstratorService
         if (user == null) throw new NotFoundException<Adminstrator>();
         if (user.RefreshTokenExpiresDate < DateTime.UtcNow.AddHours(4)) throw new RefreshTokenExpiresIsOldException();
         return _tokenService.CreateToken(user);
+    }
+
+    public async Task UpdateAsync(AdminstratorUpdateDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(userId)) throw new ArgumentIsNullException();
+        if (!await userManager.Users.AnyAsync(u => u.Id == userId)) throw new AppUserNotFoundException<Adminstrator>();
+
+        var user = await userManager.FindByIdAsync(userId);
+
+        if (await userManager.Users.AnyAsync(a=>(a.UserName==dto.UserName && a.Id != userId) || (a.Email==dto.Email && a.Id !=userId))) throw new AppUserIsAlreadyExistException<Adminstrator>();
+
+        if (dto.ImageFile != null)
+        {
+            if(user.ImageUrl != null)
+            {
+                _fileService.Delete(user.ImageUrl);
+            }
+            if (!dto.ImageFile.IsSizeValid(3)) throw new SizeNotValidException();
+            if (!dto.ImageFile.IsTypeValid("image")) throw new TypeNotValidException();
+            user.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.AdminstratortImageRoot);
+        }
+
+        var newUser = _mapper.Map(dto, user);
+        var result =await userManager.UpdateAsync(newUser);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserUpdateFailedException<Adminstrator>(a);
+        }
     }
 }
 

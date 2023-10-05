@@ -35,14 +35,27 @@ namespace SerenityHospital.API.Controllers
         {
             await _service.AddRoleAsync(dto);
             return Ok();
-
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
+        {
+            await _service.RemoveRoleAsync(dto);
+            return Ok();
+        }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm]CreateAdminstratorDto dto)
         {
             await _service.CreateAsync(dto);
+            return NoContent();
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Put([FromForm] AdminstratorUpdateDto dto)
+        {
+            await _service.UpdateAsync(dto);
             return NoContent();
         }
 

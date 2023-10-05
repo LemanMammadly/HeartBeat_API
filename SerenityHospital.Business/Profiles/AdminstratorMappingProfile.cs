@@ -9,6 +9,7 @@ public class AdminstratorMappingProfile:Profile
     public AdminstratorMappingProfile()
     {
         CreateMap<CreateAdminstratorDto, Adminstrator>().ReverseMap();
+        CreateMap<AdminstratorUpdateDto, Adminstrator>().ReverseMap();
     }
 }
 

@@ -7,6 +7,7 @@ namespace SerenityHospital.Business.Services.Interfaces;
 public interface IAdminstratorService
 {
     Task CreateAsync(CreateAdminstratorDto dto);
+    Task UpdateAsync(AdminstratorUpdateDto dto);
     Task<TokenResponseDto> LoginAsync(LoginAdminstratorDto dto);
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
     Task<ICollection<AdminstratorListItemDto>> GetAllAsync();

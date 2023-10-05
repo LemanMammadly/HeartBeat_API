@@ -70,12 +70,12 @@ public class AdminstratorService : IAdminstratorService
 
         if(!result.Succeeded)
         {
-            StringBuilder sb = new StringBuilder();
+            string a = " ";
             foreach (var item in result.Errors)
             {
-                sb.Append(item.Description + " ");
+                a += item.Description + " ";
             }
-            throw new RegisterFailedException<Adminstrator>();
+            throw new RegisterFailedException<Adminstrator>(a);
         }
     }
 

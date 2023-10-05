@@ -3,7 +3,7 @@ using SerenityHospital.Core.Entities.Common;
 
 namespace SerenityHospital.Business.Exceptions.Common;
 
-public class NotFoundException<T> : Exception, IBaseException where T : BaseEntity
+public class NotFoundException<T> : Exception, IBaseException where T : class
 {
     public int StatusCode => StatusCodes.Status400BadRequest;
 

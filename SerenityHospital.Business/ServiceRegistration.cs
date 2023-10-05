@@ -19,6 +19,7 @@ public static class ServiceRegistration
         services.AddScoped<IPatientRoomService, PatientRoomService>();
         services.AddScoped<IAdminstratorService, AdminstratorService>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IRoleService, RoleService>();
     }
 }
 

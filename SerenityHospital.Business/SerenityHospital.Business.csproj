@@ -37,6 +37,8 @@
     <None Remove="Exceptions\PatientRooms\" />
     <None Remove="Dtos\AdminstratorDtos\" />
     <None Remove="Dtos\TokenDtos\" />
+    <None Remove="Dtos\RoleDtos\" />
+    <None Remove="Exceptions\Roles\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -66,6 +68,8 @@
     <Folder Include="Exceptions\PatientRooms\" />
     <Folder Include="Dtos\AdminstratorDtos\" />
     <Folder Include="Dtos\TokenDtos\" />
+    <Folder Include="Dtos\RoleDtos\" />
+    <Folder Include="Exceptions\Roles\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />

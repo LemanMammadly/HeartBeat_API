@@ -59,6 +59,14 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles ="Admin")]
+        [HttpPut("[action]/{id}")]
+        public async Task<IActionResult> PutByAdmin(string id, [FromForm]AdminstratorUpdateByAdminDto dto)
+        {
+            await _service.UpdateByAdminAsync(id,dto);
+            return NoContent();
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm] LoginAdminstratorDto dto)
         {

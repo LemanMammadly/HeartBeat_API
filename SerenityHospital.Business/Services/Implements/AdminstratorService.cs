@@ -224,5 +224,52 @@ public class AdminstratorService : IAdminstratorService
             throw new AppUserUpdateFailedException<Adminstrator>(a);
         }
     }
+
+    public async Task UpdateByAdminAsync(string id, AdminstratorUpdateByAdminDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(id)) throw new ArgumentIsNullException();
+        var user = await userManager.FindByIdAsync(id);
+        if (user == null) throw new AppUserNotFoundException<Adminstrator>();
+
+        if (await userManager.Users.AnyAsync(a => (a.UserName == dto.UserName && a.Id != id) || (a.Email == dto.Email && a.Id != id))) throw new AppUserIsAlreadyExistException<Adminstrator>();
+
+        if (dto.ImageFile != null)
+        {
+            if (user.ImageUrl != null)
+            {
+                _fileService.Delete(user.ImageUrl);
+            }
+            if (!dto.ImageFile.IsSizeValid(3)) throw new SizeNotValidException();
+            if (!dto.ImageFile.IsTypeValid("image")) throw new TypeNotValidException();
+            user.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.AdminstratortImageRoot);
+        }
+
+        if(dto.Status==WorkStatus.leave)
+        {
+            user.EndDate = DateTime.UtcNow.AddHours(4);
+            await SoftDeleteAsync(id);
+        }
+
+        var hospital = await _hospitalRepository.GetFirstAsync();
+
+        if (dto.Status == WorkStatus.Active)
+        {
+            user.StartDate = DateTime.UtcNow.AddHours(4);
+            user.EndDate = null;
+            await RevertSoftDeleteAsync(id);
+        }
+
+        var newUser = _mapper.Map(dto, user);
+        var result = await userManager.UpdateAsync(newUser);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserUpdateFailedException<Adminstrator>(a);
+        }
+    }
 }
 

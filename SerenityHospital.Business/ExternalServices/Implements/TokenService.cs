@@ -7,18 +7,24 @@ using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Core.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Cryptography;
 
 namespace SerenityHospital.Business.ExternalServices.Implements;
 
 public class TokenService : ITokenService
 {
     readonly IConfiguration _configuration;
-    readonly UserManager<Adminstrator> _userManager;
+    readonly UserManager<Adminstrator> _adminstratorUserManager;
 
     public TokenService(IConfiguration configuration, UserManager<Adminstrator> userManager)
     {
         _configuration = configuration;
-        _userManager = userManager;
+        _adminstratorUserManager = userManager;
+    }
+
+    public string CreateRefreshToken()
+    {
+        return Guid.NewGuid().ToString();
     }
 
     public TokenResponseDto CreateToken(Adminstrator adminstrator, int expires = 60)
@@ -32,7 +38,7 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.Surname,adminstrator.Surname)
         };
 
-        foreach (var userRole in _userManager.GetRolesAsync(adminstrator).Result)
+        foreach (var userRole in _adminstratorUserManager.GetRolesAsync(adminstrator).Result)
         {
             claims.Add(new Claim(ClaimTypes.Role, userRole));
         }
@@ -52,11 +58,18 @@ public class TokenService : ITokenService
         JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
         string token = tokenHandler.WriteToken(jwtSecurity);
 
+        string refreshtoken = CreateRefreshToken();
+        var refreshtokenExpires = jwtSecurity.ValidTo.AddMinutes(expires / 3);
+        adminstrator.RefreshToken = refreshtoken;
+        adminstrator.RefreshTokenExpiresDate = refreshtokenExpires;
+        _adminstratorUserManager.UpdateAsync(adminstrator).Wait();
         return new()
         {
             Token = token,
             Expires = jwtSecurity.ValidTo,
-            Username = adminstrator.UserName
+            Username = adminstrator.UserName,
+            RefreshToken=refreshtoken,
+            RefreshTokenExpires=refreshtokenExpires
         };
     }
 }

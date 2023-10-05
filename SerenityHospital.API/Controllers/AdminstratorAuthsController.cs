@@ -52,6 +52,12 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.LoginAsync(dto));
         }
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> LoginWithRefreshToken(string refreshToken)
+        {
+            return Ok(await _service.LoginWithRefreshTokenAsync(refreshToken));
+        }
+
         [HttpPatch("[action]/{id}")]
         public async Task<IActionResult> SoftDelete(string id)
         {

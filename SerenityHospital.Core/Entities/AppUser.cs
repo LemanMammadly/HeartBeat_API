@@ -10,6 +10,10 @@ public class AppUser:IdentityUser
     public int Age { get; set; }
     public Gender Gender { get; set; }
     public string? ImageUrl { get; set; }
+    public string? RefreshToken { get; set; }
+    public DateTime? RefreshTokenExpiresDate { get; set; }
 }
+
+
 
 

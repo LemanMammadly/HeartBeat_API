@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Dtos.ServiceDtos;
+using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,10 +16,12 @@ namespace SerenityHospital.API.Controllers
     public class ServicesController : ControllerBase
     {
         readonly IServiceService _service;
+        readonly ITokenService _tokenService;
 
-        public ServicesController(IServiceService service)
+        public ServicesController(IServiceService service, ITokenService tokenService)
         {
             _service = service;
+            _tokenService = tokenService;
         }
 
         [HttpGet]

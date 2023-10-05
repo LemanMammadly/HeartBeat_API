@@ -39,6 +39,7 @@
     <None Remove="Dtos\TokenDtos\" />
     <None Remove="Dtos\RoleDtos\" />
     <None Remove="Exceptions\Roles\" />
+    <None Remove="Exceptions\Tokens\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -70,6 +71,7 @@
     <Folder Include="Dtos\TokenDtos\" />
     <Folder Include="Dtos\RoleDtos\" />
     <Folder Include="Exceptions\Roles\" />
+    <Folder Include="Exceptions\Tokens\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />

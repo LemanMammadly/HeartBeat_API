@@ -13,6 +13,7 @@ using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Images;
 using SerenityHospital.Business.Exceptions.Roles;
+using SerenityHospital.Business.Exceptions.Tokens;
 using SerenityHospital.Business.Extensions;
 using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
@@ -160,6 +161,15 @@ public class AdminstratorService : IAdminstratorService
             users.Add(userDto);
         }
         return users;
+    }
+
+    public async Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken)
+    {
+        if (string.IsNullOrEmpty(refreshToken)) throw new ArgumentIsNullException();
+        var user = await userManager.Users.SingleOrDefaultAsync(x => x.RefreshToken == refreshToken);
+        if (user == null) throw new NotFoundException<Adminstrator>();
+        if (user.RefreshTokenExpiresDate < DateTime.UtcNow.AddHours(4)) throw new RefreshTokenExpiresIsOldException();
+        return _tokenService.CreateToken(user);
     }
 }
 

@@ -6,16 +6,19 @@ using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Core.Entities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 namespace SerenityHospital.Business.ExternalServices.Implements;
 
 public class TokenService : ITokenService
 {
     readonly IConfiguration _configuration;
+    readonly UserManager<Adminstrator> _userManager;
 
-    public TokenService(IConfiguration configuration)
+    public TokenService(IConfiguration configuration, UserManager<Adminstrator> userManager)
     {
         _configuration = configuration;
+        _userManager = userManager;
     }
 
     public TokenResponseDto CreateToken(Adminstrator adminstrator, int expires = 60)
@@ -28,6 +31,11 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.GivenName,adminstrator.Name),
             new Claim(ClaimTypes.Surname,adminstrator.Surname)
         };
+
+        foreach (var userRole in _userManager.GetRolesAsync(adminstrator).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
 
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
 

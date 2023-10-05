@@ -1,9 +1,11 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SerenityHospital.Business.Dtos.RoleDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Roles;
 using SerenityHospital.Business.Services.Interfaces;
+using SerenityHospital.Core.Entities;
 
 namespace SerenityHospital.Business.Services.Implements;
 

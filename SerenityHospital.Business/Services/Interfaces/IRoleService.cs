@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SerenityHospital.Business.Dtos.RoleDtos;
 
 namespace SerenityHospital.Business.Services.Interfaces;
 

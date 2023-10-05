@@ -8,9 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.AdminstratorDtos;
+using SerenityHospital.Business.Dtos.RoleDtos;
 using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Images;
+using SerenityHospital.Business.Exceptions.Roles;
 using SerenityHospital.Business.Extensions;
 using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
@@ -23,18 +25,20 @@ namespace SerenityHospital.Business.Services.Implements;
 public class AdminstratorService : IAdminstratorService
 {
     readonly UserManager<Adminstrator> userManager;
+    readonly RoleManager<IdentityRole> _roleManager;
     readonly IMapper _mapper;
     readonly IFileService _fileService;
     readonly IHospitalRepository _hospitalRepository;
     readonly ITokenService _tokenService;
 
-    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService)
+    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager)
     {
         this.userManager = userManager;
         _mapper = mapper;
         _fileService = fileService;
         _hospitalRepository = hospitalRepository;
         _tokenService = tokenService;
+        _roleManager = roleManager;
     }
 
     public async Task CreateAsync(CreateAdminstratorDto dto)
@@ -113,6 +117,49 @@ public class AdminstratorService : IAdminstratorService
         if (!result) throw new LoginFailedException<Adminstrator>("Username or password is wrong");
 
         return _tokenService.CreateToken(adminstrator);
+    }
+
+    public async Task AddRoleAsync(AddRoleDto dto)
+    {
+        var user = await userManager.FindByNameAsync(dto.userName);
+        if (user == null) throw new NotFoundException<AppUser>();
+
+        if (!await _roleManager.RoleExistsAsync(dto.roleName)) throw new NotFoundException<IdentityRole>();
+
+        var result = await userManager.AddToRoleAsync(user, dto.roleName);
+
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new RoleCreatedFailedException(a);
+        }
+    }
+
+    public Task RemoveRoleAsync(RemoveRoleDto dto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<ICollection<AdminstratorListItemDto>> GetAllAsync()
+    {
+        ICollection<AdminstratorListItemDto> users = new List<AdminstratorListItemDto>();
+        foreach (var user in await userManager.Users.ToListAsync())
+        {
+            var userDto = new AdminstratorListItemDto
+            {
+                Name = user.Name,
+                Surname = user.Surname,
+                ImageUrl = user.ImageUrl,
+                UserName = user.UserName,
+                Roles = await userManager.GetRolesAsync(user)
+            };
+            users.Add(userDto);
+        }
+        return users;
     }
 }
 

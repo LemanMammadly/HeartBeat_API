@@ -5,7 +5,8 @@ namespace SerenityHospital.Business.ExternalServices.Interfaces;
 
 public interface ITokenService
 {
-    TokenResponseDto CreateToken(Adminstrator adminstrator, int expires = 60);
+    TokenResponseDto CreateAdminstratorToken(Adminstrator adminstrator, int expires = 60);
+    TokenResponseDto CreateDoctorToken(Doctor doctor, int expires = 60);
     string CreateRefreshToken();
 }
 

@@ -51,7 +51,6 @@ public class AdminstratorService : IAdminstratorService
 
     public async Task CreateAsync(CreateAdminstratorDto dto)
     {
-
         var existAdminstrator = await userManager.Users.FirstOrDefaultAsync(a => a.IsDeleted == false);
 
         if (existAdminstrator != null) throw new AppUserIsAlreadyExistException<Adminstrator>();
@@ -126,7 +125,7 @@ public class AdminstratorService : IAdminstratorService
         var result = await userManager.CheckPasswordAsync(adminstrator, dto.Password);
         if (!result) throw new LoginFailedException<Adminstrator>("Username or password is wrong");
 
-        return _tokenService.CreateToken(adminstrator);
+        return _tokenService.CreateAdminstratorToken(adminstrator);
     }
 
     public async Task AddRoleAsync(AddRoleDto dto)
@@ -193,7 +192,7 @@ public class AdminstratorService : IAdminstratorService
         var user = await userManager.Users.SingleOrDefaultAsync(x => x.RefreshToken == refreshToken);
         if (user == null) throw new NotFoundException<Adminstrator>();
         if (user.RefreshTokenExpiresDate < DateTime.UtcNow.AddHours(4)) throw new RefreshTokenExpiresIsOldException();
-        return _tokenService.CreateToken(user);
+        return _tokenService.CreateAdminstratorToken(user);
     }
 
     public async Task UpdateAsync(AdminstratorUpdateDto dto)

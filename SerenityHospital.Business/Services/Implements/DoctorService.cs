@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.DoctorDtos;
+using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Images;
 using SerenityHospital.Business.Extensions;
@@ -22,8 +23,9 @@ public class DoctorService : IDoctorService
     readonly IFileService _fileService;
     readonly IDepartmentRepository _departmentRepository;
     readonly IPositionRepository _positionRepository;
+    readonly ITokenService _tokenService;
 
-    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager)
+    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager, ITokenService tokenService)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -31,6 +33,7 @@ public class DoctorService : IDoctorService
         _departmentRepository = departmentRepository;
         _positionRepository = positionRepository;
         _appUserManager = appUserManager;
+        _tokenService = tokenService;
     }
 
     public async Task CreateAsync(DoctorCreateDto dto)
@@ -72,6 +75,17 @@ public class DoctorService : IDoctorService
             }
             throw new RegisterFailedException<Doctor>(a);
         }
+    }
+
+    public async Task<TokenResponseDto> LoginAsync(DoctorLoginDto dto)
+    {
+        var doctor = await _userManager.FindByNameAsync(dto.UserName);
+        if (doctor == null) throw new AppUserNotFoundException<Doctor>("Username or password is wrong");
+
+        var result = await _userManager.CheckPasswordAsync(doctor, dto.Password);
+        if (!result) throw new LoginFailedException<Doctor>("Username or password is wrong");
+
+        return _tokenService.CreateDoctorToken(doctor);
     }
 }
 

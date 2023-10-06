@@ -28,6 +28,12 @@ namespace SerenityHospital.API.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login([FromForm]DoctorLoginDto dto)
+        {
+            return Ok(await _service.LoginAsync(dto));
+        }
+
     }
 }
 

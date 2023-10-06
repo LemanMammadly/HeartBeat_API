@@ -27,6 +27,7 @@ namespace SerenityHospital.Business.Services.Implements;
 public class AdminstratorService : IAdminstratorService
 {
     readonly UserManager<Adminstrator> userManager;
+    readonly UserManager<AppUser> _appUserManager;
     readonly RoleManager<IdentityRole> _roleManager;
     readonly IHttpContextAccessor _context;
     readonly string? userId;
@@ -35,7 +36,7 @@ public class AdminstratorService : IAdminstratorService
     readonly IHospitalRepository _hospitalRepository;
     readonly ITokenService _tokenService;
 
-    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context)
+    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, UserManager<AppUser> appUserManager)
     {
         this.userManager = userManager;
         _context = context;
@@ -45,6 +46,7 @@ public class AdminstratorService : IAdminstratorService
         _hospitalRepository = hospitalRepository;
         _tokenService = tokenService;
         _roleManager = roleManager;
+        _appUserManager = appUserManager;
     }
 
     public async Task CreateAsync(CreateAdminstratorDto dto)
@@ -70,6 +72,8 @@ public class AdminstratorService : IAdminstratorService
         adminstrator.Status = WorkStatus.Active;
 
         if (await userManager.Users.AnyAsync(a => a.UserName == dto.UserName || a.Email == dto.Email)) throw new AppUserIsAlreadyExistException<Adminstrator>();
+        if (await _appUserManager.Users.AnyAsync(d => d.UserName == dto.UserName || d.Email == dto.Email)) throw new AppUserIsAlreadyExistException<Adminstrator>();
+
 
         var hospital =await _hospitalRepository.GetFirstAsync();
 

@@ -14,10 +14,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using SerenityHospital.Business.ExternalServices.Implements;
+using SerenityHospital.Business.ExternalServices.Interfaces;
+using SerenityHospital.Business.Services.Interfaces;
+using System.Security.Principal;
+using SerenityHospital.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddPersistenceServices(builder.Configuration);
 
 builder.Services.AddControllers();
 
@@ -61,12 +67,6 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration["ConnectionStrings:Default"]);
 });
-
-
-builder.Services.AddIdentity<Adminstrator, IdentityRole>(opt =>
-{
-    opt.Password.RequireNonAlphanumeric = false;
-}).AddDefaultTokenProviders().AddEntityFrameworkStores<AppDbContext>();
 
 
 builder.Services.AddAutoMapper(typeof(HospitalMappingProfile).Assembly);

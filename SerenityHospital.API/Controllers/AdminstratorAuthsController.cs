@@ -49,7 +49,7 @@ namespace SerenityHospital.API.Controllers
         public async Task<IActionResult> Create([FromForm]CreateAdminstratorDto dto)
         {
             await _service.CreateAsync(dto);
-            return NoContent();
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         [HttpPut("[action]")]

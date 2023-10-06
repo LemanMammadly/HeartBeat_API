@@ -10,6 +10,7 @@ public class Department:BaseEntity
     public Service Service { get; set; }
     public int ServiceId { get; set; }
     public ICollection<PatientRoom> PatientRooms { get; set; }
+    public ICollection<Doctor> Doctors { get; set; }
 }
 
 

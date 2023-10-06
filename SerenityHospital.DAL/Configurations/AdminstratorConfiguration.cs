@@ -19,6 +19,8 @@ public class AdminstratorConfiguration : IEntityTypeConfiguration<Adminstrator>
             .IsRequired(false);
         builder.Property(a => a.Status)
             .IsRequired();
+        builder.Property(d => d.IsDeleted)
+            .HasDefaultValue(false);
         builder.HasOne(a => a.Hospital)
             .WithOne(h => h.Adminstrator)
             .HasForeignKey<Adminstrator>(a => a.HospitalId)

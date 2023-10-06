@@ -10,6 +10,8 @@ public class AdminstratorMappingProfile:Profile
     {
         CreateMap<CreateAdminstratorDto, Adminstrator>().ReverseMap();
         CreateMap<AdminstratorUpdateDto, Adminstrator>().ReverseMap();
+        CreateMap<Adminstrator, AdminstratorListItemDto>().ReverseMap();
+        CreateMap<Adminstrator, AdminstratorDetailItemDto>().ReverseMap();
         CreateMap<AdminstratorUpdateByAdminDto, Adminstrator>().ReverseMap();
     }
 }

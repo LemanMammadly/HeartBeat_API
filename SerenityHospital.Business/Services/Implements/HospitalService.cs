@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SerenityHospital.Business.Dtos.HospitalDtos;
+using SerenityHospital.Business.Dtos.ServiceDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.HospitalExceptions;
 using SerenityHospital.Business.Services.Interfaces;
@@ -31,7 +33,8 @@ public class HospitalService : IHospitalService
 
     public async Task<IEnumerable<HospitalDetailItemDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<HospitalDetailItemDto>>(_repo.GetAll());
+        var entity = _repo.GetAll("Adminstrator");
+        return _mapper.Map<IEnumerable<HospitalDetailItemDto>>(entity);
     }
 
     public async Task UpdateAsync(int id, HospitalUpdateDto dto)

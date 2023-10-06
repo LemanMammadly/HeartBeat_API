@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Dtos.DoctorDtos;
+using SerenityHospital.Business.Dtos.RoleDtos;
 using SerenityHospital.Business.Services.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,6 +23,12 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _service.GetAllAsync(true));
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm] DoctorCreateDto dto)
         {
@@ -34,6 +42,13 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.LoginAsync(dto));
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
+        {
+            await _service.AddRole(dto);
+            return Ok();
+        }
     }
 }
 

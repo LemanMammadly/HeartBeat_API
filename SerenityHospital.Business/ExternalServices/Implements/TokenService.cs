@@ -87,6 +87,11 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.Surname,doctor.Surname),
         };
 
+        foreach (var userRole in _doctorUserManager.GetRolesAsync(doctor).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
+
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
 
         SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

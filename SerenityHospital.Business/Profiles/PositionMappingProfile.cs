@@ -12,6 +12,7 @@ public class PositionMappingProfile:Profile
         CreateMap<PositionUpdateDto, Position>().ReverseMap();
         CreateMap<Position, PositionDetailItemDto>().ReverseMap();
         CreateMap<Position, PositionListItemDto>().ReverseMap();
+        CreateMap<Position, PositionInfoDto>().ReverseMap();
     }
 }
 

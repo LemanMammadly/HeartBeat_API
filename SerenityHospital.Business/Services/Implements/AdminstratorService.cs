@@ -131,7 +131,7 @@ public class AdminstratorService : IAdminstratorService
     public async Task AddRoleAsync(AddRoleDto dto)
     {
         var user = await userManager.FindByNameAsync(dto.userName);
-        if (user == null) throw new NotFoundException<AppUser>();
+        if (user == null) throw new NotFoundException<Adminstrator>();
 
         if (!await _roleManager.RoleExistsAsync(dto.roleName)) throw new NotFoundException<IdentityRole>();
 
@@ -151,7 +151,7 @@ public class AdminstratorService : IAdminstratorService
     public async Task RemoveRoleAsync(RemoveRoleDto dto)
     {
         var user = await userManager.FindByNameAsync(dto.userName);
-        if (user == null) throw new NotFoundException<AppUser>();
+        if (user == null) throw new NotFoundException<Adminstrator>();
 
         if (!await _roleManager.RoleExistsAsync(dto.roleName)) throw new NotFoundException<IdentityRole>();
 

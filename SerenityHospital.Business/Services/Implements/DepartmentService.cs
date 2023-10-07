@@ -128,6 +128,7 @@ public class DepartmentService : IDepartmentService
             entity.IconUrl = await _fileService.UploadAsync(dto.IconFile, RootConstant.DepartmentImageRoot);
         }
 
+        entity.PatientRooms?.Clear();
         foreach (var itemId in dto.PatientRoomIds)
         {
             var patientRoom =await _patientRepo.GetByIdAsync(itemId);

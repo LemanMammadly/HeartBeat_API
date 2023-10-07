@@ -109,6 +109,7 @@ public class ServiceService : IServiceService
 
         if (await _repo.IsExistAsync(s => s.Name == dto.Name && s.Id != id)) throw new ServiceNameIsExistException();
 
+        entity.Departments?.Clear();
         foreach (var itemId in dto.DepartmentIds)
         {
             var item = await _departRepo.GetByIdAsync(itemId);

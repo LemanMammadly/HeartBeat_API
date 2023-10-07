@@ -315,5 +315,23 @@ public class DoctorService : IDoctorService
             throw new AppUserUpdateFailedException<Doctor>(a);
         }
     }
+
+    public async Task DeleteAsync(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id)) throw new ArgumentIsNullException();
+        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == id);
+        if (user is null) throw new NotFoundException<Doctor>();
+
+        var result = await _userManager.DeleteAsync(user);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserDeleteFailedException<Doctor>(a);
+        }
+    }
 }
 

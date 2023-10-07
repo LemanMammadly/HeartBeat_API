@@ -77,6 +77,13 @@ namespace SerenityHospital.API.Controllers
             await _service.UpdateByAdminAsync(id,dto);
             return NoContent();
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _service.DeleteAsync(id);
+            return NoContent();
+        }
     }
 }
 

@@ -16,6 +16,7 @@ public interface IDoctorService
     Task RemoveRole(RemoveRoleDto dto);
     Task SoftDeleteAsync(string id);
     Task ReverteSoftDeleteAsync(string id);
+    Task DeleteAsync(string id);
 }
 
 

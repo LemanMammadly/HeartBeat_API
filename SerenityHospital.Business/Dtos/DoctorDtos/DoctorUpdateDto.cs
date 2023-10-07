@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 using SerenityHospital.Business.Validators;
 using SerenityHospital.Core.Enums;
 
-namespace SerenityHospital.Business.Dtos.AdminstratorDtos;
+namespace SerenityHospital.Business.Dtos.DoctorDtos;
 
-public record AdminstratorUpdateDto
+public record DoctorUpdateDto
 {
     public string Name { get; set; }
     public string Surname { get; set; }
@@ -19,9 +19,9 @@ public record AdminstratorUpdateDto
     public IFormFile? ImageFile { get; set; }
 }
 
-public class AdminstratorUpdateDtoValidator:AbstractValidator<AdminstratorUpdateDto>
+public class DoctorUpdateDtoValidator:AbstractValidator<DoctorUpdateDto>
 {
-    public AdminstratorUpdateDtoValidator()
+    public DoctorUpdateDtoValidator()
     {
         RuleFor(a => a.Name)
             .NotEmpty()
@@ -32,7 +32,7 @@ public class AdminstratorUpdateDtoValidator:AbstractValidator<AdminstratorUpdate
                 .WithMessage("Adminstrator name length greater than 2")
             .MaximumLength(25)
                 .WithMessage("Adminstrator name length less than 25");
-        RuleFor(a => a.Surname)
+        RuleFor(a => a.Name)
             .NotEmpty()
                 .WithMessage("Adminstrator surname dont be empty")
             .NotNull()

@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Numerics;
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
@@ -98,8 +99,17 @@ public class AdminstratorService : IAdminstratorService
         if (adminstrator == null) throw new AppUserNotFoundException<Adminstrator>();
         adminstrator.IsDeleted = true;
         adminstrator.HospitalId = null;
-
-        await userManager.UpdateAsync(adminstrator);
+       
+        var result = await userManager.UpdateAsync(adminstrator);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserUpdateFailedException<Doctor>(a);
+        }
     }
 
     public async Task RevertSoftDeleteAsync(string id)
@@ -114,7 +124,16 @@ public class AdminstratorService : IAdminstratorService
         adminstrator.IsDeleted = false;
         adminstrator.HospitalId = hospital.Id;
 
-        await userManager.UpdateAsync(adminstrator);
+        var result = await userManager.UpdateAsync(adminstrator);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserUpdateFailedException<Doctor>(a);
+        }
     }
 
     public async Task<TokenResponseDto> LoginAsync(LoginAdminstratorDto dto)
@@ -168,22 +187,44 @@ public class AdminstratorService : IAdminstratorService
         }
     }
 
-    public async Task<ICollection<AdminstratorListItemDto>> GetAllAsync()
+    public async Task<ICollection<AdminstratorListItemDto>> GetAllAsync(bool takeAll)
     {
         ICollection<AdminstratorListItemDto> users = new List<AdminstratorListItemDto>();
-        foreach (var user in await userManager.Users.ToListAsync())
+
+        if(takeAll)
         {
-            var userDto = new AdminstratorListItemDto
+            foreach (var user in await userManager.Users.ToListAsync())
             {
-                Name = user.Name,
-                Surname = user.Surname,
-                ImageUrl = user.ImageUrl,
-                UserName = user.UserName,
-                Roles = await userManager.GetRolesAsync(user)
-            };
-            users.Add(userDto);
+                var userDto = new AdminstratorListItemDto
+                {
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    ImageUrl = user.ImageUrl,
+                    UserName = user.UserName,
+                    Roles = await userManager.GetRolesAsync(user),
+                    IsDeleted=user.IsDeleted
+                };
+                users.Add(userDto);
+            }
+            return users;
         }
-        return users;
+        else
+        {
+            foreach (var user in await userManager.Users.Where(a=>a.IsDeleted==false).ToListAsync())
+            {
+                var userDto = new AdminstratorListItemDto
+                {
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    ImageUrl = user.ImageUrl,
+                    UserName = user.UserName,
+                    Roles = await userManager.GetRolesAsync(user),
+                    IsDeleted = user.IsDeleted
+                };
+                users.Add(userDto);
+            }
+            return users;
+        }
     }
 
     public async Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken)
@@ -272,6 +313,24 @@ public class AdminstratorService : IAdminstratorService
                 a += item.Description + " ";
             }
             throw new AppUserUpdateFailedException<Adminstrator>(a);
+        }
+    }
+
+    public async Task DeleteAsync(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id)) throw new ArgumentIsNullException();
+        var user = await userManager.FindByIdAsync(id);
+        if (user == null) throw new AppUserNotFoundException<Adminstrator>();
+
+        var result = await userManager.DeleteAsync(user);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserDeleteFailedException<Adminstrator>(a);
         }
     }
 }

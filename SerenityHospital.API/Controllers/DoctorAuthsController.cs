@@ -42,12 +42,33 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.LoginAsync(dto));
         }
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> LoginWithRefreshToken(string refreshToken)
+        {
+            return Ok(await _service.LoginWithRefreshTokenAsync(refreshToken));
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
         {
             await _service.AddRole(dto);
             return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
+        {
+            await _service.RemoveRole(dto);
+            return Ok();
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Put([FromForm] DoctorUpdateDto dto)
+        {
+            await _service.UpdateAsync(dto);
+            return NoContent();
         }
     }
 }

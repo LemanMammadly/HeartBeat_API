@@ -6,38 +6,27 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Dtos/DoctorDtos/DoctorListItemDto.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/DoctorService.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" Line="51" Column="1" />
-      <File FileName="SerenityHospital.Business/Services/Interfaces/IDoctorService.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.Business/Services/Interfaces/IAdminstratorService.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorListItemDto.cs" Line="7" Column="2" />
-      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorCreateDto.cs" Line="13" Column="38" />
-      <File FileName="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentInfoDto.cs" Line="9" Column="1" />
-      <File FileName="SerenityHospital.Business/Dtos/PositionDtos/PositionInfoDto.cs" Line="7" Column="1" />
+      <File FileName="SerenityHospital.API/Controllers/AdminstratorAuthsController.cs" Line="24" Column="10" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" Line="101" Column="45" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorListItemDto.cs" Line="19" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital">
-            <Node name="SerenityHospital.Business">
+            <Node name="SerenityHospital.API" expanded="True">
+              <Node name="Controllers" expanded="True" />
+            </Node>
+            <Node name="SerenityHospital.Business" expanded="True">
               <Node name="Dtos" expanded="True">
-                <Node name="AdminstratorDtos" expanded="True" />
-                <Node name="DepartmentDtos" expanded="True" />
-                <Node name="DoctorDtos" expanded="True">
-                  <Node name="DoctorListItemDto.cs" selected="True" />
-                </Node>
+                <Node name="DoctorDtos" expanded="True" />
               </Node>
-              <Node name="Services">
+              <Node name="Services" expanded="True">
                 <Node name="Implements" expanded="True" />
+                <Node name="Interfaces" expanded="True" />
               </Node>
-            </Node>
-            <Node name="SerenityHospital.Core" expanded="True">
-              <Node name="Entities" expanded="True" />
-            </Node>
-            <Node name="SerenityHospital.DAL" expanded="True">
-              <Node name="Configurations" expanded="True" />
-              <Node name="Contexts" expanded="True" />
             </Node>
           </Node>
         </State>

@@ -11,10 +11,11 @@ public interface IAdminstratorService
     Task UpdateByAdminAsync(string id,AdminstratorUpdateByAdminDto dto);
     Task<TokenResponseDto> LoginAsync(LoginAdminstratorDto dto);
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
-    Task<ICollection<AdminstratorListItemDto>> GetAllAsync();
+    Task<ICollection<AdminstratorListItemDto>> GetAllAsync(bool takeAll);
     Task SoftDeleteAsync(string id);
     Task RevertSoftDeleteAsync(string id);
     Task AddRoleAsync(AddRoleDto dto);
     Task RemoveRoleAsync(RemoveRoleDto dto);
+    Task DeleteAsync(string id);
 }
 

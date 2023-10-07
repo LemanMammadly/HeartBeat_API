@@ -10,6 +10,7 @@ public record DoctorListItemDto
     public string UserName { get; set; }
     public string? ImageUrl { get; set; }
     public DateTime? EndDate { get; set; }
+    public bool IsDeleted { get; set; }
     public PositionInfoDto Position { get; set; }
     public DepartmentInfoDto Department { get; set; }
     public IEnumerable<string> Roles { get; set; }

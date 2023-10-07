@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SerenityHospital.Business.Constants;
@@ -11,6 +13,7 @@ using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Images;
 using SerenityHospital.Business.Exceptions.Roles;
+using SerenityHospital.Business.Exceptions.Tokens;
 using SerenityHospital.Business.Extensions;
 using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
@@ -25,13 +28,15 @@ public class DoctorService : IDoctorService
     readonly UserManager<Doctor> _userManager;
     readonly UserManager<AppUser> _appUserManager;
     readonly RoleManager<IdentityRole> _roleManager;
+    readonly IHttpContextAccessor _context;
+    readonly string? userId;
     readonly IMapper _mapper;
     readonly IFileService _fileService;
     readonly IDepartmentRepository _departmentRepository;
     readonly IPositionRepository _positionRepository;
     readonly ITokenService _tokenService;
 
-    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager)
+    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -41,6 +46,8 @@ public class DoctorService : IDoctorService
         _appUserManager = appUserManager;
         _tokenService = tokenService;
         _roleManager = roleManager;
+        _context = context;
+        userId = _context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
     }
 
     public async Task AddRole(AddRoleDto dto)
@@ -117,6 +124,7 @@ public class DoctorService : IDoctorService
                     Surname = user.Surname,
                     ImageUrl = user.ImageUrl,
                     UserName = user.UserName,
+                    IsDeleted=user.IsDeleted,
                     Roles = await _userManager.GetRolesAsync(user),
                     Department=_mapper.Map<DepartmentInfoDto>(user.Department),
                     Position=_mapper.Map<PositionInfoDto>(user.Position)
@@ -154,6 +162,109 @@ public class DoctorService : IDoctorService
         if (!result) throw new LoginFailedException<Doctor>("Username or password is wrong");
 
         return _tokenService.CreateDoctorToken(doctor);
+    }
+
+    public async Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken)
+    {
+        if (string.IsNullOrEmpty(refreshToken)) throw new ArgumentIsNullException();
+        var user = await _userManager.Users.SingleOrDefaultAsync(d => d.RefreshToken == refreshToken);
+        if (user is null) throw new NotFoundException<Doctor>();
+        if (user.RefreshTokenExpiresDate < DateTime.UtcNow.AddHours(4)) throw new RefreshTokenExpiresIsOldException();
+        return _tokenService.CreateDoctorToken(user);
+    }
+
+    public async Task RemoveRole(RemoveRoleDto dto)
+    {
+        var user = await _userManager.FindByNameAsync(dto.userName);
+        if (user == null) throw new NotFoundException<Doctor>();
+
+        if (!await _roleManager.RoleExistsAsync(dto.roleName)) throw new NotFoundException<IdentityRole>();
+
+        var result = await _userManager.RemoveFromRoleAsync(user,dto.roleName);
+
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new RoleRemoveFailedException(a);
+        }
+    }
+
+    public async Task SoftDeleteAsync(string id)
+    {
+        var doctor = await _userManager.Users.FirstOrDefaultAsync(d => d.Id == id);
+        if (doctor is null) throw new NotFoundException<Doctor>();
+        doctor.IsDeleted = true;
+        doctor.EndDate = DateTime.UtcNow.AddHours(4);
+        doctor.Status = WorkStatus.leave;
+
+        var result = await _userManager.UpdateAsync(doctor);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserUpdateFailedException<Doctor>(a);
+        }
+    }
+
+    public async Task ReverteSoftDeleteAsync(string id)
+    {
+        var doctor = await _userManager.Users.FirstOrDefaultAsync(d => d.Id == id);
+        if (doctor is null) throw new NotFoundException<Doctor>();
+        doctor.IsDeleted = false;
+        doctor.StartDate = DateTime.UtcNow.AddHours(4);
+        doctor.EndDate = null;
+        doctor.Status = WorkStatus.Active;
+
+        var result = await _userManager.UpdateAsync(doctor);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserUpdateFailedException<Doctor>(a);
+        }
+    }
+
+    public async Task UpdateAsync(DoctorUpdateDto dto)
+    {
+        if (string.IsNullOrEmpty(userId)) throw new ArgumentIsNullException();
+        if (!await _userManager.Users.AnyAsync(d => d.Id == userId)) throw new NotFoundException<Doctor>();
+
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (await _userManager.Users.AnyAsync(d => (d.UserName == dto.UserName && d.Id != userId) || (d.Email == dto.Email && d.Id != userId))) throw new AppUserIsAlreadyExistException<Doctor>();
+
+        if (dto.ImageFile != null)
+        {
+            if (user.ImageUrl != null)
+            {
+                _fileService.Delete(user.ImageUrl);
+            }
+            if (!dto.ImageFile.IsSizeValid(3)) throw new SizeNotValidException();
+            if (!dto.ImageFile.IsTypeValid("image")) throw new TypeNotValidException();
+            user.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.DoctorImageRoot);
+        }
+
+        var newUser = _mapper.Map(dto, user);
+        var result = await _userManager.UpdateAsync(newUser);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserUpdateFailedException<Doctor>(a);
+        }
     }
 }
 

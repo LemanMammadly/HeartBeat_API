@@ -26,7 +26,7 @@ namespace SerenityHospital.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _service.GetAllAsync());
+            return Ok(await _service.GetAllAsync(true));
         }
 
         [Authorize(Roles ="Admin")]
@@ -79,17 +79,10 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.LoginWithRefreshTokenAsync(refreshToken));
         }
 
-        [HttpPatch("[action]/{id}")]
-        public async Task<IActionResult> SoftDelete(string id)
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string id)
         {
-            await _service.SoftDeleteAsync(id);
-            return NoContent();
-        }
-
-        [HttpPatch("[action]/{id}")]
-        public async Task<IActionResult> ReverteSoftDelete(string id)
-        {
-            await _service.RevertSoftDeleteAsync(id);
+            await _service.DeleteAsync(id);
             return NoContent();
         }
     }

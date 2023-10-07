@@ -11,6 +11,7 @@ public interface IDoctorService
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
     Task<ICollection<DoctorListItemDto>> GetAllAsync(bool takeAll);
     Task UpdateAsync(DoctorUpdateDto dto);
+    Task UpdateByAdminAsync(string id,DoctorUpdateByAdminDto dto);
     Task AddRole(AddRoleDto dto);
     Task RemoveRole(RemoveRoleDto dto);
     Task SoftDeleteAsync(string id);

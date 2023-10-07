@@ -70,6 +70,13 @@ namespace SerenityHospital.API.Controllers
             await _service.UpdateAsync(dto);
             return NoContent();
         }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> PutByAdmin(string id,[FromForm] DoctorUpdateByAdminDto dto)
+        {
+            await _service.UpdateByAdminAsync(id,dto);
+            return NoContent();
+        }
     }
 }
 

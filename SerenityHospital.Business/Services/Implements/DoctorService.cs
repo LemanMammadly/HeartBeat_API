@@ -266,5 +266,54 @@ public class DoctorService : IDoctorService
             throw new AppUserUpdateFailedException<Doctor>(a);
         }
     }
+
+    public async Task UpdateByAdminAsync(string id,DoctorUpdateByAdminDto dto)
+    {
+        if (string.IsNullOrWhiteSpace(id)) throw new ArgumentIsNullException();
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null) throw new AppUserNotFoundException<Adminstrator>();
+
+
+        if (await _userManager.Users.AnyAsync(d => (d.UserName == dto.UserName && d.Id != id) || (d.Email == dto.Email && d.Id != id))) throw new AppUserIsAlreadyExistException<Doctor>();
+
+        if (dto.ImageFile != null)
+        {
+            if (user.ImageUrl != null)
+            {
+                _fileService.Delete(user.ImageUrl);
+            }
+            if (!dto.ImageFile.IsSizeValid(3)) throw new SizeNotValidException();
+            if (!dto.ImageFile.IsTypeValid("image")) throw new TypeNotValidException();
+            user.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.DoctorImageRoot);
+        }
+
+        if(dto.Status==WorkStatus.leave)
+        {
+            await SoftDeleteAsync(id);
+        }
+
+        if(dto.Status==WorkStatus.Active)
+        {
+            await ReverteSoftDeleteAsync(id);
+        }
+
+        var position = await _positionRepository.GetSingleAsync(p=>p.Id==dto.PositionId);
+        if (position == null) throw new NotFoundException<Position>();
+
+        var department = await _departmentRepository.GetSingleAsync(d => d.Id == dto.DepartmentId);
+        if (department == null) throw new NotFoundException<Department>();
+
+        var newUser = _mapper.Map(dto, user);
+        var result = await _userManager.UpdateAsync(newUser);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserUpdateFailedException<Doctor>(a);
+        }
+    }
 }
 

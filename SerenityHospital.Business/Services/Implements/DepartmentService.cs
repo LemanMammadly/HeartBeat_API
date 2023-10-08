@@ -49,10 +49,12 @@ public class DepartmentService : IDepartmentService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Department>();
-        var entity = await _repo.GetByIdAsync(id,"PatientRooms");
+        var entity = await _repo.GetByIdAsync(id,"PatientRooms","Doctors");
         if (entity is null) throw new NotFoundException<Department>();
 
+
         if (entity.PatientRooms.Count() > 0) throw new DepartmentIsNotEmptyException();
+        if (entity.Doctors.Count() > 0) throw new DepartmentIsNotEmptyException();
 
         _repo.Delete(entity);
         _fileService.Delete(entity.IconUrl);
@@ -77,12 +79,12 @@ public class DepartmentService : IDepartmentService
         Department? entity;
         if(takeAll)
         {
-            entity = await _repo.GetByIdAsync(id,"PatientRooms");
+            entity = await _repo.GetByIdAsync(id,"PatientRooms","Doctors","Doctors.Position");
             if (entity is null) throw new NotFoundException<Department>();
         }
         else
         {
-            entity = await _repo.GetSingleAsync(d => d.Id == id && d.IsDeleted == false, "PatientRooms");
+            entity = await _repo.GetSingleAsync(d => d.Id == id && d.IsDeleted == false, "PatientRooms", "Doctors", "Doctors.Position");
             if (entity is null) throw new NotFoundException<Department>();
         }
 
@@ -104,10 +106,11 @@ public class DepartmentService : IDepartmentService
     public async Task SoftDeleteAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Department>();
-        var entity = await _repo.GetByIdAsync(id,"PatientRooms");
+        var entity = await _repo.GetByIdAsync(id,"PatientRooms","Doctors");
         if (entity is null) throw new NotFoundException<Department>();
 
         if (entity.PatientRooms.Count() > 0) throw new DepartmentIsNotEmptyException();
+        if (entity.Doctors.Count() > 0) throw new DepartmentIsNotEmptyException();
 
         _repo.SoftDelete(entity);
         await _repo.SaveAsync();
@@ -137,6 +140,8 @@ public class DepartmentService : IDepartmentService
             if (isPatientRoomInOtherDepartment) throw new PatientRoomInOtherDepartmentException();
             entity?.PatientRooms.Add(patientRoom);
         }
+
+        
 
         var service = await _serviceRepo.GetByIdAsync(dto.ServiceId);
         if (service == null) throw new NotFoundException<Service>();

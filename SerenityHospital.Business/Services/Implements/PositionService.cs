@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SerenityHospital.Business.Dtos.PositionDtos;
 using SerenityHospital.Business.Exceptions.Common;
+using SerenityHospital.Business.Exceptions.Positions;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
 using SerenityHospital.DAL.Repositories.Interfaces;
@@ -30,8 +31,10 @@ public class PositionService : IPositionService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Position>();
-        var entity = await _repo.GetByIdAsync(id);
+        var entity = await _repo.GetByIdAsync(id, "Doctors");
         if (entity is null) throw new NotFoundException<Position>();
+
+        if (entity.Doctors.Count() > 0) throw new PositionIsNotEmptyException();
 
         _repo.Delete(entity);
         await _repo.SaveAsync();
@@ -41,11 +44,11 @@ public class PositionService : IPositionService
     {
         if(takeAll)
         {
-            return _mapper.Map<IEnumerable<PositionListItemDto>>(_repo.GetAll());
+            return _mapper.Map<IEnumerable<PositionListItemDto>>(_repo.GetAll("Doctors","Doctors.Department"));
         }
         else
         {
-            return _mapper.Map<IEnumerable<PositionListItemDto>>(_repo.FindAll(p => p.IsDeleted == false));
+            return _mapper.Map<IEnumerable<PositionListItemDto>>(_repo.FindAll(p => p.IsDeleted == false, "Doctors", "Doctors.Department"));
         }
     }
 
@@ -57,12 +60,12 @@ public class PositionService : IPositionService
 
         if(takeAll)
         {
-            entity = await _repo.GetByIdAsync(id);
+            entity = await _repo.GetByIdAsync(id,"Doctors","Doctors.Department");
             if (entity is null) throw new NotFoundException<Position>();
         }
         else
         {
-            entity = await _repo.GetSingleAsync(p => p.IsDeleted == false && p.Id==id);
+            entity = await _repo.GetSingleAsync(p => p.IsDeleted == false && p.Id==id,"Doctors.Department");
             if (entity is null) throw new NotFoundException<Position>();
         }
 
@@ -82,8 +85,10 @@ public class PositionService : IPositionService
     public async Task SoftDeleteAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Position>();
-        var entity = await _repo.GetByIdAsync(id);
+        var entity = await _repo.GetByIdAsync(id, "Doctors");
         if (entity is null) throw new NotFoundException<Position>();
+
+        if (entity.Doctors.Count() > 0) throw new PositionIsNotEmptyException();
 
         _repo.SoftDelete(entity);
         await _repo.SaveAsync();

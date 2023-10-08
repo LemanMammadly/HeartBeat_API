@@ -15,7 +15,6 @@ public record DepartmentListItemDto
     public bool IsDeleted { get; set; }
     public IEnumerable<PatientRoomListItemDto> PatientRooms { get; set; }
     public IEnumerable<DoctorInfoDto> Doctors { get; set; }
-    public IEnumerable<PositionInfoDto> Positions { get; set; }
 }
 
 

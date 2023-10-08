@@ -11,6 +11,7 @@ public class DoctorMappingProfile:Profile
         CreateMap<DoctorCreateDto, Doctor>().ReverseMap();
         CreateMap<DoctorUpdateDto, Doctor>().ReverseMap();
         CreateMap<DoctorUpdateByAdminDto, Doctor>().ReverseMap();
+        CreateMap<Doctor, DoctorInfoDto>().ReverseMap();
     }
 }
 

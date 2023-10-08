@@ -1,37 +1,39 @@
 ﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/DepartmentService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.API/Program.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Interfaces/IDepartmentService.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.Business/Services/Implements/DepartmentService.cs" Line="127" Column="12" />
-      <File FileName="SerenityHospital.Business/Services/Implements/PositionService.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.Business/Services/Implements/HospitalService.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.Business/Services/Implements/PatientRoomService.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.Business/Services/Implements/ServiceService.cs" Line="112" Column="16" />
-      <File FileName="SerenityHospital.Business/Services/Implements/SettingService.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.Business/Services/Implements/AdminstratorService.cs" Line="1" Column="1" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DepartmentService.cs" Line="71" Column="10" />
+      <File FileName="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentListItemDto.cs" />
+      <File FileName="SerenityHospital.Core/Entities/Department.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorInfoDto.cs" />
+      <File FileName="SerenityHospital.Business/Profiles/SettingMappingProfile.cs" />
+      <File FileName="SerenityHospital.Business/Profiles/PositionMappingProfile.cs" />
+      <File FileName="SerenityHospital.Business/Profiles/HospitalMappingProfile.cs" />
+      <File FileName="SerenityHospital.Business/Profiles/DoctorMappingProfile.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/PositionDtos/PositionUpdateDto.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/PositionService.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" />
+      <File FileName="SerenityHospital.API/Program.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.Business">
-              <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True">
-                  <Node name="DepartmentService.cs" selected="True" />
-                </Node>
-                <Node name="Interfaces" expanded="True" />
-              </Node>
+            <Node name="SerenityHospital.API" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
+            <Node name="SerenityHospital.Core" expanded="True">
+              <Node name="Entities" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -63,11 +63,11 @@ public class DepartmentService : IDepartmentService
     {
         if(takeAll)
         {
-            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.GetAll("PatientRooms"));
+            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.GetAll("PatientRooms","Doctors","Doctors.Position"));
         }
         else
         {
-            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.FindAll(d => d.IsDeleted == false,"PatientRooms"));
+            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.FindAll(d => d.IsDeleted == false,"PatientRooms","Doctors","Doctors.Position"));
         }
     }
 

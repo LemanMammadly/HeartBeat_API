@@ -35,7 +35,7 @@ public class DoctorCreateDtoValidator:AbstractValidator<DoctorCreateDto>
                 .WithMessage("Doctor name length greater than 2")
             .MaximumLength(25)
                 .WithMessage("Doctor name length less than 25");
-        RuleFor(a => a.Name)
+        RuleFor(a => a.Surname)
             .NotEmpty()
                 .WithMessage("Doctor surname dont be empty")
             .NotNull()

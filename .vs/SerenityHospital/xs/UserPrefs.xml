@@ -1,30 +1,20 @@
 ﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/DepartmentService.cs">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Core/Enums/BloodType.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Implements/DepartmentService.cs" Line="137" Column="16" />
-      <File FileName="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentDetailItemDto.cs" Line="17" Column="2" />
-      <File FileName="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentListItemDto.cs" Line="18" Column="2" />
-      <File FileName="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentUpdateDto.cs" Line="13" Column="57" />
+      <File FileName="SerenityHospital.Core/Entities/Patient.cs" Line="5" Column="1" />
+      <File FileName="SerenityHospital.Core/Enums/BloodType.cs" Line="1" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.API" expanded="True" />
-            <Node name="SerenityHospital.Business">
-              <Node name="Dtos" expanded="True">
-                <Node name="DepartmentDtos" expanded="True" />
-                <Node name="DoctorDtos" expanded="True" />
-              </Node>
-              <Node name="Profiles" expanded="True" />
-              <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True">
-                  <Node name="DepartmentService.cs" selected="True" />
-                </Node>
-              </Node>
-            </Node>
-            <Node name="SerenityHospital.Core" expanded="True">
+          <Node name="SerenityHospital">
+            <Node name="SerenityHospital.Core">
               <Node name="Entities" expanded="True" />
+              <Node name="Enums" expanded="True">
+                <Node name="BloodType.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
@@ -33,9 +23,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

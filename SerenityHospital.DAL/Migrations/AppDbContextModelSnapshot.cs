@@ -527,6 +527,25 @@ namespace SerenityHospital.DAL.Migrations
                     b.HasDiscriminator().HasValue("Doctor");
                 });
 
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Patient", b =>
+                {
+                    b.HasBaseType("SerenityHospital.Core.Entities.AppUser");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BloodType")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PatientRoomId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("PatientRoomId");
+
+                    b.HasDiscriminator().HasValue("Patient");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -628,6 +647,16 @@ namespace SerenityHospital.DAL.Migrations
                     b.Navigation("Position");
                 });
 
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Patient", b =>
+                {
+                    b.HasOne("SerenityHospital.Core.Entities.PatientRoom", "PatientRoom")
+                        .WithMany("Patients")
+                        .HasForeignKey("PatientRoomId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("PatientRoom");
+                });
+
             modelBuilder.Entity("SerenityHospital.Core.Entities.Department", b =>
                 {
                     b.Navigation("Doctors");
@@ -639,6 +668,11 @@ namespace SerenityHospital.DAL.Migrations
                 {
                     b.Navigation("Adminstrator")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SerenityHospital.Core.Entities.PatientRoom", b =>
+                {
+                    b.Navigation("Patients");
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Position", b =>

@@ -15,7 +15,7 @@ public static class PersistenceServiceRegistration
 {
     public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString =configuration["ConnectionStrings:Default"];
+        var connectionString = configuration["ConnectionStrings:Default"];
 
         services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -36,6 +36,14 @@ public static class PersistenceServiceRegistration
         .AddDefaultTokenProviders();
 
         services.AddIdentityCore<Doctor>(options =>
+        {
+            options.Password.RequireNonAlphanumeric = false;
+        })
+        .AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders();
+
+        services.AddIdentityCore<Patient>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
         })

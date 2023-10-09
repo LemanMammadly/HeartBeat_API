@@ -1,0 +1,103 @@
+﻿using System.Text.RegularExpressions;
+using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using SerenityHospital.Business.Validators;
+using SerenityHospital.Core.Enums;
+
+namespace SerenityHospital.Business.Dtos.PatientDtos;
+
+public record PatientCreateDto
+{
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public int Age { get; set; }
+    public string Email { get; set; }
+    public string UserName { get; set; }
+    public string Password { get; set; }
+    public string Address { get; set; }
+    public Gender Gender { get; set; }
+    public BloodType BloodType { get; set; }
+    public IFormFile? ImageFile { get; set; }
+    public int? PatientRoomId { get; set; }
+}
+
+
+public class PatientCreateDtoValidator:AbstractValidator<PatientCreateDto>
+{
+    public PatientCreateDtoValidator()
+    {
+        RuleFor(a => a.Name)
+            .NotEmpty()
+                .WithMessage("Patient name dont be empty")
+            .NotNull()
+                .WithMessage("Patient name dont be null")
+            .MinimumLength(2)
+                .WithMessage("Patient name length greater than 2")
+            .MaximumLength(25)
+                .WithMessage("Patient name length less than 25");
+        RuleFor(a => a.Surname)
+            .NotEmpty()
+                .WithMessage("Patient surname dont be empty")
+            .NotNull()
+                .WithMessage("Patient surname dont be null")
+            .MaximumLength(25)
+                .WithMessage("Patient surname length less than 25");
+        RuleFor(p => p.Age)
+            .NotEmpty()
+                .WithMessage("Patient age dont be empty")
+            .NotNull()
+                .WithMessage("Patient age dont be null");
+        RuleFor(d => d.Email)
+            .NotEmpty()
+                .WithMessage("Patient email dont be empty")
+            .NotNull()
+                .WithMessage("Patient email dont be null")
+           .Must(u =>
+           {
+               Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+               var result = regex.Match(u);
+               return result.Success;
+           })
+                 .WithMessage("Please enter valid Patient email");
+        RuleFor(d => d.UserName)
+            .NotEmpty()
+                .WithMessage("Patient username dont be empty")
+            .NotNull()
+                .WithMessage("Patient username dont be null")
+           .MinimumLength(2)
+                .WithMessage("Patient username length must be greater than 2")
+           .MaximumLength(45)
+                .WithMessage("Patient username length must be less than 45");
+        RuleFor(d => d.Password)
+            .NotEmpty()
+                .WithMessage("Patient Password dont be empty")
+            .NotNull()
+                .WithMessage("Patient Password dont be null")
+           .MinimumLength(6)
+                .WithMessage("Patient password length must be greater than 6");
+        RuleFor(a => a.Address)
+            .NotEmpty()
+                .WithMessage("Patient surname dont be empty")
+            .NotNull()
+                .WithMessage("Patient surname dont be null");
+        RuleFor(d => d.Gender)
+            .Must(BeAValidGender)
+                .WithMessage("Invalid gender");
+        RuleFor(d => d.BloodType)
+            .Must(BeAValidBloodType)
+                .WithMessage("Invalid BloodType");
+        RuleFor(d => d.ImageFile)
+            .SetValidator(new FileValidator());
+        RuleFor(d => d.PatientRoomId)
+            .GreaterThan(0)
+                .WithMessage("Patiend PatientRoomId greater than 0");
+    }
+    private bool BeAValidGender(Gender gender)
+    {
+        return Enum.IsDefined(typeof(Gender), gender);
+    }
+    private bool BeAValidBloodType(BloodType bloodType)
+    {
+        return Enum.IsDefined(typeof(BloodType), bloodType);
+    }
+}

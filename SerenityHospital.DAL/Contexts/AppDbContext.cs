@@ -16,6 +16,7 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<PatientRoom> PatientRooms { get; set; }
     public DbSet<Adminstrator> Adminstrators { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
+    public DbSet<Patient> Patients { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,6 +24,7 @@ public class AppDbContext:IdentityDbContext<AppUser>
         base.OnModelCreating(modelBuilder);
     }
 }
+
 
 
 

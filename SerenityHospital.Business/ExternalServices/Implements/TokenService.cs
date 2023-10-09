@@ -16,12 +16,14 @@ public class TokenService : ITokenService
     readonly IConfiguration _configuration;
     readonly UserManager<Adminstrator> _adminstratorUserManager;
     readonly UserManager<Doctor> _doctorUserManager;
+    readonly UserManager<Patient> _patientUserManager;
 
-    public TokenService(IConfiguration configuration, UserManager<Adminstrator> userManager, UserManager<Doctor> doctorUserManager)
+    public TokenService(IConfiguration configuration, UserManager<Adminstrator> userManager, UserManager<Doctor> doctorUserManager, UserManager<Patient> patientUserManager)
     {
         _configuration = configuration;
         _adminstratorUserManager = userManager;
         _doctorUserManager = doctorUserManager;
+        _patientUserManager = patientUserManager;
     }
 
     public string CreateRefreshToken()
@@ -117,6 +119,49 @@ public class TokenService : ITokenService
             Token = token,
             Expires = jwtSecurity.ValidTo,
             Username = doctor.UserName,
+            RefreshToken = refreshToken,
+            RefreshTokenExpires = refreshTokenExpires
+        };
+    }
+
+    public TokenResponseDto CreatePatientToken(Patient patient, int expires = 60)
+    {
+
+        List<Claim> claims = new List<Claim>()
+        {
+            new Claim(ClaimTypes.Name,patient.UserName),
+            new Claim(ClaimTypes.NameIdentifier,patient.Id),
+            new Claim(ClaimTypes.Email,patient.Email),
+            new Claim(ClaimTypes.GivenName,patient.Name),
+            new Claim(ClaimTypes.Surname,patient.Surname)
+        };
+
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
+
+        SigningCredentials credentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
+
+        JwtSecurityToken jwtSecurity = new JwtSecurityToken(
+            _configuration["Jwt:issuer"],
+            _configuration["Jwt:audience"],
+            claims,
+            DateTime.UtcNow.AddHours(4),
+            DateTime.UtcNow.AddHours(4).AddMinutes(expires),
+            credentials);
+
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+        string token = tokenHandler.WriteToken(jwtSecurity);
+
+        string refreshToken = CreateRefreshToken();
+        var refreshTokenExpires = jwtSecurity.ValidTo.AddMinutes(expires / 3);
+        patient.RefreshToken = refreshToken;
+        patient.RefreshTokenExpiresDate = refreshTokenExpires;
+        _patientUserManager.UpdateAsync(patient).Wait();
+
+        return new()
+        {
+            Token = token,
+            Expires = jwtSecurity.ValidTo,
+            Username = patient.UserName,
             RefreshToken = refreshToken,
             RefreshTokenExpires = refreshTokenExpires
         };

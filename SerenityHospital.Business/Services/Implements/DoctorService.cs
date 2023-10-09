@@ -52,7 +52,7 @@ public class DoctorService : IDoctorService
 
     public async Task AddRole(AddRoleDto dto)
     {
-        var user =await _userManager.FindByNameAsync(dto.userName);
+        var user = await _userManager.FindByNameAsync(dto.userName);
         if (user == null) throw new NotFoundException<Doctor>();
 
         if (!await _roleManager.RoleExistsAsync(dto.roleName)) throw new NotFoundException<IdentityRole>();
@@ -156,7 +156,7 @@ public class DoctorService : IDoctorService
     public async Task<TokenResponseDto> LoginAsync(DoctorLoginDto dto)
     {
         var doctor = await _userManager.FindByNameAsync(dto.UserName);
-        if (doctor == null) throw new AppUserNotFoundException<Doctor>("Username or password is wrong");
+        if (doctor == null) throw new LoginFailedException<Doctor>("Username or password is wrong");
 
         var result = await _userManager.CheckPasswordAsync(doctor, dto.Password);
         if (!result) throw new LoginFailedException<Doctor>("Username or password is wrong");

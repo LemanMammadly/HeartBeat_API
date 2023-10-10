@@ -17,5 +17,6 @@ public interface IAdminstratorService
     Task AddRoleAsync(AddRoleDto dto);
     Task RemoveRoleAsync(RemoveRoleDto dto);
     Task DeleteAsync(string id);
+    Task Logout();
 }
 

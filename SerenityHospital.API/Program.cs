@@ -19,6 +19,7 @@ using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
 using System.Security.Principal;
 using SerenityHospital.API;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +79,8 @@ builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultSignOutScheme = JwtBearerDefaults.AuthenticationScheme;
+
 }).AddJwtBearer(opt =>
 {
     opt.TokenValidationParameters = new TokenValidationParameters()
@@ -92,7 +95,7 @@ builder.Services.AddAuthentication(opt =>
         LifetimeValidator = (_, expires, token, _) => token != null ? DateTime.UtcNow.AddHours(4) < expires : false,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SigningKey"]))
     };
-});
+}).AddIdentityCookies();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

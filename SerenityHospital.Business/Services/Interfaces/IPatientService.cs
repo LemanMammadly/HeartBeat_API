@@ -7,9 +7,15 @@ namespace SerenityHospital.Business.Services.Interfaces;
 public interface IPatientService
 {
     Task CreateAsync(PatientCreateDto dto);
+    Task AddPatientRoom(AddPatientRoomDto dto);
     Task<TokenResponseDto> LoginAsync(PatientLoginDto dto);
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
+    Task<ICollection<PatientListItemDto>> GetAllAsync();
     Task AddRole(AddRoleDto dto);
-    Task<ICollection<PatientListItemDto>> GetAllAsync(bool takeAll);
+    Task RemoveRole(RemoveRoleDto dto);
+    Task UpdateAsync(PatientUpdateDto dto);
+    Task UpdateByAdminAsync(string id,PatientUpdateByAdminDto dto);
+    Task DeleteAsync(string id);
+    Task Logout();
 }
 

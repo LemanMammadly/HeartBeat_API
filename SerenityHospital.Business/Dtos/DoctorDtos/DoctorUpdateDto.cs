@@ -25,56 +25,60 @@ public class DoctorUpdateDtoValidator:AbstractValidator<DoctorUpdateDto>
     {
         RuleFor(a => a.Name)
             .NotEmpty()
-                .WithMessage("Adminstrator name dont be empty")
+                .WithMessage("Doctor name dont be empty")
             .NotNull()
-                .WithMessage("Adminstrator name dont be null")
+                .WithMessage("Doctor name dont be null")
             .MinimumLength(2)
-                .WithMessage("Adminstrator name length greater than 2")
+                .WithMessage("Doctor name length greater than 2")
             .MaximumLength(25)
-                .WithMessage("Adminstrator name length less than 25");
-        RuleFor(a => a.Name)
+                .WithMessage("Doctor name length less than 25");
+        RuleFor(a => a.Surname)
             .NotEmpty()
-                .WithMessage("Adminstrator surname dont be empty")
+                .WithMessage("Doctor surname dont be empty")
             .NotNull()
-                .WithMessage("Adminstrator surname dont be null")
+                .WithMessage("Doctor surname dont be null")
             .MaximumLength(25)
-                .WithMessage("Adminstrator surname length less than 25");
+                .WithMessage("Doctor surname length less than 25");
         RuleFor(d => d.Email)
             .NotEmpty()
-                .WithMessage("Adminstrator email dont be empty")
+                .WithMessage("Doctor email dont be empty")
             .NotNull()
-                .WithMessage("Adminstrator email dont be null")
+                .WithMessage("Doctor email dont be null")
            .Must(u =>
            {
                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
                var result = regex.Match(u);
                return result.Success;
            })
-                 .WithMessage("Please enter valid Adminstrator email");
+                 .WithMessage("Please enter valid Doctor email");
         RuleFor(d => d.UserName)
             .NotEmpty()
-                .WithMessage("Adminstrator username dont be empty")
+                .WithMessage("Doctor username dont be empty")
             .NotNull()
-                .WithMessage("Adminstrator username dont be null")
+                .WithMessage("Doctor username dont be null")
            .MinimumLength(2)
-                .WithMessage("Adminstrator username length must be greater than 2")
+                .WithMessage("Doctor username length must be greater than 2")
            .MaximumLength(45)
-                .WithMessage("Adminstrator username length must be less than 45");
+                .WithMessage("Doctor username length must be less than 45");
         RuleFor(d => d.Password)
             .NotEmpty()
-                .WithMessage("Adminstrator Password dont be empty")
+                .WithMessage("Doctor Password dont be empty")
             .NotNull()
-                .WithMessage("Adminstrator Password dont be null")
+                .WithMessage("Doctor Password dont be null")
            .MinimumLength(6)
-                .WithMessage("Adminstrator password length must be greater than 6");
+                .WithMessage("Doctor password length must be greater than 6");
         RuleFor(d => d.Description)
             .NotEmpty()
-                .WithMessage("Adminstrator Description dont be empty")
+                .WithMessage("Doctor Description dont be empty")
             .NotNull()
-                .WithMessage("Adminstrator Description dont be null");
+                .WithMessage("Doctor Description dont be null");
         RuleFor(d => d.Age)
+            .NotEmpty()
+                .WithMessage("Doctor ager dont be empty")
+            .NotNull()
+                .WithMessage("Doctor ager dont be null")
             .GreaterThan(18)
-                .WithMessage("Adminstrator age must be greater than 18");
+                .WithMessage("Doctor age must be greater than 18");
         RuleFor(d => d.Gender)
             .Must(BeAValidGender)
                 .WithMessage("Invalid gender");

@@ -12,6 +12,7 @@ public class PatientRoomMappingProfile:Profile
         CreateMap<PatientRoomUpdateDto, PatientRoom>().ReverseMap();
         CreateMap<PatientRoom, PatientRoomListItemDto>().ReverseMap();
         CreateMap<PatientRoom, PatientRoomDetailItemDto>().ReverseMap();
+        CreateMap<PatientRoom, PatientRoomInfoDto>().ReverseMap();
     }
 }
 

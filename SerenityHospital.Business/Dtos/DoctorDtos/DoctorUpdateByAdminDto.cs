@@ -81,6 +81,10 @@ public class DoctorUpdateByAdminDtoValidator:AbstractValidator<DoctorUpdateByAdm
             .GreaterThan(500)
                 .WithMessage("Doctor salary must be greater than 500");
         RuleFor(d => d.Age)
+             .NotEmpty()
+                .WithMessage("Doctor ager dont be empty")
+            .NotNull()
+                .WithMessage("Doctor ager dont be null")
             .GreaterThan(18)
                 .WithMessage("Doctor age must be greater than 18");
         RuleFor(d => d.Gender)

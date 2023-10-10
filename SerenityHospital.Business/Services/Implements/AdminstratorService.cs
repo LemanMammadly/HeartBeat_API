@@ -36,8 +36,9 @@ public class AdminstratorService : IAdminstratorService
     readonly IFileService _fileService;
     readonly IHospitalRepository _hospitalRepository;
     readonly ITokenService _tokenService;
+    readonly SignInManager<Adminstrator> _signInManager;
 
-    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, UserManager<AppUser> appUserManager)
+    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, UserManager<AppUser> appUserManager, SignInManager<Adminstrator> signInManager)
     {
         this.userManager = userManager;
         _context = context;
@@ -48,6 +49,7 @@ public class AdminstratorService : IAdminstratorService
         _tokenService = tokenService;
         _roleManager = roleManager;
         _appUserManager = appUserManager;
+        _signInManager = signInManager;
     }
 
     public async Task CreateAsync(CreateAdminstratorDto dto)
@@ -322,6 +324,11 @@ public class AdminstratorService : IAdminstratorService
         var user = await userManager.FindByIdAsync(id);
         if (user == null) throw new AppUserNotFoundException<Adminstrator>();
 
+        if (user.ImageUrl != null)
+        {
+            _fileService.Delete(user.ImageUrl);
+        }
+
         var result = await userManager.DeleteAsync(user);
         if (!result.Succeeded)
         {
@@ -332,6 +339,17 @@ public class AdminstratorService : IAdminstratorService
             }
             throw new AppUserDeleteFailedException<Adminstrator>(a);
         }
+    }
+
+    public async Task Logout()
+    {
+        await _signInManager.SignOutAsync();
+
+        var user = await userManager.FindByIdAsync(userId);
+        if (user == null) throw new AppUserNotFoundException<Adminstrator>();
+        user.RefreshToken = null;
+        var result = await userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new LogoutFaileException<Adminstrator>();
     }
 }
 

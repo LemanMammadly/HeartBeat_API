@@ -9,3 +9,4 @@ public class Patient:AppUser
     public PatientRoom? PatientRoom { get; set; }
     public int? PatientRoomId { get; set; }
 }
+

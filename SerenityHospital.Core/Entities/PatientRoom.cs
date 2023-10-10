@@ -13,7 +13,7 @@ public class PatientRoom:BaseEntity
     public string ImageUrl { get; set; }
     public Department Department { get; set; }
     public int DepartmentId { get; set; }
-    public IEnumerable<Patient> Patients { get; set; }
+    public ICollection<Patient> Patients { get; set; }
 }
 
 

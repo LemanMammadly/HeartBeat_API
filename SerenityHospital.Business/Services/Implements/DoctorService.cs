@@ -35,8 +35,9 @@ public class DoctorService : IDoctorService
     readonly IDepartmentRepository _departmentRepository;
     readonly IPositionRepository _positionRepository;
     readonly ITokenService _tokenService;
+    readonly SignInManager<Doctor> _signInManager;
 
-    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context)
+    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, SignInManager<Doctor> signInManager)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -48,6 +49,7 @@ public class DoctorService : IDoctorService
         _roleManager = roleManager;
         _context = context;
         userId = _context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _signInManager = signInManager;
     }
 
     public async Task AddRole(AddRoleDto dto)
@@ -322,6 +324,11 @@ public class DoctorService : IDoctorService
         var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == id);
         if (user is null) throw new NotFoundException<Doctor>();
 
+        if (user.ImageUrl != null)
+        {
+            _fileService.Delete(user.ImageUrl);
+        }
+
         var result = await _userManager.DeleteAsync(user);
         if (!result.Succeeded)
         {
@@ -332,6 +339,17 @@ public class DoctorService : IDoctorService
             }
             throw new AppUserDeleteFailedException<Doctor>(a);
         }
+    }
+
+    public async Task Logout()
+    {
+        await _signInManager.SignOutAsync();
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null) throw new AppUserNotFoundException<Doctor>();
+        user.RefreshToken = null;
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new LogoutFaileException<Doctor>();
     }
 }
 

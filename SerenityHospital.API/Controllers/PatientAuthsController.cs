@@ -22,6 +22,13 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _service.GetAllAsync());
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm]PatientCreateDto dto)
         {
@@ -45,6 +52,48 @@ namespace SerenityHospital.API.Controllers
         public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
         {
             await _service.AddRole(dto);
+            return NoContent();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
+        {
+            await _service.RemoveRole(dto);
+            return NoContent();
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Update([FromForm] PatientUpdateDto dto)
+        {
+            await _service.UpdateAsync(dto);
+            return NoContent();
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateByAmin(string id,[FromForm] PatientUpdateByAdminDto dto)
+        {
+            await _service.UpdateByAdminAsync(id,dto);
+            return NoContent();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddPatientRoom([FromForm] AddPatientRoomDto dto)
+        {
+            await _service.AddPatientRoom(dto);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _service.DeleteAsync(id);
+            return NoContent();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Logout()
+        {
+            await _service.Logout();
             return NoContent();
         }
     }

@@ -6,25 +6,25 @@ using SerenityHospital.Core.Enums;
 
 namespace SerenityHospital.Business.Dtos.PatientDtos;
 
-public record PatientCreateDto
+public record PatientUpdateByAdminDto
 {
     public string Name { get; set; }
     public string Surname { get; set; }
     public int Age { get; set; }
-    public string Email { get; set; }
     public string PhoneNumber { get; set; }
+    public string Email { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
     public string Address { get; set; }
+    public int RoomId { get; set; }
     public Gender Gender { get; set; }
     public BloodType BloodType { get; set; }
     public IFormFile? ImageFile { get; set; }
 }
 
-
-public class PatientCreateDtoValidator:AbstractValidator<PatientCreateDto>
+public class PatientUpdateByAdminDtoValidator:AbstractValidator<PatientUpdateByAdminDto>
 {
-    public PatientCreateDtoValidator()
+    public PatientUpdateByAdminDtoValidator()
     {
         RuleFor(a => a.Name)
             .NotEmpty()
@@ -42,11 +42,6 @@ public class PatientCreateDtoValidator:AbstractValidator<PatientCreateDto>
                 .WithMessage("Patient surname dont be null")
             .MaximumLength(25)
                 .WithMessage("Patient surname length less than 25");
-        RuleFor(p => p.Age)
-            .NotEmpty()
-                .WithMessage("Patient age dont be empty")
-            .NotNull()
-                .WithMessage("Patient age dont be null");
         RuleFor(d => d.Email)
             .NotEmpty()
                 .WithMessage("Patient email dont be empty")
@@ -68,6 +63,13 @@ public class PatientCreateDtoValidator:AbstractValidator<PatientCreateDto>
                 .WithMessage("Patient username length must be greater than 2")
            .MaximumLength(45)
                 .WithMessage("Patient username length must be less than 45");
+        RuleFor(d => d.Password)
+            .NotEmpty()
+                .WithMessage("Patient Password dont be empty")
+            .NotNull()
+                .WithMessage("Patient Password dont be null")
+           .MinimumLength(6)
+                .WithMessage("Patient password length must be greater than 6");
         RuleFor(s => s.PhoneNumber)
             .NotEmpty()
                 .WithMessage("Phone number dont be empty")
@@ -79,19 +81,17 @@ public class PatientCreateDtoValidator:AbstractValidator<PatientCreateDto>
                 var result = regex.Match(s);
                 return result.Success;
             })
-        .WithMessage("Please enter valid phone number");
-        RuleFor(d => d.Password)
-            .NotEmpty()
-                .WithMessage("Patient Password dont be empty")
-            .NotNull()
-                .WithMessage("Patient Password dont be null")
-           .MinimumLength(6)
-                .WithMessage("Patient password length must be greater than 6");
+            .WithMessage("Please enter valid phone number");
         RuleFor(a => a.Address)
             .NotEmpty()
                 .WithMessage("Patient surname dont be empty")
             .NotNull()
                 .WithMessage("Patient surname dont be null");
+        RuleFor(d => d.Age)
+            .NotEmpty()
+                .WithMessage("Patient ager dont be empty")
+            .NotNull()
+                .WithMessage("Patient age dont be null");
         RuleFor(d => d.Gender)
             .Must(BeAValidGender)
                 .WithMessage("Invalid gender");
@@ -100,6 +100,9 @@ public class PatientCreateDtoValidator:AbstractValidator<PatientCreateDto>
                 .WithMessage("Invalid BloodType");
         RuleFor(d => d.ImageFile)
             .SetValidator(new FileValidator());
+        RuleFor(d => d.RoomId)
+            .GreaterThan(0)
+                .WithMessage("Room Id must be greater than 0");
     }
     private bool BeAValidGender(Gender gender)
     {

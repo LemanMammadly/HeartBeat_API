@@ -17,6 +17,7 @@ public interface IDoctorService
     Task SoftDeleteAsync(string id);
     Task ReverteSoftDeleteAsync(string id);
     Task DeleteAsync(string id);
+    Task Logout();
 }
 
 

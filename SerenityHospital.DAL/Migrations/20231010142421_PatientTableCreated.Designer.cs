@@ -12,7 +12,7 @@ using SerenityHospital.DAL.Contexts;
 namespace SerenityHospital.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231009083420_PatientTableCreated")]
+    [Migration("20231010142421_PatientTableCreated")]
     partial class PatientTableCreated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -79,10 +79,17 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.LoginWithRefreshTokenAsync(refreshToken));
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             await _service.DeleteAsync(id);
+            return NoContent();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Logout()
+        {
+            await _service.Logout();
             return NoContent();
         }
     }

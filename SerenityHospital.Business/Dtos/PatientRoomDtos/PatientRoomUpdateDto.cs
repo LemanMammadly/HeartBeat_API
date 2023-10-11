@@ -14,6 +14,7 @@ public record PatientRoomUpdateDto
     public decimal Price { get; set; }
     public IFormFile? ImageFile { get; set; }
     public int DepartmentId { get; set; }
+    public IEnumerable<string>? Patientids { get; set; }
 }
 
 public class PatientRoomUpdateDtoValidator:AbstractValidator<PatientRoomUpdateDto>
@@ -66,6 +67,9 @@ public class PatientRoomUpdateDtoValidator:AbstractValidator<PatientRoomUpdateDt
                  .WithMessage("DepartmentId dont be null")
             .GreaterThan(0)
                 .WithMessage("DepartmentId must be greater than 0");
+        RuleFor(p => p.Patientids)
+            .Must(p => IsDistinct(p))
+                .WithMessage("You cannot add same patient id in same room");
     }
 
     private bool BeAValidPatientRoomType(PatientRoomType type)
@@ -76,5 +80,25 @@ public class PatientRoomUpdateDtoValidator:AbstractValidator<PatientRoomUpdateDt
     private bool BeAValidStatus(PatientRoomStatus status)
     {
         return Enum.IsDefined(typeof(PatientRoomStatus), status);
+    }
+    private bool IsDistinct(IEnumerable<string> ids)
+    {
+        var encounteredIds = new HashSet<string>();
+
+        if(ids !=null)
+        {
+            foreach (var id in ids)
+            {
+                if (!encounteredIds.Contains(id))
+                {
+                    encounteredIds.Add(id);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

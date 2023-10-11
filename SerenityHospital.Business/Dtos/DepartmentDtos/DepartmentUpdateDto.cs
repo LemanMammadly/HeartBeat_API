@@ -10,7 +10,7 @@ public record DepartmentUpdateDto
     public string Description { get; set; }
     public IFormFile? IconFile { get; set; }
     public int ServiceId { get; set; }
-    public IEnumerable<int> PatientRoomIds { get; set; }
+    public IEnumerable<int>? PatientRoomIds { get; set; }
 }
 
 public class DepartmentUpdateDtoValidator:AbstractValidator<DepartmentUpdateDto>
@@ -45,15 +45,18 @@ public class DepartmentUpdateDtoValidator:AbstractValidator<DepartmentUpdateDto>
     {
         var encounteredIds = new HashSet<int>();
 
-        foreach (var id in ids)
+        if(ids!=null)
         {
-            if (!encounteredIds.Contains(id))
+            foreach (var id in ids)
             {
-                encounteredIds.Add(id);
-            }
-            else
-            {
-                return false;
+                if (!encounteredIds.Contains(id))
+                {
+                    encounteredIds.Add(id);
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         return true;

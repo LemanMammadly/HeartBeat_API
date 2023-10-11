@@ -6,27 +6,27 @@
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/PatientService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.API/PersistenceServiceRegistration.cs">
     <Files>
-      <File FileName="SerenityHospital.API/Controllers/PatientAuthsController.cs" />
-      <File FileName="SerenityHospital.Business/Services/Interfaces/IPatientService.cs" />
-      <File FileName="SerenityHospital.API/Controllers/DoctorAuthsController.cs" />
-      <File FileName="SerenityHospital.Business/Services/Implements/PatientService.cs" Line="82" Column="14" />
+      <File FileName="SerenityHospital.Business/Services/Implements/PatientService.cs" Line="187" Column="34" />
+      <File FileName="SerenityHospital.Business/Services/Interfaces/IPatientService.cs" Line="19" Column="1" />
+      <File FileName="SerenityHospital.Business/Services/Interfaces/IAdminstratorService.cs" Line="20" Column="19" />
+      <File FileName="SerenityHospital.Business/Services/Implements/AdminstratorService.cs" Line="352" Column="75" />
+      <File FileName="SerenityHospital.API/Controllers/AdminstratorAuthsController.cs" Line="97" Column="1" />
+      <File FileName="SerenityHospital.API/Controllers/PatientAuthsController.cs" Line="93" Column="1" />
+      <File FileName="SerenityHospital.API/Controllers/DoctorAuthsController.cs" Line="93" Column="10" />
+      <File FileName="SerenityHospital.API/PersistenceServiceRegistration.cs" Line="23" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="SerenityHospital" expanded="True">
+          <Node name="SerenityHospital">
             <Node name="SerenityHospital.API" expanded="True">
               <Node name="Controllers" expanded="True" />
             </Node>
             <Node name="SerenityHospital.Business" expanded="True">
-              <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True">
-                  <Node name="PatientService.cs" selected="True" />
-                </Node>
-                <Node name="Interfaces" expanded="True" />
-              </Node>
+              <Node name="Exceptions" expanded="True" />
+              <Node name="Services" expanded="True" />
             </Node>
             <Node name="SerenityHospital.Core" expanded="True" />
           </Node>

@@ -110,15 +110,18 @@ public class ServiceService : IServiceService
         if (await _repo.IsExistAsync(s => s.Name == dto.Name && s.Id != id)) throw new ServiceNameIsExistException();
 
         entity.Departments?.Clear();
-        foreach (var itemId in dto.DepartmentIds)
+        if(dto.DepartmentIds != null)
         {
-            var item = await _departRepo.GetByIdAsync(itemId);
-            if (item is null) throw new NotFoundException<Department>();
+            foreach (var itemId in dto.DepartmentIds)
+            {
+                var item = await _departRepo.GetByIdAsync(itemId);
+                if (item is null) throw new NotFoundException<Department>();
 
-            var isDepartmentInOtherService = await _repo.IsExistAsync(s => s.Id != id && s.Departments.Any(d => d.Id == item.Id));
-            if (isDepartmentInOtherService) throw new DepartmentIsInOtherSereviceException();
+                var isDepartmentInOtherService = await _repo.IsExistAsync(s => s.Id != id && s.Departments.Any(d => d.Id == item.Id));
+                if (isDepartmentInOtherService) throw new DepartmentIsInOtherSereviceException();
 
-            entity?.Departments.Add(item);
+                entity.Departments?.Add(item);
+            }
         }
 
         _mapper.Map(dto,entity);

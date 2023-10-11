@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SerenityHospital.Business.Dtos.PatientDtos;
 using SerenityHospital.Core.Enums;
 
 namespace SerenityHospital.Business.Dtos.PatientRoomDtos;
@@ -14,7 +15,9 @@ public record PatientRoomListItemDto
     public string ImageUrl { get; set; }
     public int DepartmentId { get; set; }
     public bool IsDeleted { get; set; }
+    public ICollection<PatientListItemDto> Patients { get; set; }
 }
+
 
 
 

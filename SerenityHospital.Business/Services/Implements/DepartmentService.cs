@@ -132,16 +132,17 @@ public class DepartmentService : IDepartmentService
         }
 
         entity.PatientRooms?.Clear();
-        foreach (var itemId in dto.PatientRoomIds)
+        if(dto.PatientRoomIds !=null)
         {
-            var patientRoom =await _patientRepo.GetByIdAsync(itemId);
-            if (patientRoom is null) throw new NotFoundException<PatientRoom>();
-            var isPatientRoomInOtherDepartment = await _repo.IsExistAsync(d => d.Id != id && d.PatientRooms.Any(d => d.Id == patientRoom.Id));
-            if (isPatientRoomInOtherDepartment) throw new PatientRoomInOtherDepartmentException();
-            entity?.PatientRooms.Add(patientRoom);
+            foreach (var itemId in dto.PatientRoomIds)
+            {
+                var patientRoom = await _patientRepo.GetByIdAsync(itemId);
+                if (patientRoom is null) throw new NotFoundException<PatientRoom>();
+                var isPatientRoomInOtherDepartment = await _repo.IsExistAsync(d => d.Id != id && d.PatientRooms.Any(d => d.Id == patientRoom.Id));
+                if (isPatientRoomInOtherDepartment) throw new PatientRoomInOtherDepartmentException();
+                entity.PatientRooms?.Add(patientRoom);
+            }
         }
-
-        
 
         var service = await _serviceRepo.GetByIdAsync(dto.ServiceId);
         if (service == null) throw new NotFoundException<Service>();

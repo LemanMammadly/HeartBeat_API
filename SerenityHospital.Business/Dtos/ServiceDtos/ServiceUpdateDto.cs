@@ -11,7 +11,7 @@ public record ServiceUpdateDto
     public DateTime ServiceEnding { get; set; }
     public decimal MinPrice { get; set; }
     public decimal MaxPrice { get; set; }
-    public IEnumerable<int> DepartmentIds { get; set; }
+    public IEnumerable<int>? DepartmentIds { get; set; }
 }
 
 public class ServiceUpdateDtoValidator:AbstractValidator<ServiceUpdateDto>
@@ -63,15 +63,18 @@ public class ServiceUpdateDtoValidator:AbstractValidator<ServiceUpdateDto>
     {
         var encounteredIds = new HashSet<int>();
 
-        foreach (var id in ids)
+        if(ids != null)
         {
-            if (!encounteredIds.Contains(id))
+            foreach (var id in ids)
             {
-                encounteredIds.Add(id);
-            }
-            else
-            {
-                return false;
+                if (!encounteredIds.Contains(id))
+                {
+                    encounteredIds.Add(id);
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
         return true;

@@ -35,9 +35,7 @@ public class ServiceCreateDtoValidator:AbstractValidator<ServiceCreateDto>
             .NotEmpty()
                 .WithMessage("ServiceEnding dont be empty")
             .NotNull()
-                .WithMessage("ServiceEnding dont be null")
-            .GreaterThan(s=>s.ServiceBeginning)
-                .WithMessage("ServiceEnding must be greater than ServiceBeginning");
+                .WithMessage("ServiceEnding dont be null");
         RuleFor(s => s.MinPrice)
             .NotEmpty()
                 .WithMessage("MinPrice dont be empty")

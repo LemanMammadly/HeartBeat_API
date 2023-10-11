@@ -54,5 +54,14 @@ public static class PersistenceServiceRegistration
         .AddEntityFrameworkStores<AppDbContext>()
         .AddSignInManager<SignInManager<Patient>>()
         .AddDefaultTokenProviders();
-    }
+
+        services.AddIdentityCore<Nurse>(options =>
+        {
+            options.Password.RequireNonAlphanumeric = false;
+        })
+        .AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddSignInManager<SignInManager<Nurse>>()
+        .AddDefaultTokenProviders();
+         }
 }

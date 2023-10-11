@@ -17,6 +17,7 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<Adminstrator> Adminstrators { get; set; }
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Patient> Patients { get; set; }
+    public DbSet<Nurse> Nurses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

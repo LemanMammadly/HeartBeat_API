@@ -27,6 +27,7 @@ public static class ServiceRegistration
         services.AddScoped<IRoleService, RoleService>();
         services.AddScoped<IDoctorService, DoctorService>();
         services.AddScoped<IPatientService, PatientService>();
+        services.AddScoped<INurseService, NurseService>();
     }
 }
 

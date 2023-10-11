@@ -11,6 +11,7 @@ public class Department:BaseEntity
     public int ServiceId { get; set; }
     public ICollection<PatientRoom> PatientRooms { get; set; }
     public ICollection<Doctor> Doctors { get; set; }
+    public ICollection<Nurse> Nurses { get; set; }
 }
 
 

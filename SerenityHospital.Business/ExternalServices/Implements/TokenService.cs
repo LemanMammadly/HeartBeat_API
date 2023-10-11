@@ -17,13 +17,15 @@ public class TokenService : ITokenService
     readonly UserManager<Adminstrator> _adminstratorUserManager;
     readonly UserManager<Doctor> _doctorUserManager;
     readonly UserManager<Patient> _patientUserManager;
+    readonly UserManager<Nurse> _nurseUserManager;
 
-    public TokenService(IConfiguration configuration, UserManager<Adminstrator> userManager, UserManager<Doctor> doctorUserManager, UserManager<Patient> patientUserManager)
+    public TokenService(IConfiguration configuration, UserManager<Adminstrator> userManager, UserManager<Doctor> doctorUserManager, UserManager<Patient> patientUserManager, UserManager<Nurse> nurseUserManager)
     {
         _configuration = configuration;
         _adminstratorUserManager = userManager;
         _doctorUserManager = doctorUserManager;
         _patientUserManager = patientUserManager;
+        _nurseUserManager = nurseUserManager;
     }
 
     public string CreateRefreshToken()
@@ -162,6 +164,49 @@ public class TokenService : ITokenService
             Token = token,
             Expires = jwtSecurity.ValidTo,
             Username = patient.UserName,
+            RefreshToken = refreshToken,
+            RefreshTokenExpires = refreshTokenExpires
+        };
+    }
+
+    public TokenResponseDto CreateNurseToken(Nurse nurse, int expires = 60)
+    {
+
+        List<Claim> claims = new List<Claim>()
+        {
+            new Claim(ClaimTypes.Name,nurse.UserName),
+            new Claim(ClaimTypes.NameIdentifier,nurse.Id),
+            new Claim(ClaimTypes.Email,nurse.Email),
+            new Claim(ClaimTypes.GivenName,nurse.Name),
+            new Claim(ClaimTypes.Surname,nurse.Surname),
+        };
+
+
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
+
+        SigningCredentials credentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
+
+        JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
+            _configuration["Jwt:issuer"],
+            _configuration["Jwt:audience"],
+            claims,
+            DateTime.UtcNow.AddHours(4),
+            DateTime.UtcNow.AddHours(4).AddMinutes(expires),
+            credentials);
+
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+        string token = tokenHandler.WriteToken(jwtSecurityToken);
+        string refreshToken = CreateRefreshToken();
+        var refreshTokenExpires = jwtSecurityToken.ValidTo.AddMinutes(expires / 3);
+        nurse.RefreshToken = refreshToken;
+        nurse.RefreshTokenExpiresDate = refreshTokenExpires;
+        _nurseUserManager.UpdateAsync(nurse).Wait();
+
+        return new()
+        {
+            Token = token,
+            Expires = jwtSecurityToken.ValidTo,
+            Username = nurse.UserName,
             RefreshToken = refreshToken,
             RefreshTokenExpires = refreshTokenExpires
         };

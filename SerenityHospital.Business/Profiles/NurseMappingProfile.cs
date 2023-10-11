@@ -9,6 +9,7 @@ public class NurseMappingProfile:Profile
     public NurseMappingProfile()
     {
         CreateMap<NurseCreateDto, Nurse>().ReverseMap();
+        CreateMap<Nurse, NurseListItemDto>().ReverseMap();
     }
 }
 

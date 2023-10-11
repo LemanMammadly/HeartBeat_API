@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Dtos.NurseDtos;
+using SerenityHospital.Business.Dtos.RoleDtos;
 using SerenityHospital.Business.Services.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,6 +20,12 @@ namespace SerenityHospital.API.Controllers
         public NurseAuthsController(INurseService service)
         {
             _service = service;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            return Ok(await _service.GetAllAsync(true));
         }
 
         [HttpPost("[action]")]
@@ -39,6 +46,20 @@ namespace SerenityHospital.API.Controllers
         public async Task<IActionResult> LoginWithRefreshToken(string refreshToken)
         {
             return Ok(await _service.LoginWithRefreshTokenAsync(refreshToken));
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
+        {
+            await _service.AddRole(dto);
+            return Ok();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
+        {
+            await _service.RemoveRole(dto);
+            return Ok();
         }
     }
 }

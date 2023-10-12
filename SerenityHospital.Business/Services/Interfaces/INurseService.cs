@@ -10,7 +10,12 @@ public interface INurseService
     Task<TokenResponseDto> LoginAsync(NurseLoginDto dto);
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
     Task<ICollection<NurseListItemDto>> GetAllAsync(bool takeAll);
+    Task<NurseDetailItemDto> GetById(bool takeAll,string id);
+    Task UpdateAsync(NurseUpdateDto dto);
+    Task UpdateByAdminAsync(string id,NurseUpdateByAdminDto dto);
     Task AddRole(AddRoleDto dto);
     Task RemoveRole(RemoveRoleDto dto);
+    Task SoftDeleteAsync(string id);
+    Task RevertSoftDeleteAsync(string id);
 }
 

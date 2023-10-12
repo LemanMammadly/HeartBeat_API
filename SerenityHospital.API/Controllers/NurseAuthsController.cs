@@ -28,6 +28,26 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetAllAsync(true));
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            return Ok(await _service.GetById(true,id));
+        }
+
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Put([FromForm]NurseUpdateDto dto)
+        {
+            await _service.UpdateAsync(dto);
+            return NoContent();
+        }
+
+        [HttpPut("[action]/{id}")]
+        public async Task<IActionResult> PutByAdmin(string id,[FromForm] NurseUpdateByAdminDto dto)
+        {
+            await _service.UpdateByAdminAsync(id,dto);
+            return NoContent();
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm]NurseCreateDto dto)
         {

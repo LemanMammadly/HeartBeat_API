@@ -267,13 +267,15 @@ public class PatientService : IPatientService
             user.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.PatientImageRoot);
         }
 
-        var roomExist = await _patientRoomRepository.GetByIdAsync(dto.RoomId,"Patients");
-        if (roomExist is null) throw new NotFoundException<PatientRoom>();
-
-        if (roomExist.Patients.Count() >= roomExist.Capacity) throw new PatientRoomCapacityIsFullException();
+        if (dto.PatientRoomId != null)
+        {
+            var roomExist = await _patientRoomRepository.GetSingleAsync(r=>r.Id== dto.PatientRoomId, "Patients");
+            if (roomExist is null) throw new NotFoundException<PatientRoom>();
+            if (roomExist.Patients.Count() >= roomExist.Capacity) throw new PatientRoomCapacityIsFullException();
+            user.PatientRoomId = roomExist.Id;
+        }
 
         var newUser = _mapper.Map(dto, user);
-        newUser.PatientRoomId = roomExist.Id;
         var result = await _userManager.UpdateAsync(newUser);
         if (!result.Succeeded)
         {

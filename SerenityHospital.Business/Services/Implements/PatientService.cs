@@ -55,6 +55,7 @@ public class PatientService : IPatientService
     {
         var room = await _patientRoomRepository.GetByIdAsync(dto.RoomId,"Patients");
         if (room is null) throw new NotFoundException<PatientRoom>();
+        if (room.IsDeleted==true) throw new NotFoundException<PatientRoom>();
 
         var user = await _userManager.FindByIdAsync(dto.Id);
         if (user is null) throw new AppUserNotFoundException<Patient>();
@@ -189,11 +190,11 @@ public class PatientService : IPatientService
 
     public async Task Logout()
     {
-        await _signInManager.SignOutAsync();
-
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) throw new AppUserNotFoundException<Patient>();
+        await _signInManager.SignOutAsync();
         user.RefreshToken = null;
+        user.RefreshTokenExpiresDate = null;
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new LogoutFaileException<Patient>();
     }
@@ -271,6 +272,7 @@ public class PatientService : IPatientService
         {
             var roomExist = await _patientRoomRepository.GetSingleAsync(r=>r.Id== dto.PatientRoomId, "Patients");
             if (roomExist is null) throw new NotFoundException<PatientRoom>();
+            if (roomExist.IsDeleted==true) throw new NotFoundException<PatientRoom>();
             if (roomExist.Patients.Count() >= roomExist.Capacity) throw new PatientRoomCapacityIsFullException();
             user.PatientRoomId = roomExist.Id;
         }

@@ -40,6 +40,7 @@ public class PatientRoomService : IPatientRoomService
 
         var department =await _depRepo.GetByIdAsync(dto.DepartmentId);
         if (department is null) throw new NotFoundException<Department>();
+        if (department.IsDeleted==true) throw new NotFoundException<Department>();
 
         var patientRoom = _mapper.Map<PatientRoom>(dto);
         patientRoom.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.PatientRoomtImageRoot);
@@ -134,6 +135,7 @@ public class PatientRoomService : IPatientRoomService
 
         var department =await _depRepo.GetByIdAsync(dto.DepartmentId);
         if (department is null) throw new NotFoundException<Department>();
+        if (department.IsDeleted==true) throw new NotFoundException<Department>();
 
         entity.Patients?.Clear();
 

@@ -17,5 +17,7 @@ public interface INurseService
     Task RemoveRole(RemoveRoleDto dto);
     Task SoftDeleteAsync(string id);
     Task RevertSoftDeleteAsync(string id);
+    Task DeleteAsync(string id);
+    Task Logout();
 }
 

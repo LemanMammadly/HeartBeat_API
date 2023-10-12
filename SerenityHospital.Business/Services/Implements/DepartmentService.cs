@@ -39,6 +39,7 @@ public class DepartmentService : IDepartmentService
 
         var service = await _serviceRepo.GetByIdAsync(dto.ServiceId);
         if (service == null) throw new NotFoundException<Service>();
+        if(service.IsDeleted==true) throw new NotFoundException<Service>();
 
         var department = _mapper.Map<Department>(dto);
         department.IconUrl = await _fileService.UploadAsync(dto.IconFile, RootConstant.DepartmentImageRoot);
@@ -138,6 +139,7 @@ public class DepartmentService : IDepartmentService
             {
                 var patientRoom = await _patientRepo.GetByIdAsync(itemId);
                 if (patientRoom is null) throw new NotFoundException<PatientRoom>();
+                if (patientRoom.IsDeleted==true) throw new NotFoundException<PatientRoom>();
                 var isPatientRoomInOtherDepartment = await _repo.IsExistAsync(d => d.Id != id && d.PatientRooms.Any(d => d.Id == patientRoom.Id));
                 if (isPatientRoomInOtherDepartment) throw new PatientRoomInOtherDepartmentException();
                 entity.PatientRooms?.Add(patientRoom);
@@ -146,6 +148,7 @@ public class DepartmentService : IDepartmentService
 
         var service = await _serviceRepo.GetByIdAsync(dto.ServiceId);
         if (service == null) throw new NotFoundException<Service>();
+        if (service.IsDeleted==true) throw new NotFoundException<Service>();
 
         entity.ServiceId = dto.ServiceId;
 

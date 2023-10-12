@@ -86,9 +86,11 @@ public class DoctorService : IDoctorService
 
         var department = await _departmentRepository.GetByIdAsync(dto.DepartmentId);
         if (department == null) throw new NotFoundException<Department>();
+        if (department.IsDeleted==true) throw new NotFoundException<Department>();
 
         var position = await _positionRepository.GetByIdAsync(dto.PositionId);
         if (position == null) throw new NotFoundException<Position>();
+        if (position.IsDeleted==true) throw new NotFoundException<Position>();
 
 
         var doctor = _mapper.Map<Doctor>(dto);
@@ -302,9 +304,11 @@ public class DoctorService : IDoctorService
 
         var position = await _positionRepository.GetSingleAsync(p=>p.Id==dto.PositionId);
         if (position == null) throw new NotFoundException<Position>();
+        if (position.IsDeleted==true) throw new NotFoundException<Position>();
 
         var department = await _departmentRepository.GetSingleAsync(d => d.Id == dto.DepartmentId);
         if (department == null) throw new NotFoundException<Department>();
+        if (department.IsDeleted==true) throw new NotFoundException<Department>();
 
         var newUser = _mapper.Map(dto, user);
         var result = await _userManager.UpdateAsync(newUser);
@@ -344,11 +348,11 @@ public class DoctorService : IDoctorService
 
     public async Task Logout()
     {
-        await _signInManager.SignOutAsync();
-
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) throw new AppUserNotFoundException<Doctor>();
+        await _signInManager.SignOutAsync();
         user.RefreshToken = null;
+        user.RefreshTokenExpiresDate = null;
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new LogoutFaileException<Doctor>();
     }

@@ -32,8 +32,9 @@ public class NurseService : INurseService
     readonly ITokenService _tokenService;
     readonly IHttpContextAccessor _context;
     readonly string? userId;
+    readonly SignInManager<Nurse> _signInManager;
 
-    public NurseService(UserManager<Nurse> userManager, UserManager<AppUser> appUserManager, IDepartmentRepository departmentRepository, IMapper mapper, IFileService fileService, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context)
+    public NurseService(UserManager<Nurse> userManager, UserManager<AppUser> appUserManager, IDepartmentRepository departmentRepository, IMapper mapper, IFileService fileService, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, SignInManager<Nurse> signInManager)
     {
         _userManager = userManager;
         _appUserManager = appUserManager;
@@ -44,6 +45,7 @@ public class NurseService : INurseService
         _roleManager = roleManager;
         _context = context;
         userId = _context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _signInManager = signInManager;
     }
 
     public async Task AddRole(AddRoleDto dto)
@@ -79,6 +81,7 @@ public class NurseService : INurseService
 
         var department = await _departmentRepository.GetByIdAsync(dto.DepartmentId);
         if (department is null) throw new NotFoundException<Department>();
+        if (department.IsDeleted==true) throw new NotFoundException<Department>();
 
         var nurse = _mapper.Map<Nurse>(dto);
 
@@ -337,6 +340,7 @@ public class NurseService : INurseService
 
         var department = await _departmentRepository.GetByIdAsync(dto.DepartmentId);
         if (department == null) throw new NotFoundException<Department>();
+        if (department.IsDeleted == true) throw new NotFoundException<Department>();
 
         if(dto.Status==WorkStatus.leave)
         {
@@ -361,6 +365,35 @@ public class NurseService : INurseService
             }
             throw new AppUserUpdateFailedException<Nurse>();
         }
+    }
+
+    public async Task DeleteAsync(string id)
+    {
+        if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null) throw new AppUserNotFoundException<Nurse>();
+
+        var result = await _userManager.DeleteAsync(user);
+        if (!result.Succeeded)
+        {
+            string a = " ";
+            foreach (var item in result.Errors)
+            {
+                a += item.Description + " ";
+            }
+            throw new AppUserDeleteFailedException<Nurse>(a);
+        }
+    }
+
+    public async Task Logout()
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null) throw new AppUserNotFoundException<Nurse>();
+        await _signInManager.SignOutAsync();
+        user.RefreshToken = null;
+        user.RefreshTokenExpiresDate = null;
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded) throw new LogoutFaileException<Nurse>();
     }
 }
 

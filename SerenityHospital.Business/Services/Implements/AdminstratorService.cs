@@ -343,11 +343,11 @@ public class AdminstratorService : IAdminstratorService
 
     public async Task Logout()
     {
-        await _signInManager.SignOutAsync();
-
         var user = await userManager.FindByIdAsync(userId);
         if (user == null) throw new AppUserNotFoundException<Adminstrator>();
+        await _signInManager.SignOutAsync();
         user.RefreshToken = null;
+        user.RefreshTokenExpiresDate = null;
         var result = await userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new LogoutFaileException<Adminstrator>();
     }

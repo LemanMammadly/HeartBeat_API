@@ -10,6 +10,7 @@ using SerenityHospital.Business.Extensions;
 using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
+using SerenityHospital.Core.Enums;
 using SerenityHospital.DAL.Repositories.Interfaces;
 
 namespace SerenityHospital.Business.Services.Implements;
@@ -44,6 +45,7 @@ public class PatientRoomService : IPatientRoomService
 
         var patientRoom = _mapper.Map<PatientRoom>(dto);
         patientRoom.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.PatientRoomtImageRoot);
+        patientRoom.Status = PatientRoomStatus.Available;
 
         await _repo.CreateAsync(patientRoom);
         await _repo.SaveAsync();
@@ -139,7 +141,7 @@ public class PatientRoomService : IPatientRoomService
 
         entity.Patients?.Clear();
 
-        if(dto.Patientids !=null)
+        if (dto.Patientids != null)
         {
             foreach (var patientId in dto.Patientids)
             {
@@ -149,12 +151,23 @@ public class PatientRoomService : IPatientRoomService
                 var patientInOtherPatientRoom = await _repo.IsExistAsync(p => p.Id != id && p.Patients.Any(p => p.Id == patient.Id));
                 if (patientInOtherPatientRoom) throw new PatientInOtherPatientRoomException();
 
-
-                if (dto.Patientids.Count() > dto.Capacity) throw new PatientRoomCapacityIsFullException();
-
                 entity.Patients?.Add(patient);
             }
+            if (dto.Patientids.Count() > dto.Capacity) throw new PatientRoomCapacityIsFullException();
+            if (dto.Patientids.Count() == dto.Capacity)
+            {
+                entity.Status = PatientRoomStatus.Occupied;
+            }
 
+            if (dto.Patientids.Count() < dto.Capacity)
+            {
+                entity.Status = PatientRoomStatus.Available;
+            }
+
+        }
+        else
+        {
+           entity.Status = PatientRoomStatus.Available;
         }
         entity.DepartmentId = dto.DepartmentId;
 

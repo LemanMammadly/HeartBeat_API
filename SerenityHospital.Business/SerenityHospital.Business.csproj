@@ -45,6 +45,7 @@
     <None Remove="Dtos\PatientDtos\" />
     <None Remove="Exceptions\Patients\" />
     <None Remove="Dtos\NurseDtos\" />
+    <None Remove="Dtos\DoctorRoom\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -82,6 +83,7 @@
     <Folder Include="Dtos\PatientDtos\" />
     <Folder Include="Exceptions\Patients\" />
     <Folder Include="Dtos\NurseDtos\" />
+    <Folder Include="Dtos\DoctorRoom\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />

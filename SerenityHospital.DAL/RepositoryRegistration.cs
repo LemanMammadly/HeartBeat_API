@@ -14,6 +14,7 @@ public static class RepositoryRegistration
         services.AddScoped<IDepartmentRepository, DepartmentRepository>();
         services.AddScoped<IPositionRepository, PositionRepository>();
         services.AddScoped<IPatientRoomRepository, PatientRoomRepository>();
+        services.AddScoped<IDoctorRoomRepository, DoctorRoomRepository>();
     }
 }
 

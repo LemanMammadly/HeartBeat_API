@@ -11,7 +11,6 @@ public record PatientRoomCreateDto
 {
     public int Number { get; set; }
     public PatientRoomType Type { get; set; }
-    public PatientRoomStatus Status { get; set; }
     public int Capacity { get; set; }
     public decimal Price { get; set; }
     public IFormFile ImageFile { get; set; }
@@ -37,13 +36,6 @@ public class PatientRoomCreateDtoValidator:AbstractValidator<PatientRoomCreateDt
                 .WithMessage("Patient room type dont be null")
             .Must(BeAValidPatientRoomType)
                 .WithMessage("Enter valid PatientRoomType");
-        RuleFor(pr => pr.Status)
-             .NotEmpty()
-                .WithMessage("Patient room status dont be empty")
-            .NotNull()
-                .WithMessage("Patient room status dont be null")
-            .Must(BeAValidStatus)
-                .WithMessage("Enter valid PatientRoomStatus");
         RuleFor(pr => pr.Capacity)
             .NotEmpty()
                 .WithMessage("Patient room capacity dont be empty")

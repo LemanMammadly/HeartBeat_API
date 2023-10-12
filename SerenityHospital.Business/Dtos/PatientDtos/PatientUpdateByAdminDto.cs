@@ -16,7 +16,6 @@ public record PatientUpdateByAdminDto
     public string UserName { get; set; }
     public string Password { get; set; }
     public string Address { get; set; }
-    public int? PatientRoomId { get; set; }
     public Gender Gender { get; set; }
     public BloodType BloodType { get; set; }
     public IFormFile? ImageFile { get; set; }
@@ -100,9 +99,6 @@ public class PatientUpdateByAdminDtoValidator:AbstractValidator<PatientUpdateByA
                 .WithMessage("Invalid BloodType");
         RuleFor(d => d.ImageFile)
             .SetValidator(new FileValidator());
-        RuleFor(d => d.PatientRoomId)
-            .GreaterThan(0)
-                .WithMessage("Room Id must be greater than 0");
     }
     private bool BeAValidGender(Gender gender)
     {

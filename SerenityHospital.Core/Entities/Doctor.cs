@@ -13,8 +13,11 @@ public class Doctor:AppUser
     public int PositionId { get; set; }
     public Department Department { get; set; }
     public int DepartmentId { get; set; }
+    public DoctorRoom? DoctorRoom { get; set; }
+    public int? DoctorRoomId { get; set; }
     public bool IsDeleted { get; set; }
 }
+
 
 
 

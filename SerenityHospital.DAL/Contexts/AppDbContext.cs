@@ -18,6 +18,7 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<Doctor> Doctors { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Nurse> Nurses { get; set; }
+    public DbSet<DoctorRoom> DoctorRooms { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

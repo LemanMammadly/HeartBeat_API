@@ -60,12 +60,20 @@ public class PatientService : IPatientService
         var user = await _userManager.FindByIdAsync(dto.Id);
         if (user is null) throw new AppUserNotFoundException<Patient>();
 
+
         if (user.PatientRoomId != null) throw new PatientHavAlreadyRoomException();
 
-        if (room.Patients.Count() >= room.Capacity) throw new PatientRoomCapacityIsFullException();
-
-
         room.Patients.Add(user);
+
+        if (room.Patients.Count() == room.Capacity)
+        {
+            room.Status = PatientRoomStatus.Occupied;
+        }
+
+        if (room.Patients.Count() > room.Capacity) throw new PatientRoomCapacityIsFullException();
+
+
+ 
         await _patientRoomRepository.SaveAsync();
     }
 
@@ -266,15 +274,6 @@ public class PatientService : IPatientService
             if (!dto.ImageFile.IsSizeValid(3)) throw new SizeNotValidException();
             if (!dto.ImageFile.IsTypeValid("image")) throw new TypeNotValidException();
             user.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.PatientImageRoot);
-        }
-
-        if (dto.PatientRoomId != null)
-        {
-            var roomExist = await _patientRoomRepository.GetSingleAsync(r=>r.Id== dto.PatientRoomId, "Patients");
-            if (roomExist is null) throw new NotFoundException<PatientRoom>();
-            if (roomExist.IsDeleted==true) throw new NotFoundException<PatientRoom>();
-            if (roomExist.Patients.Count() >= roomExist.Capacity) throw new PatientRoomCapacityIsFullException();
-            user.PatientRoomId = roomExist.Id;
         }
 
         var newUser = _mapper.Map(dto, user);

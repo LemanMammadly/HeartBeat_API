@@ -30,6 +30,10 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
             .WithMany(p => p.Doctors)
             .HasForeignKey(d => d.PositionId)
             .OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(d => d.DoctorRoom)
+            .WithOne(dr => dr.Doctor)
+            .HasForeignKey<Doctor>(d => d.DoctorRoomId)
+            .IsRequired(false);
     }
 }
 

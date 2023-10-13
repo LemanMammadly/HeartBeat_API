@@ -29,6 +29,14 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetAllAsync(true));
         }
 
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            return Ok(await _service.GetById(id,true));
+        }
+
+
         [Authorize(Roles ="Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)

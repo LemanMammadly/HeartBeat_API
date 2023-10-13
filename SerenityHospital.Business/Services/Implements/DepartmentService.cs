@@ -3,6 +3,7 @@ using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.DepartmentDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Departments;
+using SerenityHospital.Business.Exceptions.Doctors;
 using SerenityHospital.Business.Exceptions.Images;
 using SerenityHospital.Business.Exceptions.PatientRooms;
 using SerenityHospital.Business.Extensions;
@@ -17,17 +18,19 @@ public class DepartmentService : IDepartmentService
 {
     readonly IDepartmentRepository _repo;
     readonly IPatientRoomRepository _patientRepo;
+    readonly IDoctorRoomRepository _doctorRoomRepo;
     readonly IMapper _mapper;
     readonly IFileService _fileService;
     readonly IServiceRepository _serviceRepo;
 
-    public DepartmentService(IDepartmentRepository repo, IMapper mapper, IFileService fileService, IServiceRepository serviceRepo, IPatientRoomRepository patientRepo)
+    public DepartmentService(IDepartmentRepository repo, IMapper mapper, IFileService fileService, IServiceRepository serviceRepo, IPatientRoomRepository patientRepo, IDoctorRoomRepository doctorRoomRepo)
     {
         _repo = repo;
         _mapper = mapper;
         _fileService = fileService;
         _serviceRepo = serviceRepo;
         _patientRepo = patientRepo;
+        _doctorRoomRepo = doctorRoomRepo;
     }
 
     public async Task CreateAsync(DepartmentCreateDto dto)
@@ -66,11 +69,11 @@ public class DepartmentService : IDepartmentService
     {
         if(takeAll)
         {
-            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.GetAll("PatientRooms","Doctors","Doctors.Position"));
+            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.GetAll("PatientRooms","Doctors","Doctors.Position", "DoctorRooms"));
         }
         else
         {
-            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.FindAll(d => d.IsDeleted == false,"PatientRooms","Doctors","Doctors.Position"));
+            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.FindAll(d => d.IsDeleted == false,"PatientRooms","Doctors","Doctors.Position", "DoctorRooms"));
         }
     }
 
@@ -80,12 +83,12 @@ public class DepartmentService : IDepartmentService
         Department? entity;
         if(takeAll)
         {
-            entity = await _repo.GetByIdAsync(id,"PatientRooms","Doctors","Doctors.Position");
+            entity = await _repo.GetByIdAsync(id,"PatientRooms","Doctors","Doctors.Position", "DoctorRooms");
             if (entity is null) throw new NotFoundException<Department>();
         }
         else
         {
-            entity = await _repo.GetSingleAsync(d => d.Id == id && d.IsDeleted == false, "PatientRooms", "Doctors", "Doctors.Position");
+            entity = await _repo.GetSingleAsync(d => d.Id == id && d.IsDeleted == false, "PatientRooms", "Doctors", "Doctors.Position", "DoctorRooms");
             if (entity is null) throw new NotFoundException<Department>();
         }
 
@@ -130,20 +133,6 @@ public class DepartmentService : IDepartmentService
             if (!dto.IconFile.IsSizeValid(3)) throw new SizeNotValidException();
             if (!dto.IconFile.IsTypeValid("image")) throw new TypeNotValidException();
             entity.IconUrl = await _fileService.UploadAsync(dto.IconFile, RootConstant.DepartmentImageRoot);
-        }
-
-        entity.PatientRooms?.Clear();
-        if(dto.PatientRoomIds !=null)
-        {
-            foreach (var itemId in dto.PatientRoomIds)
-            {
-                var patientRoom = await _patientRepo.GetByIdAsync(itemId);
-                if (patientRoom is null) throw new NotFoundException<PatientRoom>();
-                if (patientRoom.IsDeleted==true) throw new NotFoundException<PatientRoom>();
-                var isPatientRoomInOtherDepartment = await _repo.IsExistAsync(d => d.Id != id && d.PatientRooms.Any(d => d.Id == patientRoom.Id));
-                if (isPatientRoomInOtherDepartment) throw new PatientRoomInOtherDepartmentException();
-                entity.PatientRooms?.Add(patientRoom);
-            }
         }
 
         var service = await _serviceRepo.GetByIdAsync(dto.ServiceId);

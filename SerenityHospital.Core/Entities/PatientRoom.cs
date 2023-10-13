@@ -11,8 +11,8 @@ public class PatientRoom:BaseEntity
     public int Capacity { get; set; }
     public decimal Price { get; set; }
     public string ImageUrl { get; set; }
-    public Department Department { get; set; }
-    public int DepartmentId { get; set; }
+    public Department? Department { get; set; }
+    public int? DepartmentId { get; set; }
     public ICollection<Patient> Patients { get; set; }
 }
 

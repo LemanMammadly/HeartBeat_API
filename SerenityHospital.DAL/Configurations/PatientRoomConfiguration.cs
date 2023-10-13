@@ -24,7 +24,7 @@ public class PatientRoomConfiguration : IEntityTypeConfiguration<PatientRoom>
             .WithMany(d => d.PatientRooms)
             .HasForeignKey(pr => pr.DepartmentId)
             .OnDelete(DeleteBehavior.NoAction)
-            .IsRequired();
+            .IsRequired(false);
     }
 }
 

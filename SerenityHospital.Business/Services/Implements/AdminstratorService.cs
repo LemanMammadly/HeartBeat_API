@@ -351,5 +351,38 @@ public class AdminstratorService : IAdminstratorService
         var result = await userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new LogoutFaileException<Adminstrator>();
     }
+
+    public async Task<AdminstratorDetailItemDto> GetById(string id, bool takeAll)
+    {
+        if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
+        if (takeAll)
+        {
+            var user=await userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (user is null) throw new AppUserNotFoundException<Adminstrator>();
+            var userDto = new AdminstratorDetailItemDto()
+            {
+                Name = user.Name,
+                Surname = user.Surname,
+                UserName = user.UserName,
+                ImageUrl = user.ImageUrl,
+                Roles = await userManager.GetRolesAsync(user)
+            };
+            return userDto;
+        }
+        else
+        {
+            var user = await userManager.Users.Where(u=>u.IsDeleted==false).FirstOrDefaultAsync(u => u.Id == id);
+            if (user is null) throw new AppUserNotFoundException<Adminstrator>();
+            var userDto = new AdminstratorDetailItemDto()
+            {
+                Name = user.Name,
+                Surname = user.Surname,
+                UserName = user.UserName,
+                ImageUrl = user.ImageUrl,
+                Roles = await userManager.GetRolesAsync(user)
+            };
+            return userDto;
+        }
+    }
 }
 

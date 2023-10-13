@@ -11,6 +11,7 @@ public interface IPatientService
     Task<TokenResponseDto> LoginAsync(PatientLoginDto dto);
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
     Task<ICollection<PatientListItemDto>> GetAllAsync();
+    Task<PatientDetailItemDto> GetById(string id);
     Task AddRole(AddRoleDto dto);
     Task RemoveRole(RemoveRoleDto dto);
     Task UpdateAsync(PatientUpdateDto dto);

@@ -10,6 +10,8 @@ public interface IDoctorService
     Task<TokenResponseDto> LoginAsync(DoctorLoginDto dto);
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
     Task<ICollection<DoctorListItemDto>> GetAllAsync(bool takeAll);
+    Task<DoctorDetailItemDto> GetById(string id, bool takeAll);
+    Task AddDoctorRoom(AddDoctorRoomDto dto);
     Task UpdateAsync(DoctorUpdateDto dto);
     Task UpdateByAdminAsync(string id,DoctorUpdateByAdminDto dto);
     Task AddRole(AddRoleDto dto);

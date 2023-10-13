@@ -156,7 +156,8 @@ public class NurseService : INurseService
 
     public async Task<NurseDetailItemDto> GetById(bool takeAll, string id)
     {
-        if(takeAll)
+        if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
+        if (takeAll)
         {
             var user = await _userManager.Users.Include(u=>u.Department).FirstOrDefaultAsync(u=>u.Id==id);
             if (user is null) throw new AppUserNotFoundException<Nurse>();

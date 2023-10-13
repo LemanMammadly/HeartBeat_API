@@ -10,6 +10,8 @@ public class DoctorRoomConfiguration : IEntityTypeConfiguration<DoctorRoom>
     {
         builder.HasIndex(dr=>dr.Number)
                .IsUnique();
+        builder.Property(dr => dr.DoctorRoomStatus)
+            .IsRequired();
         builder.HasOne(dr => dr.Department)
             .WithMany(d => d.DoctorRooms)
             .HasForeignKey(dr => dr.DepartmentId)

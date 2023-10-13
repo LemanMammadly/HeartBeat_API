@@ -292,7 +292,10 @@ namespace SerenityHospital.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorRoomStatus")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -344,7 +347,7 @@ namespace SerenityHospital.DAL.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
@@ -695,8 +698,7 @@ namespace SerenityHospital.DAL.Migrations
                     b.HasOne("SerenityHospital.Core.Entities.Department", "Department")
                         .WithMany("DoctorRooms")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Department");
                 });
@@ -706,8 +708,7 @@ namespace SerenityHospital.DAL.Migrations
                     b.HasOne("SerenityHospital.Core.Entities.Department", "Department")
                         .WithMany("PatientRooms")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Department");
                 });
@@ -780,8 +781,7 @@ namespace SerenityHospital.DAL.Migrations
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.DoctorRoom", b =>
                 {
-                    b.Navigation("Doctor")
-                        .IsRequired();
+                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Hospital", b =>

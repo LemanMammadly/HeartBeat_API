@@ -1,4 +1,5 @@
 ﻿using SerenityHospital.Business.Dtos.DoctorDtos;
+using SerenityHospital.Business.Dtos.DoctorRoom;
 using SerenityHospital.Business.Dtos.PatientRoomDtos;
 using SerenityHospital.Business.Dtos.PositionDtos;
 using SerenityHospital.Core.Entities;
@@ -15,6 +16,8 @@ public record DepartmentListItemDto
     public bool IsDeleted { get; set; }
     public IEnumerable<PatientRoomListItemDto> PatientRooms { get; set; }
     public IEnumerable<DoctorInfoDto> Doctors { get; set; }
+    public IEnumerable<DoctorRoomDetailItemDto> DoctorRooms { get; set; }
 }
+
 
 

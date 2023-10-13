@@ -56,6 +56,7 @@ public class PatientService : IPatientService
         var room = await _patientRoomRepository.GetByIdAsync(dto.RoomId,"Patients");
         if (room is null) throw new NotFoundException<PatientRoom>();
         if (room.IsDeleted==true) throw new NotFoundException<PatientRoom>();
+        if (room.Status == PatientRoomStatus.Occupied || room.Status == PatientRoomStatus.OutOfService) throw new PatientRoomIsNotAvailableException();
 
         var user = await _userManager.FindByIdAsync(dto.Id);
         if (user is null) throw new AppUserNotFoundException<Patient>();
@@ -72,8 +73,6 @@ public class PatientService : IPatientService
 
         if (room.Patients.Count() > room.Capacity) throw new PatientRoomCapacityIsFullException();
 
-
- 
         await _patientRoomRepository.SaveAsync();
     }
 
@@ -174,6 +173,28 @@ public class PatientService : IPatientService
                 patients.Add(patientDto);
             }
             return patients;
+    }
+
+    public async Task<PatientDetailItemDto> GetById(string id)
+    {
+        if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
+        var user = await _userManager.Users.Include(p => p.PatientRoom).SingleOrDefaultAsync(p => p.Id == id);
+        if (user is null) throw new AppUserNotFoundException<Patient>();
+        var userDto = new PatientDetailItemDto
+        {
+            Name = user.Name,
+            Surname = user.Surname,
+            UserName = user.UserName,
+            ImageUrl = user.ImageUrl,
+            PhoneNumber = user.PhoneNumber,
+            Age = user.Age,
+            Address = user.Address,
+            Gender = user.Gender,
+            BloodType = user.BloodType,
+            Roles = await _userManager.GetRolesAsync(user),
+            PatientRoom = _mapper.Map<PatientRoomInfoDto>(user.PatientRoom)
+        };
+        return userDto;
     }
 
     public async Task<TokenResponseDto> LoginAsync(PatientLoginDto dto)

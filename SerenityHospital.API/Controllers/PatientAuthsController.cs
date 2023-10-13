@@ -29,6 +29,12 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetAllAsync());
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            return Ok(await _service.GetById(id));
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm]PatientCreateDto dto)
         {

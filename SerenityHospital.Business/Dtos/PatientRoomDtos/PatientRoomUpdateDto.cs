@@ -12,7 +12,7 @@ public record PatientRoomUpdateDto
     public int Capacity { get; set; }
     public decimal Price { get; set; }
     public IFormFile? ImageFile { get; set; }
-    public int DepartmentId { get; set; }
+    public int? DepartmentId { get; set; }
     public IEnumerable<string>? Patientids { get; set; }
 }
 
@@ -53,10 +53,6 @@ public class PatientRoomUpdateDtoValidator:AbstractValidator<PatientRoomUpdateDt
         RuleFor(pr => pr.ImageFile)
             .SetValidator(new FileValidator());
         RuleFor(pr => pr.DepartmentId)
-            .NotNull()
-                .WithMessage("DepartmentId dont be null")
-            .NotEmpty()
-                 .WithMessage("DepartmentId dont be null")
             .GreaterThan(0)
                 .WithMessage("DepartmentId must be greater than 0");
         RuleFor(p => p.Patientids)

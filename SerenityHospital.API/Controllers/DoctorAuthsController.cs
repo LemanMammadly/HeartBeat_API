@@ -29,6 +29,12 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetAllAsync(true));
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            return Ok(await _service.GetById(id,true));
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm] DoctorCreateDto dto)
         {
@@ -63,6 +69,14 @@ namespace SerenityHospital.API.Controllers
             await _service.RemoveRole(dto);
             return Ok();
         }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddDoctorRoom([FromForm] AddDoctorRoomDto dto)
+        {
+            await _service.AddDoctorRoom(dto);
+            return Ok();
+        }
+
 
         [HttpPut("[action]")]
         public async Task<IActionResult> Put([FromForm] DoctorUpdateDto dto)

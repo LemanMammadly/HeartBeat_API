@@ -7,10 +7,12 @@ using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.AdminstratorDtos;
 using SerenityHospital.Business.Dtos.DepartmentDtos;
 using SerenityHospital.Business.Dtos.DoctorDtos;
+using SerenityHospital.Business.Dtos.DoctorRoom;
 using SerenityHospital.Business.Dtos.PositionDtos;
 using SerenityHospital.Business.Dtos.RoleDtos;
 using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.Exceptions.Common;
+using SerenityHospital.Business.Exceptions.Doctors;
 using SerenityHospital.Business.Exceptions.Images;
 using SerenityHospital.Business.Exceptions.Roles;
 using SerenityHospital.Business.Exceptions.Tokens;
@@ -19,6 +21,7 @@ using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
 using SerenityHospital.Core.Enums;
+using SerenityHospital.DAL.Repositories.Implements;
 using SerenityHospital.DAL.Repositories.Interfaces;
 
 namespace SerenityHospital.Business.Services.Implements;
@@ -36,8 +39,9 @@ public class DoctorService : IDoctorService
     readonly IPositionRepository _positionRepository;
     readonly ITokenService _tokenService;
     readonly SignInManager<Doctor> _signInManager;
+    readonly IDoctorRoomRepository _doctorRoomRepository;
 
-    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, SignInManager<Doctor> signInManager)
+    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, SignInManager<Doctor> signInManager, IDoctorRoomRepository doctorRoomRepository)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -50,6 +54,7 @@ public class DoctorService : IDoctorService
         _context = context;
         userId = _context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _signInManager = signInManager;
+        _doctorRoomRepository = doctorRoomRepository;
     }
 
     public async Task AddRole(AddRoleDto dto)
@@ -120,7 +125,7 @@ public class DoctorService : IDoctorService
         ICollection<DoctorListItemDto> users = new List<DoctorListItemDto>();
         if (takeAll)
         {
-            foreach (var user in await _userManager.Users.Include(d=>d.Department).Include(d=>d.Position).ToListAsync())
+            foreach (var user in await _userManager.Users.Include(d=>d.Department).Include(d=>d.Position).Include(d=>d.DoctorRoom).ToListAsync())
             {
                 var userDto = new DoctorListItemDto
                 {
@@ -128,8 +133,9 @@ public class DoctorService : IDoctorService
                     Surname = user.Surname,
                     ImageUrl = user.ImageUrl,
                     UserName = user.UserName,
-                    IsDeleted=user.IsDeleted,
+                    IsDeleted = user.IsDeleted,
                     Roles = await _userManager.GetRolesAsync(user),
+                    DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
                     Department=_mapper.Map<DepartmentInfoDto>(user.Department),
                     Position=_mapper.Map<PositionInfoDto>(user.Position)
                 };
@@ -139,7 +145,7 @@ public class DoctorService : IDoctorService
         }
         else
         {
-            foreach (var user in await _userManager.Users.Include(d => d.Department).Include(d => d.Position).Where(d=>d.IsDeleted==false).ToListAsync())
+            foreach (var user in await _userManager.Users.Include(d => d.Department).Include(d => d.Position).Include(d => d.DoctorRoom).Where(d=>d.IsDeleted==false).ToListAsync())
             {
                 var userDto = new DoctorListItemDto
                 {
@@ -275,7 +281,7 @@ public class DoctorService : IDoctorService
     public async Task UpdateByAdminAsync(string id,DoctorUpdateByAdminDto dto)
     {
         if (string.IsNullOrWhiteSpace(id)) throw new ArgumentIsNullException();
-        var user = await _userManager.FindByIdAsync(id);
+        var user = await _userManager.Users.Include(d=>d.DoctorRoom).FirstOrDefaultAsync(d=>d.Id==id);
         if (user == null) throw new AppUserNotFoundException<Adminstrator>();
 
 
@@ -355,6 +361,70 @@ public class DoctorService : IDoctorService
         user.RefreshTokenExpiresDate = null;
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new LogoutFaileException<Doctor>();
+    }
+
+    public async Task AddDoctorRoom(AddDoctorRoomDto dto)
+    {
+        var room = await _doctorRoomRepository.GetByIdAsync(dto.RoomId);
+        if (room is null) throw new NotFoundException<DoctorRoom>();
+        if (room.IsDeleted==true) throw new NotFoundException<DoctorRoom>();
+        if (room.DoctorRoomStatus==DoctorRoomStatus.Occupied || room.DoctorRoomStatus==DoctorRoomStatus.OutOfService)
+            throw new DoctorRoomIsNotAvailableException();
+
+        var user = await _userManager.FindByIdAsync(dto.Id);
+        if (user is null) throw new AppUserNotFoundException<Patient>();
+
+
+        if (user.DoctorRoomId != null) throw new DoctorHavAlreadyRoomException();
+
+        if (user.DepartmentId != room.DepartmentId) throw new DepartmentIdsDifferentException();
+
+        room.Doctor = user;
+
+        room.DoctorRoomStatus = DoctorRoomStatus.Occupied;
+
+        await _doctorRoomRepository.SaveAsync();
+    }
+
+    public async Task<DoctorDetailItemDto> GetById(string id, bool takeAll)
+    {
+        if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
+        if (takeAll)
+        {
+            var user = await _userManager.Users.Include(d => d.Department).Include(d => d.Position).Include(d => d.DoctorRoom).SingleOrDefaultAsync(d => d.Id == id);
+            if (user is null) throw new AppUserNotFoundException<Doctor>();
+            var userDto = new DoctorDetailItemDto
+            {
+                Name = user.Name,
+                Surname = user.Surname,
+                ImageUrl = user.ImageUrl,
+                UserName = user.UserName,
+                IsDeleted = user.IsDeleted,
+                Roles = await _userManager.GetRolesAsync(user),
+                DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
+                Department = _mapper.Map<DepartmentInfoDto>(user.Department),
+                Position = _mapper.Map<PositionInfoDto>(user.Position)
+            };
+            return userDto;
+        }
+        else
+        {
+            var user = await _userManager.Users.Include(d => d.Department).Include(d => d.Position).Include(d => d.DoctorRoom).Where(d=>d.IsDeleted==false).SingleOrDefaultAsync(d => d.Id == id);
+            if (user is null) throw new AppUserNotFoundException<Doctor>();
+            var userDto = new DoctorDetailItemDto
+            {
+                Name = user.Name,
+                Surname = user.Surname,
+                ImageUrl = user.ImageUrl,
+                UserName = user.UserName,
+                IsDeleted = user.IsDeleted,
+                Roles = await _userManager.GetRolesAsync(user),
+                DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
+                Department = _mapper.Map<DepartmentInfoDto>(user.Department),
+                Position = _mapper.Map<PositionInfoDto>(user.Position)
+            };
+            return userDto;
+        }
     }
 }
 

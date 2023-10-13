@@ -135,9 +135,12 @@ public class PatientRoomService : IPatientRoomService
             entity.ImageUrl = await _fileService.UploadAsync(dto.ImageFile, RootConstant.PatientRoomtImageRoot);
         }
 
-        var department =await _depRepo.GetByIdAsync(dto.DepartmentId);
-        if (department is null) throw new NotFoundException<Department>();
-        if (department.IsDeleted==true) throw new NotFoundException<Department>();
+        if (dto.DepartmentId != null)
+        {
+            var department = await _depRepo.GetSingleAsync(d => d.Id == dto.DepartmentId);
+            if (department is null) throw new NotFoundException<Department>();
+            if (department.IsDeleted==true) throw new NotFoundException<Department>();
+        }
 
         entity.Patients?.Clear();
 

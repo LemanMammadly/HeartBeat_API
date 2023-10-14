@@ -155,6 +155,54 @@ namespace SerenityHospital.DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Appoinment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("AppoinmentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("AppoinmentMoney")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(20.0m);
+
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Duration")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(20);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PatientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProblemDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Appoinments");
+                });
+
             modelBuilder.Entity("SerenityHospital.Core.Entities.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -515,6 +563,9 @@ namespace SerenityHospital.DAL.Migrations
                 {
                     b.HasBaseType("SerenityHospital.Core.Entities.AppUser");
 
+                    b.Property<int>("AvailabilityStatus")
+                        .HasColumnType("int");
+
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
@@ -682,6 +733,25 @@ namespace SerenityHospital.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Appoinment", b =>
+                {
+                    b.HasOne("SerenityHospital.Core.Entities.Doctor", "Doctor")
+                        .WithMany("Appoinments")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SerenityHospital.Core.Entities.Patient", "Patient")
+                        .WithMany("Appoinments")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("SerenityHospital.Core.Entities.Department", b =>
                 {
                     b.HasOne("SerenityHospital.Core.Entities.Service", "Service")
@@ -803,6 +873,16 @@ namespace SerenityHospital.DAL.Migrations
             modelBuilder.Entity("SerenityHospital.Core.Entities.Service", b =>
                 {
                     b.Navigation("Departments");
+                });
+
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Doctor", b =>
+                {
+                    b.Navigation("Appoinments");
+                });
+
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Patient", b =>
+                {
+                    b.Navigation("Appoinments");
                 });
 #pragma warning restore 612, 618
         }

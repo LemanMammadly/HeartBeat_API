@@ -9,6 +9,7 @@ public class Doctor:AppUser
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public WorkStatus Status { get; set; }
+    public DoctorAvailabilityStatus AvailabilityStatus { get; set; }
     public Position Position { get; set; }
     public int PositionId { get; set; }
     public Department Department { get; set; }
@@ -16,7 +17,10 @@ public class Doctor:AppUser
     public DoctorRoom? DoctorRoom { get; set; }
     public int? DoctorRoomId { get; set; }
     public bool IsDeleted { get; set; }
+    public ICollection<Appoinment> Appoinments { get; set; }
 }
+
+
 
 
 

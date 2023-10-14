@@ -8,5 +8,6 @@ public class Patient:AppUser
     public string Address { get; set; }
     public PatientRoom? PatientRoom { get; set; }
     public int? PatientRoomId { get; set; }
+    public ICollection<Appoinment> Appoinments { get; set; }
 }
 

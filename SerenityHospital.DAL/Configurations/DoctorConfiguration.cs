@@ -22,6 +22,8 @@ public class DoctorConfiguration : IEntityTypeConfiguration<Doctor>
         builder.Property(d => d.IsDeleted)
             .HasDefaultValue(false)
             .IsRequired();
+        builder.Property(d => d.AvailabilityStatus)
+            .IsRequired();
         builder.HasOne(d => d.Department)
             .WithMany(d => d.Doctors)
             .HasForeignKey(d => d.DepartmentId)

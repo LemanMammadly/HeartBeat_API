@@ -3,42 +3,36 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/DoctorService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/AdminstratorService.cs">
     <Files>
-      <File FileName="SerenityHospital.Core/Entities/DoctorRoom.cs" Line="11" Column="19" />
-      <File FileName="SerenityHospital.DAL/Configurations/DoctorRoomConfiguration.cs" Line="11" Column="40" />
-      <File FileName="SerenityHospital.Business/Services/Implements/DoctorRoomService.cs" Line="126" Column="2" />
-      <File FileName="SerenityHospital.Business/Dtos/DoctorRoom/DoctorRoomUpdateDto.cs" Line="23" Column="39" />
-      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" Line="294" Column="45" />
-      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorUpdateByAdminDto.cs" Line="25" Column="1" />
-      <File FileName="SerenityHospital.Core/Entities/Doctor.cs" Line="16" Column="1" />
-      <File FileName="SerenityHospital.DAL/Configurations/DoctorConfiguration.cs" Line="1" Column="1" />
+      <File FileName="SerenityHospital.API/Controllers/PatientAuthsController.cs" Line="35" Column="48" />
+      <File FileName="SerenityHospital.Business/Dtos/PatientDtos/PatientDetailItemDto.cs" Line="16" Column="12" />
+      <File FileName="SerenityHospital.Business/Dtos/PatientDtos/PatientListItemDto.cs" Line="6" Column="33" />
+      <File FileName="SerenityHospital.Business/Services/Interfaces/IPatientService.cs" Line="14" Column="51" />
+      <File FileName="SerenityHospital.Business/Profiles/PatientMappingProfile.cs" Line="13" Column="48" />
+      <File FileName="SerenityHospital.Business/Services/Implements/PatientService.cs" Line="177" Column="1" />
+      <File FileName="SerenityHospital.Business/Services/Implements/NurseService.cs" Line="155" Column="6" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" Line="391" Column="75" />
+      <File FileName="SerenityHospital.Business/Services/Implements/AdminstratorService.cs" Line="355" Column="74" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.API">
+            <Node name="SerenityHospital.API" expanded="True">
               <Node name="Controllers" expanded="True" />
             </Node>
-            <Node name="SerenityHospital.Business">
+            <Node name="SerenityHospital.Business" expanded="True">
               <Node name="Dtos" expanded="True">
-                <Node name="DoctorDtos" expanded="True" />
-                <Node name="DoctorRoom" expanded="True" />
+                <Node name="PatientDtos" expanded="True" />
               </Node>
-              <Node name="Exceptions" expanded="True">
-                <Node name="Doctors" expanded="True" />
-              </Node>
+              <Node name="Profiles" expanded="True" />
               <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True">
-                  <Node name="DoctorService.cs" selected="True" />
-                </Node>
+                <Node name="Implements" expanded="True" />
+                <Node name="Interfaces" expanded="True" />
               </Node>
             </Node>
-            <Node name="SerenityHospital.Core">
-              <Node name="Entities" expanded="True" />
-            </Node>
-            <Node name="SerenityHospital.DAL">
+            <Node name="SerenityHospital.DAL" expanded="True">
               <Node name="Configurations" expanded="True" />
             </Node>
           </Node>

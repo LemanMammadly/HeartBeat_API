@@ -63,5 +63,17 @@ public class AppoinmentService : IAppoinmentService
         await _repo.CreateAsync(appoinment);
         await _repo.SaveAsync();
     }
+
+    public async Task<ICollection<AppoinmentListItemDto>> GetAllAsync(bool takeAll)
+    {
+       if(takeAll)
+       {
+            return _mapper.Map<ICollection<AppoinmentListItemDto>>(_repo.GetAll("Doctor","Patient", "Doctor.Position", "Doctor.Department"));
+       }
+       else
+       {
+            return _mapper.Map<ICollection<AppoinmentListItemDto>>(_repo.FindAll(a => a.IsDeleted == false,"Doctor", "Patient", "Doctor.Position", "Doctor.Department"));
+       }
+    }
 }
 

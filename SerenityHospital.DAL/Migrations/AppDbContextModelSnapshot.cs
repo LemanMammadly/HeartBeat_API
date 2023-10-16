@@ -183,7 +183,6 @@ namespace SerenityHospital.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PatientId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProblemDesc")
@@ -742,8 +741,7 @@ namespace SerenityHospital.DAL.Migrations
                     b.HasOne("SerenityHospital.Core.Entities.Patient", "Patient")
                         .WithMany("Appoinments")
                         .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Doctor");
 

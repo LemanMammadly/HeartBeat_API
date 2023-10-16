@@ -4,28 +4,32 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.DAL/Configurations/AppoinmentConfiguration.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.API/Program.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" Line="360" Column="12" />
-      <File FileName="SerenityHospital.API/Program.cs" Line="143" Column="11" />
-      <File FileName="SerenityHospital.Core/Entities/Appoinment.cs" Line="19" Column="1" />
-      <File FileName="SerenityHospital.Core/Entities/Doctor.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.DAL/Configurations/AppoinmentConfiguration.cs" Line="12" Column="42" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/PatientService.cs" Line="191" Column="44" />
+      <File FileName="SerenityHospital.Business/Dtos/PatientDtos/PatientListItemDto.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/PatientDtos/PatientDetailItemDto.cs" />
+      <File FileName="SerenityHospital.API/Program.cs" Line="28" Column="64" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.API" expanded="True" />
+            <Node name="SerenityHospital.API" expanded="True">
+              <Node name="Program.cs" selected="True" />
+            </Node>
             <Node name="SerenityHospital.Business" expanded="True">
               <Node name="Services" expanded="True">
                 <Node name="Implements" expanded="True" />
               </Node>
             </Node>
-            <Node name="SerenityHospital.DAL">
-              <Node name="Configurations" expanded="True">
-                <Node name="AppoinmentConfiguration.cs" selected="True" />
-              </Node>
+            <Node name="SerenityHospital.Core" expanded="True">
+              <Node name="Entities" expanded="True" />
+              <Node name="Enums" expanded="True" />
+            </Node>
+            <Node name="SerenityHospital.DAL" expanded="True">
+              <Node name="Configurations" expanded="True" />
             </Node>
           </Node>
         </State>

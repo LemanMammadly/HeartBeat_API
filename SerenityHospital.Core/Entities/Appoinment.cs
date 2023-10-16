@@ -7,8 +7,8 @@ public class Appoinment:BaseEntity
 {
     public Doctor? Doctor { get; set; }
     public string? DoctorId { get; set; }
-    public Patient Patient { get; set; }
-    public string PatientId { get; set; }
+    public Patient? Patient { get; set; }
+    public string? PatientId { get; set; }
     public string ProblemDesc { get; set; }
     public DateTime AppoinmentDate { get; set; }
     public int Duration { get; set; }

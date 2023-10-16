@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SerenityHospital.Business.Constants;
+using SerenityHospital.Business.Dtos.AppoinmentDtos;
 using SerenityHospital.Business.Dtos.PatientDtos;
 using SerenityHospital.Business.Dtos.PatientRoomDtos;
 using SerenityHospital.Business.Dtos.RoleDtos;
@@ -12,6 +13,7 @@ using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Images;
 using SerenityHospital.Business.Exceptions.PatientRooms;
+using SerenityHospital.Business.Exceptions.Patients;
 using SerenityHospital.Business.Exceptions.Roles;
 using SerenityHospital.Business.Exceptions.Tokens;
 using SerenityHospital.Business.Extensions;
@@ -131,12 +133,15 @@ public class PatientService : IPatientService
     public async Task DeleteAsync(string id)
     {
         if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
-        var user = await _userManager.FindByIdAsync(id);
+        var user = await _userManager.Users.Include(p=>p.Appoinments).Include(p=>p.PatientRoom).SingleOrDefaultAsync(p=>p.Id==id);
         if (user is null) throw new AppUserNotFoundException<Patient>();
         if(user.ImageUrl != null)
         {
             _fileService.Delete(user.ImageUrl);
         }
+
+        if (user.Appoinments.Count() > 0) throw new PatientHasAppoinmentException();
+
         var result = await _userManager.DeleteAsync(user);
 
         if (!result.Succeeded)
@@ -154,7 +159,7 @@ public class PatientService : IPatientService
     {
         ICollection<PatientListItemDto> patients = new List<PatientListItemDto>();
 
-            foreach (var patient in await _userManager.Users.Include(p=>p.PatientRoom).ToListAsync())
+            foreach (var patient in await _userManager.Users.Include(p=>p.PatientRoom).Include(p=>p.Appoinments).ThenInclude(a=>a.Doctor).ToListAsync())
             {
                 var patientDto = new PatientListItemDto
                 {
@@ -168,7 +173,8 @@ public class PatientService : IPatientService
                     Gender = patient.Gender,
                     BloodType = patient.BloodType,
                     Roles = await _userManager.GetRolesAsync(patient),
-                    PatientRoom = _mapper.Map<PatientRoomInfoDto>(patient.PatientRoom)
+                    PatientRoom = _mapper.Map<PatientRoomInfoDto>(patient.PatientRoom),
+                    Appoinments=_mapper.Map<ICollection<AppoinmentListItemDto>>(patient.Appoinments)
                 };
                 patients.Add(patientDto);
             }
@@ -178,7 +184,7 @@ public class PatientService : IPatientService
     public async Task<PatientDetailItemDto> GetById(string id)
     {
         if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
-        var user = await _userManager.Users.Include(p => p.PatientRoom).SingleOrDefaultAsync(p => p.Id == id);
+        var user = await _userManager.Users.Include(p => p.PatientRoom).Include(p=>p.Appoinments).ThenInclude(a=>a.Doctor).SingleOrDefaultAsync(p => p.Id == id);
         if (user is null) throw new AppUserNotFoundException<Patient>();
         var userDto = new PatientDetailItemDto
         {
@@ -192,7 +198,8 @@ public class PatientService : IPatientService
             Gender = user.Gender,
             BloodType = user.BloodType,
             Roles = await _userManager.GetRolesAsync(user),
-            PatientRoom = _mapper.Map<PatientRoomInfoDto>(user.PatientRoom)
+            PatientRoom = _mapper.Map<PatientRoomInfoDto>(user.PatientRoom),
+            Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments)
         };
         return userDto;
     }

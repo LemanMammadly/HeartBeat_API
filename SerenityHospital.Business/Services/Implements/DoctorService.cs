@@ -172,6 +172,12 @@ public class DoctorService : IDoctorService
     public async Task<TokenResponseDto> LoginAsync(DoctorLoginDto dto)
     {
         var doctor = await _userManager.FindByNameAsync(dto.UserName);
+
+        if (doctor.IsDeleted)
+        {
+            throw new LoginFailedException<Doctor>("Username or password is wronfsfsdg");
+        };
+
         if (doctor == null) throw new LoginFailedException<Doctor>("Username or password is wrong");
 
         var result = await _userManager.CheckPasswordAsync(doctor, dto.Password);

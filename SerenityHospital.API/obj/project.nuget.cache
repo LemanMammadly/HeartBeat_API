@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KfZlRZsYwEYM5qT7MpPpvtF+9o7Zz9UdBX4suFSmtlUC+PUYF3KvN3NBUb67nsaRtvoAPni+9OjlR8LGZUM9hw==",
+  "dgSpecHash": "WEq+LC7/hNTfGlMZemB6gEjzU0TSv4CgdsgTpG4trv6BtmQUhmWL92edhCb7SRNl6W+b4CgEGHVs4kyIbJE31g==",
   "success": true,
   "projectFilePath": "/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/SerenityHospital.API.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,11 @@
     "/Users/imac/.nuget/packages/fluentvalidation/11.7.1/fluentvalidation.11.7.1.nupkg.sha512",
     "/Users/imac/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
     "/Users/imac/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.7.1/fluentvalidation.dependencyinjectionextensions.11.7.1.nupkg.sha512",
+    "/Users/imac/.nuget/packages/hangfire/1.8.5/hangfire.1.8.5.nupkg.sha512",
+    "/Users/imac/.nuget/packages/hangfire.aspnetcore/1.8.5/hangfire.aspnetcore.1.8.5.nupkg.sha512",
+    "/Users/imac/.nuget/packages/hangfire.core/1.8.5/hangfire.core.1.8.5.nupkg.sha512",
+    "/Users/imac/.nuget/packages/hangfire.netcore/1.8.5/hangfire.netcore.1.8.5.nupkg.sha512",
+    "/Users/imac/.nuget/packages/hangfire.sqlserver/1.8.5/hangfire.sqlserver.1.8.5.nupkg.sha512",
     "/Users/imac/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
     "/Users/imac/.nuget/packages/microsoft.aspnetcore.authentication/2.2.0/microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "/Users/imac/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.2.0/microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",

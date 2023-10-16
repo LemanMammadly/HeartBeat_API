@@ -58,9 +58,27 @@ public class AppoinmentService : IAppoinmentService
         appoinment.PatientId = userId;
         appoinment.Doctor = doctor;
         appoinment.Status = AppoinmentStatus.Pending;
-        appoinment.Doctor.AvailabilityStatus = DoctorAvailabilityStatus.Busy;
 
         await _repo.CreateAsync(appoinment);
+        await _repo.SaveAsync();
+
+        var now = DateTime.Now;
+        var appointmentStart = dto.AppoinmentDate;
+        var appointmentEnd = dto.AppoinmentDate.AddMinutes(20);
+
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        if (id <= 0) throw new NegativeIdException<Appoinment>();
+        var appoinment = await _repo.GetByIdAsync(id);
+        if (appoinment is null) throw new NotFoundException<Appoinment>();
+
+        var now = DateTime.Now;
+
+        if (now >= appoinment.AppoinmentDate && now <= appoinment.AppoinmentDate.AddMinutes(appoinment.Duration)) throw new AppoinmentCouldntBeDeleteException();
+
+        _repo.Delete(appoinment);
         await _repo.SaveAsync();
     }
 
@@ -91,6 +109,31 @@ public class AppoinmentService : IAppoinmentService
             if (entity is null) throw new NotFoundException<Appoinment>();
         }
         return _mapper.Map<AppoinmentDetailItemDto>(entity);
+    }
+
+    public async Task ReverteSoftDeleteAsync(int id)
+    {
+        if (id <= 0) throw new NegativeIdException<Appoinment>();
+        var appoinment = await _repo.GetByIdAsync(id);
+        if (appoinment is null) throw new NotFoundException<Appoinment>();
+
+        _repo.RevertSoftDelete(appoinment);
+        await _repo.SaveAsync();
+    }
+
+    public async Task SoftDeleteAsync(int id)
+    {
+        if (id <= 0) throw new NegativeIdException<Appoinment>();
+        var appoinment = await _repo.GetByIdAsync(id);
+        if (appoinment is null) throw new NotFoundException<Appoinment>();
+
+        var now = DateTime.Now;
+
+        if (now >= appoinment.AppoinmentDate && now <= appoinment.AppoinmentDate.AddMinutes(appoinment.Duration))
+            throw new AppoinmentCouldntBeDeleteException();
+
+        _repo.SoftDelete(appoinment);
+        await _repo.SaveAsync();
     }
 
     public async Task UpdateAsync(int id,AppoinmentUpdateDto dto)

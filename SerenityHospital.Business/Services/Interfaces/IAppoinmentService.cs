@@ -8,5 +8,8 @@ public interface IAppoinmentService
     Task<AppoinmentDetailItemDto> GetByIdAsync(int id, bool takeAll);
     Task CreateAsync(AppoinmentCreateDto dto);
     Task UpdateAsync(int id,AppoinmentUpdateDto dto);
+    Task DeleteAsync(int id);
+    Task SoftDeleteAsync(int id);
+    Task ReverteSoftDeleteAsync(int id);
 }
 

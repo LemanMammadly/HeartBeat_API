@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Numerics;
+using System.Security.Claims;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -202,6 +203,12 @@ public class NurseService : INurseService
     public async Task<TokenResponseDto> LoginAsync(NurseLoginDto dto)
     {
         var user = await _userManager.FindByNameAsync(dto.UserName);
+
+        if (user.IsDeleted)
+        {
+            throw new LoginFailedException<Nurse>("This user is delete");
+        };
+
         if (user is null) throw new LoginFailedException<Nurse>("Username or password is wrong");
 
         var result = await _userManager.CheckPasswordAsync(user, dto.Password);

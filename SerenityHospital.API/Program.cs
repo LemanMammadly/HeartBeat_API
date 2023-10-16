@@ -71,7 +71,7 @@ builder.Services.AddStripeInfrastructure(builder.Configuration);
 
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
-StripeConfiguration.ApiKey = "sk_test_51O1U3aC9ZRylyEqUPlDQmzbxVp2V1VUqgXDnLGs5jizrjQ8zKwVorDMA4ZqVWxVkfU5XciZnFXfSXQrVMAeQ2Rwr00Sl1PQxIO";
+StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
 
 var options = new PaymentIntentCreateOptions
 {

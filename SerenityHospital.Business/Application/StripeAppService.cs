@@ -28,7 +28,6 @@ public class StripeAppService : IStripeAppService
     /// <returns>Stripe Customer</returns>
     public async Task<StripeCustomer> AddStripeCustomerAsync(AddStripeCustomer customer, CancellationToken ct)
     {
-        // Set Stripe Token options based on customer data
         TokenCreateOptions tokenOptions = new TokenCreateOptions
         {
             Card = new TokenCardOptions
@@ -41,10 +40,8 @@ public class StripeAppService : IStripeAppService
             }
         };
 
-        // Create new Stripe Token
         Token stripeToken = await _tokenService.CreateAsync(tokenOptions, null, ct);
 
-        // Set Customer options using
         CustomerCreateOptions customerOptions = new CustomerCreateOptions
         {
             Name = customer.Name,
@@ -52,11 +49,10 @@ public class StripeAppService : IStripeAppService
             Source = stripeToken.Id
         };
 
-        // Create customer at Stripe
         Customer createdCustomer = await _customerService.CreateAsync(customerOptions, null, ct);
 
-        // Return the created customer at stripe
         return new StripeCustomer(createdCustomer.Name, createdCustomer.Email, createdCustomer.Id);
+        //Set Customer options - We need to create the customer first as we will need the id
     }
 
     /// <summary>

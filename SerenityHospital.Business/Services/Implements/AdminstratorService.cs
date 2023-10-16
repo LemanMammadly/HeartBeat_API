@@ -141,6 +141,12 @@ public class AdminstratorService : IAdminstratorService
     public async Task<TokenResponseDto> LoginAsync(LoginAdminstratorDto dto)
     {
         var adminstrator = await userManager.FindByNameAsync(dto.UserName);
+
+        if (adminstrator.IsDeleted)
+        {
+            throw new LoginFailedException<Adminstrator>("This user is delete");
+        };
+
         if (adminstrator == null) throw new LoginFailedException<Adminstrator>("Username or password is wrong");
 
         var result = await userManager.CheckPasswordAsync(adminstrator, dto.Password);

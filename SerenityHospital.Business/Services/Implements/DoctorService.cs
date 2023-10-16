@@ -175,7 +175,7 @@ public class DoctorService : IDoctorService
 
         if (doctor.IsDeleted)
         {
-            throw new LoginFailedException<Doctor>("Username or password is wronfsfsdg");
+            throw new LoginFailedException<Doctor>("This user is delete");
         };
 
         if (doctor == null) throw new LoginFailedException<Doctor>("Username or password is wrong");

@@ -5,8 +5,8 @@ namespace SerenityHospital.Core.Entities;
 
 public class Appoinment:BaseEntity
 {
-    public Doctor Doctor { get; set; }
-    public string DoctorId { get; set; }
+    public Doctor? Doctor { get; set; }
+    public string? DoctorId { get; set; }
     public Patient Patient { get; set; }
     public string PatientId { get; set; }
     public string ProblemDesc { get; set; }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "yYoQiHvD8WnZQPeWWsaNgIru0R0wTvNZ+N2edzVdCJc=",
+  "Hash": "LIeiGafev8nOTHdlmagZ3bfsF7JQdsSgNb4eGYx7e2o=",
   "Source": "SerenityHospital.API",
   "BasePath": "_content/SerenityHospital.API",
   "Mode": "Default",
@@ -457,23 +457,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/imgs/doctor/651e1dd7-01a4-419c-bb3b-5c1acc6eaee2.png"
-    },
-    {
-      "Identity": "/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/wwwroot/imgs/doctor/6bcafb06-bac2-48f9-abae-12f90e9bd868.png",
-      "SourceId": "SerenityHospital.API",
-      "SourceType": "Discovered",
-      "ContentRoot": "/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/wwwroot/",
-      "BasePath": "_content/SerenityHospital.API",
-      "RelativePath": "imgs/doctor/6bcafb06-bac2-48f9-abae-12f90e9bd868.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/imgs/doctor/6bcafb06-bac2-48f9-abae-12f90e9bd868.png"
     },
     {
       "Identity": "/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/wwwroot/imgs/doctor/6e431b54-8d6e-4e3f-b515-8f76a9ff1800.png",

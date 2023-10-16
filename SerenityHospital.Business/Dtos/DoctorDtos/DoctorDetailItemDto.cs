@@ -1,4 +1,5 @@
-﻿using SerenityHospital.Business.Dtos.DepartmentDtos;
+﻿using SerenityHospital.Business.Dtos.AppoinmentDtos;
+using SerenityHospital.Business.Dtos.DepartmentDtos;
 using SerenityHospital.Business.Dtos.DoctorRoom;
 using SerenityHospital.Business.Dtos.PositionDtos;
 using SerenityHospital.Core.Enums;
@@ -18,6 +19,8 @@ public record DoctorDetailItemDto
     public DoctorRoomDetailItemDto DoctorRoom { get; set; }
     public DoctorAvailabilityStatus AvailabilityStatus { get; set; }
     public IEnumerable<string> Roles { get; set; }
+    public ICollection<AppoinmentListItemDto> Appoinments { get; set; }
 }
+
 
 

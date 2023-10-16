@@ -11,8 +11,7 @@ public class AppoinmentConfiguration : IEntityTypeConfiguration<Appoinment>
         builder.HasOne(a => a.Doctor)
             .WithMany(d => d.Appoinments)
             .HasForeignKey(a => a.DoctorId)
-            .OnDelete(DeleteBehavior.NoAction)
-            .IsRequired();
+            .OnDelete(DeleteBehavior.NoAction);
         builder.HasOne(a => a.Patient)
             .WithMany(p => p.Appoinments)
             .HasForeignKey(a => a.PatientId)

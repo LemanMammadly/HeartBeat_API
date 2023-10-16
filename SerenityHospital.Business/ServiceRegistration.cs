@@ -8,6 +8,8 @@ using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Implements;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
+using SerenityHospital.Business.Application;
+using SerenityHospital.Business.Contracts;
 
 namespace SerenityHospital.Business;
 

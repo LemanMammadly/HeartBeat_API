@@ -61,6 +61,10 @@
             "Microsoft.Extensions.Hosting.Abstractions": {
               "target": "Package",
               "version": "[7.0.0, )"
+            },
+            "Stripe.net": {
+              "target": "Package",
+              "version": "[42.9.0, )"
             }
           },
           "imports": [

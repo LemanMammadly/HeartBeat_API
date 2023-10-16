@@ -1,39 +1,37 @@
 ﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/AppoinmentService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.API/Program.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" Line="424" Column="62" />
-      <File FileName="SerenityHospital.Business/Services/Implements/AppoinmentService.cs" Line="67" Column="1" />
-      <File FileName="SerenityHospital.API/Controllers/AppoinmentsController.cs" Line="25" Column="58" />
-      <File FileName="SerenityHospital.API/Program.cs" Line="125" Column="1" />
-      <File FileName="SerenityHospital.Core/Enums/DoctorAvailabilityStatus.cs" Line="1" Column="1" />
-      <File FileName="SerenityHospital.Business/Dtos/AppoinmentDtos/AppoinmentCreateDto.cs" Line="44" Column="2" />
+      <File FileName="SerenityHospital.Business/Services/Interfaces/IStripeAppService.cs" Line="9" Column="2" />
+      <File FileName="SerenityHospital.Business/Services/Implements/StripeAppService.cs" Line="32" Column="22" />
+      <File FileName="SerenityHospital.API/Controllers/StripesController.cs" Line="38" Column="22" />
+      <File FileName="SerenityHospital.Business/ServiceRegistration.cs" Line="18" Column="68" />
+      <File FileName="SerenityHospital.API/appsettings.json" Line="18" Column="130" />
+      <File FileName="SerenityHospital.API/StripeInfrastructure.cs" Line="20" Column="2" />
+      <File FileName="SerenityHospital.API/Program.cs" Line="62" Column="15" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.API" expanded="True" />
-            <Node name="SerenityHospital.Business" expanded="True">
-              <Node name="Dtos" expanded="True">
-                <Node name="AppoinmentDtos" expanded="True" />
-              </Node>
-              <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True" />
-              </Node>
+            <Node name="SerenityHospital.API">
+              <Node name="Controllers" expanded="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
-            <Node name="SerenityHospital.Core" expanded="True">
-              <Node name="Enums" expanded="True" />
+            <Node name="SerenityHospital.Business">
+              <Node name="Application" expanded="True" />
+              <Node name="Contracts" expanded="True" />
+              <Node name="Services" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

@@ -20,6 +20,7 @@ using SerenityHospital.Business.Services.Interfaces;
 using System.Security.Principal;
 using SerenityHospital.API;
 using Microsoft.Extensions.Options;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,6 +64,23 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
+
+
+builder.Services.AddStripeInfrastructure(builder.Configuration);
+
+// Set your secret key. Remember to switch to your live secret key in production.
+// See your keys here: https://dashboard.stripe.com/apikeys
+StripeConfiguration.ApiKey = "sk_test_51O1U3aC9ZRylyEqUPlDQmzbxVp2V1VUqgXDnLGs5jizrjQ8zKwVorDMA4ZqVWxVkfU5XciZnFXfSXQrVMAeQ2Rwr00Sl1PQxIO";
+
+var options = new PaymentIntentCreateOptions
+{
+    Amount = 500,
+    Currency = "gbp",
+    PaymentMethod = "pm_card_visa",
+};
+var service = new PaymentIntentService();
+service.Create(options);
+
 
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {

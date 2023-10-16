@@ -75,5 +75,49 @@ public class AppoinmentService : IAppoinmentService
             return _mapper.Map<ICollection<AppoinmentListItemDto>>(_repo.FindAll(a => a.IsDeleted == false,"Doctor", "Patient", "Doctor.Position", "Doctor.Department"));
        }
     }
+
+    public async Task<AppoinmentDetailItemDto> GetByIdAsync(int id, bool takeAll)
+    {
+        if (id <= 0) throw new NegativeIdException<Appoinment>();
+        Appoinment? entity;
+        if(takeAll)
+        {
+            entity = await _repo.GetByIdAsync(id, "Doctor", "Patient", "Doctor.Position", "Doctor.Department");
+            if (entity is null) throw new NotFoundException<Appoinment>();
+        }
+        else
+        {
+            entity = await _repo.GetSingleAsync(a => a.IsDeleted == false && a.Id == id, "Doctor", "Patient", "Doctor.Position", "Doctor.Department");
+            if (entity is null) throw new NotFoundException<Appoinment>();
+        }
+        return _mapper.Map<AppoinmentDetailItemDto>(entity);
+    }
+
+    public async Task UpdateAsync(int id,AppoinmentUpdateDto dto)
+    {
+        if (id <= 0) throw new NegativeIdException<Appoinment>();
+        var appoinment = await _repo.GetByIdAsync(id);
+        if (appoinment is null) throw new NotFoundException<Appoinment>();
+        if (appoinment.IsDeleted == true) throw new NotFoundException<Appoinment>();
+
+        var doctor = await _docUserManager.FindByIdAsync(dto.DoctorId);
+        if (doctor is null) throw new NotFoundException<Doctor>();
+        if (doctor.IsDeleted==true) throw new NotFoundException<Doctor>();
+
+        var patient = await _patUserManager.FindByIdAsync(dto.PatientId);
+        if (patient is null) throw new NotFoundException<Patient>();
+
+        var appoinmentStart = dto.AppoinmentDate;
+        var appoinmentEnd = dto.AppoinmentDate.AddMinutes(dto.Duration);
+
+        var conflict = await _repo.IsExistAsync(a => a.DoctorId == dto.DoctorId && ((dto.AppoinmentDate <= a.AppoinmentDate.AddMinutes(a.Duration) && dto.AppoinmentDate >= a.AppoinmentDate) || (dto.AppoinmentDate.AddMinutes(dto.Duration) >= a.AppoinmentDate)) && a.Id != id);
+        if (conflict) throw new ConflictingAppointmentException();
+
+        var conflictPatient = await _repo.IsExistAsync(a => a.DoctorId != dto.DoctorId && a.PatientId == userId && ((dto.AppoinmentDate <= a.AppoinmentDate.AddMinutes(a.Duration) && dto.AppoinmentDate >= a.AppoinmentDate) || (dto.AppoinmentDate.AddMinutes(dto.Duration)) >= a.AppoinmentDate) && a.Id != id);
+        if (conflictPatient) throw new ConflictingAppointmentException();
+
+        _mapper.Map(dto, appoinment);
+        await _repo.SaveAsync();
+    }
 }
 

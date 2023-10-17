@@ -14,12 +14,14 @@ public record DoctorListItemDto
     public string? ImageUrl { get; set; }
     public DateTime? EndDate { get; set; }
     public bool IsDeleted { get; set; }
+    public WorkStatus Status { get; set; }
     public PositionInfoDto Position { get; set; }
     public DepartmentInfoDto Department { get; set; }
     public DoctorRoomDetailItemDto DoctorRoom { get; set; }
     public DoctorAvailabilityStatus AvailabilityStatus { get; set; }
     public IEnumerable<string> Roles { get; set; }
     public ICollection<AppoinmentListItemDto> Appoinments { get; set; }
+    public ICollection<AppoinmentListItemDto> AppointmentsAsPatient { get; set; }
 }
 
 

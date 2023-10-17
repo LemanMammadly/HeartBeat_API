@@ -5,7 +5,8 @@ namespace SerenityHospital.Business.Dtos.AppoinmentDtos;
 public record AppoinmentUpdateDto
 {
     public string DoctorId { get; set; }
-    public string PatientId { get; set; }
+    public string? PatientId { get; set; }
+    public string? AppoinmentAsDoctorId { get; set; }
     public string ProblemDesc { get; set; }
     public DateTime AppoinmentDate { get; set; }
     public int Duration { get; set; }
@@ -21,11 +22,6 @@ public class AppoinmentUpdateDtoValidator:AbstractValidator<AppoinmentUpdateDto>
                 .WithMessage("DoctorId dont be null")
             .NotEmpty()
                  .WithMessage("DoctorId dont be null");
-        RuleFor(a => a.PatientId)
-            .NotNull()
-                .WithMessage("PatientId dont be null")
-            .NotEmpty()
-                 .WithMessage("PatientId dont be null");
         RuleFor(a => a.AppoinmentDate)
             .NotEmpty()
                 .WithMessage("AppoinmentDate dont be empty")

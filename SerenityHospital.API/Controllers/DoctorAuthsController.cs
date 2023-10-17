@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Dtos.DoctorDtos;
@@ -104,6 +105,13 @@ namespace SerenityHospital.API.Controllers
         {
             await _service.Logout();
             return NoContent();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Updater(string id)
+        {
+            await _service.DoctorStatusUpdater(id);
+            return Ok();
         }
     }
 }

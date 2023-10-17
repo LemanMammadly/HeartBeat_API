@@ -20,6 +20,7 @@ public interface IDoctorService
     Task ReverteSoftDeleteAsync(string id);
     Task DeleteAsync(string id);
     Task Logout();
+    Task DoctorStatusUpdater(string id);
 }
 
 

@@ -18,7 +18,9 @@ public class Doctor:AppUser
     public int? DoctorRoomId { get; set; }
     public bool IsDeleted { get; set; }
     public ICollection<Appoinment> Appoinments { get; set; }
+    public ICollection<Appoinment> AppointmentsAsPatient { get; set; }
 }
+
 
 
 

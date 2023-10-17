@@ -136,12 +136,14 @@ public class DoctorService : IDoctorService
                     ImageUrl = user.ImageUrl,
                     UserName = user.UserName,
                     IsDeleted = user.IsDeleted,
+                    Status=user.Status,
                     AvailabilityStatus=user.AvailabilityStatus,
                     Roles = await _userManager.GetRolesAsync(user),
                     DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
                     Department=_mapper.Map<DepartmentInfoDto>(user.Department),
                     Position=_mapper.Map<PositionInfoDto>(user.Position),
-                    Appoinments= _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments)
+                    Appoinments= _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
+                    //AppointmentsAsPatient= _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments.Where(a=>a.AppoinmentAsDoctorId==))
                 };
                 users.Add(userDto);
             }
@@ -157,11 +159,13 @@ public class DoctorService : IDoctorService
                     Surname = user.Surname,
                     ImageUrl = user.ImageUrl,
                     UserName = user.UserName,
+                    Status = user.Status,
                     AvailabilityStatus = user.AvailabilityStatus,
                     Roles = await _userManager.GetRolesAsync(user),
                     Department = _mapper.Map<DepartmentInfoDto>(user.Department),
                     Position = _mapper.Map<PositionInfoDto>(user.Position),
-                    Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments)
+                    Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
+                    AppointmentsAsPatient = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.AppointmentsAsPatient)
                 };
                 users.Add(userDto);
             }
@@ -172,11 +176,6 @@ public class DoctorService : IDoctorService
     public async Task<TokenResponseDto> LoginAsync(DoctorLoginDto dto)
     {
         var doctor = await _userManager.FindByNameAsync(dto.UserName);
-
-        if (doctor.IsDeleted)
-        {
-            throw new LoginFailedException<Doctor>("This user is delete");
-        };
 
         if (doctor == null) throw new LoginFailedException<Doctor>("Username or password is wrong");
 
@@ -450,6 +449,34 @@ public class DoctorService : IDoctorService
                 Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments)
             };
             return userDto;
+        }
+    }
+
+    public async Task DoctorStatusUpdater(string id)
+    {
+        if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
+        var doctor = await _userManager.FindByIdAsync(id);
+        if (doctor is null) throw new NotFoundException<Doctor>();
+
+        var currentDate = DateTime.Now;
+        var newStatus = DoctorAvailabilityStatus.Available;
+
+        foreach (var app in doctor.Appoinments)
+        {
+            if(currentDate>=app.AppoinmentDate && currentDate<=app.AppoinmentDate.Add(TimeSpan.FromMinutes(app.Duration)))
+            {
+                newStatus = DoctorAvailabilityStatus.Busy;
+                break;
+            }
+        }
+
+        doctor.AvailabilityStatus = newStatus;
+
+        var result = await _userManager.UpdateAsync(doctor);
+
+        if (!result.Succeeded)
+        {
+            throw new AppUserUpdateFailedException<Doctor>();
         }
     }
 }

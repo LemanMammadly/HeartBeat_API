@@ -21,6 +21,7 @@ using System.Security.Principal;
 using SerenityHospital.API;
 using Microsoft.Extensions.Options;
 using Stripe;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +66,15 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
+
+
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("Default")));
+
+builder.Services.AddHangfireServer();
 
 
 builder.Services.AddStripeInfrastructure(builder.Configuration);
@@ -131,6 +141,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseHangfireDashboard();
+app.MapHangfireDashboard();
+
+RecurringJob.AddOrUpdate<IDoctorService>(x => x.DoctorStatusUpdater("be79adb2-ecb0-4133-8a91-927ab27ba95e"), Cron.MinuteInterval(1));
 
 app.UseAuthentication();
 app.UseAuthorization();

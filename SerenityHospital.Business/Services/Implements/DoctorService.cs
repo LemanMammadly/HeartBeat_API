@@ -127,7 +127,7 @@ public class DoctorService : IDoctorService
         ICollection<DoctorListItemDto> users = new List<DoctorListItemDto>();
         if (takeAll)
         {
-            foreach (var user in await _userManager.Users.Include(d=>d.Department).Include(d=>d.Position).Include(d=>d.DoctorRoom).Include(d=>d.Appoinments).ThenInclude(a=>a.Patient).ToListAsync())
+            foreach (var user in await _userManager.Users.Include(d=>d.Department).Include(d=>d.AppointmentsAsPatient).Include(d=>d.Position).Include(d=>d.DoctorRoom).Include(d=>d.Appoinments).ThenInclude(a=>a.Patient).ToListAsync())
             {
                 var userDto = new DoctorListItemDto
                 {
@@ -136,14 +136,14 @@ public class DoctorService : IDoctorService
                     ImageUrl = user.ImageUrl,
                     UserName = user.UserName,
                     IsDeleted = user.IsDeleted,
-                    Status=user.Status,
-                    AvailabilityStatus=user.AvailabilityStatus,
+                    Status = user.Status,
+                    AvailabilityStatus = user.AvailabilityStatus,
                     Roles = await _userManager.GetRolesAsync(user),
                     DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
-                    Department=_mapper.Map<DepartmentInfoDto>(user.Department),
-                    Position=_mapper.Map<PositionInfoDto>(user.Position),
-                    Appoinments= _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
-                    //AppointmentsAsPatient= _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments.Where(a=>a.AppoinmentAsDoctorId==))
+                    Department = _mapper.Map<DepartmentInfoDto>(user.Department),
+                    Position = _mapper.Map<PositionInfoDto>(user.Position),
+                    Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
+                    AppointmentsAsPatient = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.AppointmentsAsPatient)
                 };
                 users.Add(userDto);
             }
@@ -151,7 +151,7 @@ public class DoctorService : IDoctorService
         }
         else
         {
-            foreach (var user in await _userManager.Users.Include(d => d.Department).Include(d => d.Position).Include(d => d.DoctorRoom).Include(d=>d.Appoinments).Where(d=>d.IsDeleted==false).ToListAsync())
+            foreach (var user in await _userManager.Users.Include(d => d.Department).Include(d => d.AppointmentsAsPatient).Include(d => d.Position).Include(d => d.DoctorRoom).Include(d=>d.Appoinments).Where(d=>d.IsDeleted==false).ToListAsync())
             {
                 var userDto = new DoctorListItemDto
                 {
@@ -421,7 +421,7 @@ public class DoctorService : IDoctorService
         if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
         if (takeAll)
         {
-            var user = await _userManager.Users.Include(d => d.Department).Include(d => d.Position).Include(d => d.DoctorRoom).Include(d=>d.Appoinments).ThenInclude(a=>a.Patient).SingleOrDefaultAsync(d => d.Id == id);
+            var user = await _userManager.Users.Include(d => d.Department).Include(d => d.AppointmentsAsPatient).Include(d => d.Position).Include(d => d.DoctorRoom).Include(d=>d.Appoinments).ThenInclude(a=>a.Patient).SingleOrDefaultAsync(d => d.Id == id);
             if (user is null) throw new AppUserNotFoundException<Doctor>();
             var userDto = new DoctorDetailItemDto
             {
@@ -435,13 +435,14 @@ public class DoctorService : IDoctorService
                 DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
                 Department = _mapper.Map<DepartmentInfoDto>(user.Department),
                 Position = _mapper.Map<PositionInfoDto>(user.Position),
-                Appoinments=_mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments)
+                Appoinments=_mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
+                AppointmentsAsPatient = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.AppointmentsAsPatient)
             };
             return userDto;
         }
         else
         {
-            var user = await _userManager.Users.Include(d => d.Department).Include(d => d.Position).Include(d => d.DoctorRoom).Include(d => d.Appoinments).ThenInclude(a => a.Patient).Where(d=>d.IsDeleted==false).SingleOrDefaultAsync(d => d.Id == id);
+            var user = await _userManager.Users.Include(d => d.Department).Include(d => d.AppointmentsAsPatient).Include(d => d.Position).Include(d => d.DoctorRoom).Include(d => d.Appoinments).ThenInclude(a => a.Patient).Where(d=>d.IsDeleted==false).SingleOrDefaultAsync(d => d.Id == id);
             if (user is null) throw new AppUserNotFoundException<Doctor>();
             var userDto = new DoctorDetailItemDto
             {
@@ -455,7 +456,8 @@ public class DoctorService : IDoctorService
                 DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
                 Department = _mapper.Map<DepartmentInfoDto>(user.Department),
                 Position = _mapper.Map<PositionInfoDto>(user.Position),
-                Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments)
+                Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
+                AppointmentsAsPatient = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.AppointmentsAsPatient)
             };
             return userDto;
         }

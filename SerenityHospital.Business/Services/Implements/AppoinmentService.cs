@@ -54,6 +54,13 @@ public class AppoinmentService : IAppoinmentService
         var appoinmentStart = dto.AppoinmentDate;
         var appoinmentEnd = dto.AppoinmentDate.AddMinutes(20);
 
+        var conflictDoc = await _repo.IsExistAsync(a => a.AppoinmentAsDoctorId == dto.DoctorId &&
+        (dto.AppoinmentDate <= a.AppoinmentDate.AddMinutes(a.Duration) &&
+            dto.AppoinmentDate >= a.AppoinmentDate));
+
+        if (conflictDoc)
+            throw new ConflictingAppointmentException();
+
         var conflict = await _repo.IsExistAsync(a => a.DoctorId == dto.DoctorId &&
             (dto.AppoinmentDate <= a.AppoinmentDate.AddMinutes(a.Duration) &&
             dto.AppoinmentDate >= a.AppoinmentDate));
@@ -216,6 +223,13 @@ public class AppoinmentService : IAppoinmentService
             var conflictAsDoctorPatient = await _repo.IsExistAsync(a => a.DoctorId != dto.DoctorId && a.AppoinmentAsDoctorId == dto.AppoinmentAsDoctorId && ((dto.AppoinmentDate <= a.AppoinmentDate.AddMinutes(a.Duration) && dto.AppoinmentDate >= a.AppoinmentDate) || (dto.AppoinmentDate.AddMinutes(dto.Duration)) >= a.AppoinmentDate) && a.Id != id);
             if (conflictAsDoctorPatient) throw new ConflictingAppointmentException();
         }
+
+        var conflictDoc = await _repo.IsExistAsync(a => a.AppoinmentAsDoctorId == dto.DoctorId &&
+        (dto.AppoinmentDate <= a.AppoinmentDate.AddMinutes(a.Duration) &&
+            dto.AppoinmentDate >= a.AppoinmentDate));
+
+        if (conflictDoc)
+            throw new ConflictingAppointmentException();
 
         var conflict = await _repo.IsExistAsync
             (a => a.DoctorId == dto.DoctorId &&

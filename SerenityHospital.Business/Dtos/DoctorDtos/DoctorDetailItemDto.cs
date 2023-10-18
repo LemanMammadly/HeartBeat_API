@@ -20,6 +20,7 @@ public record DoctorDetailItemDto
     public DoctorAvailabilityStatus AvailabilityStatus { get; set; }
     public IEnumerable<string> Roles { get; set; }
     public ICollection<AppoinmentListItemDto> Appoinments { get; set; }
+    public ICollection<AppoinmentListItemDto> AppointmentsAsPatient { get; set; }
 }
 
 

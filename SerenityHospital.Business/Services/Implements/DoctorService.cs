@@ -11,6 +11,7 @@ using SerenityHospital.Business.Dtos.DepartmentDtos;
 using SerenityHospital.Business.Dtos.DoctorDtos;
 using SerenityHospital.Business.Dtos.DoctorRoom;
 using SerenityHospital.Business.Dtos.PositionDtos;
+using SerenityHospital.Business.Dtos.RecipeDtos;
 using SerenityHospital.Business.Dtos.RoleDtos;
 using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.Exceptions.Common;
@@ -127,7 +128,7 @@ public class DoctorService : IDoctorService
         ICollection<DoctorListItemDto> users = new List<DoctorListItemDto>();
         if (takeAll)
         {
-            foreach (var user in await _userManager.Users.Include(d=>d.Department).Include(d=>d.AppointmentsAsPatient).Include(d=>d.Position).Include(d=>d.DoctorRoom).Include(d=>d.Appoinments).ThenInclude(a=>a.Patient).ToListAsync())
+            foreach (var user in await _userManager.Users.Include(d=>d.Department).Include(d=>d.AppointmentsAsPatient).Include(d=>d.Position).Include(d=>d.Recipes).Include(d=>d.DoctorRoom).Include(d=>d.Appoinments).ThenInclude(a=>a.Patient).ToListAsync())
             {
                 var userDto = new DoctorListItemDto
                 {
@@ -143,7 +144,8 @@ public class DoctorService : IDoctorService
                     Department = _mapper.Map<DepartmentInfoDto>(user.Department),
                     Position = _mapper.Map<PositionInfoDto>(user.Position),
                     Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
-                    AppointmentsAsPatient = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.AppointmentsAsPatient)
+                    AppointmentsAsPatient = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.AppointmentsAsPatient),
+                    Recipes=_mapper.Map<ICollection<RecipeListItemDto>>(user.Recipes)
                 };
                 users.Add(userDto);
             }
@@ -165,7 +167,8 @@ public class DoctorService : IDoctorService
                     Department = _mapper.Map<DepartmentInfoDto>(user.Department),
                     Position = _mapper.Map<PositionInfoDto>(user.Position),
                     Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
-                    AppointmentsAsPatient = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.AppointmentsAsPatient)
+                    AppointmentsAsPatient = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.AppointmentsAsPatient),
+                    Recipes = _mapper.Map<ICollection<RecipeListItemDto>>(user.Recipes)
                 };
                 users.Add(userDto);
             }
@@ -234,6 +237,8 @@ public class DoctorService : IDoctorService
                 if (app.AppoinmentDate >= DateTime.Now) throw new DoctorHasAppoinmentException();
             }
         }
+
+        if (doctor.Recipes.Count() > 0) throw new DoctorHasAppoinmentException();
 
         var result = await _userManager.UpdateAsync(doctor);
         if (!result.Succeeded)
@@ -369,6 +374,7 @@ public class DoctorService : IDoctorService
         }
 
         if (user.Appoinments.Count() > 0) throw new DoctorHasAppoinmentException();
+        if (user.Recipes.Count() > 0) throw new DoctorHasAppoinmentException();
 
         var result = await _userManager.DeleteAsync(user);
         if (!result.Succeeded)

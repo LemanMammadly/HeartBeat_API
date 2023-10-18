@@ -2,6 +2,7 @@
 using SerenityHospital.Business.Dtos.DepartmentDtos;
 using SerenityHospital.Business.Dtos.DoctorRoom;
 using SerenityHospital.Business.Dtos.PositionDtos;
+using SerenityHospital.Business.Dtos.RecipeDtos;
 using SerenityHospital.Core.Enums;
 
 namespace SerenityHospital.Business.Dtos.DoctorDtos;
@@ -21,6 +22,7 @@ public record DoctorDetailItemDto
     public IEnumerable<string> Roles { get; set; }
     public ICollection<AppoinmentListItemDto> Appoinments { get; set; }
     public ICollection<AppoinmentListItemDto> AppointmentsAsPatient { get; set; }
+    public ICollection<RecipeListItemDto> Recipes { get; set; }
 }
 
 

@@ -387,6 +387,44 @@ namespace SerenityHospital.DAL.Migrations
                     b.ToTable("Hospitals");
                 });
 
+            modelBuilder.Entity("SerenityHospital.Core.Entities.PatientHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PatientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("RecipeId")
+                        .IsUnique()
+                        .HasFilter("[RecipeId] IS NOT NULL");
+
+                    b.ToTable("PatientHistories");
+                });
+
             modelBuilder.Entity("SerenityHospital.Core.Entities.PatientRoom", b =>
                 {
                     b.Property<int>("Id")
@@ -448,6 +486,44 @@ namespace SerenityHospital.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Positions");
+                });
+
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Recipe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("AppoinmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RecipeDesc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppoinmentId")
+                        .IsUnique()
+                        .HasFilter("[AppoinmentId] IS NOT NULL");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Recipes");
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Service", b =>
@@ -780,6 +856,31 @@ namespace SerenityHospital.DAL.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("SerenityHospital.Core.Entities.PatientHistory", b =>
+                {
+                    b.HasOne("SerenityHospital.Core.Entities.Doctor", "Doctor")
+                        .WithMany("PatientHistories")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SerenityHospital.Core.Entities.Patient", "Patient")
+                        .WithMany("PatientHistories")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SerenityHospital.Core.Entities.Recipe", "Recipe")
+                        .WithOne("PatientHistory")
+                        .HasForeignKey("SerenityHospital.Core.Entities.PatientHistory", "RecipeId");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Recipe");
+                });
+
             modelBuilder.Entity("SerenityHospital.Core.Entities.PatientRoom", b =>
                 {
                     b.HasOne("SerenityHospital.Core.Entities.Department", "Department")
@@ -788,6 +889,30 @@ namespace SerenityHospital.DAL.Migrations
                         .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Recipe", b =>
+                {
+                    b.HasOne("SerenityHospital.Core.Entities.Appoinment", "Appoinment")
+                        .WithOne("Recipe")
+                        .HasForeignKey("SerenityHospital.Core.Entities.Recipe", "AppoinmentId");
+
+                    b.HasOne("SerenityHospital.Core.Entities.Doctor", "Doctor")
+                        .WithMany("Recipes")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("SerenityHospital.Core.Entities.Patient", "Patient")
+                        .WithMany("Recipes")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Appoinment");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Adminstrator", b =>
@@ -845,6 +970,12 @@ namespace SerenityHospital.DAL.Migrations
                     b.Navigation("PatientRoom");
                 });
 
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Appoinment", b =>
+                {
+                    b.Navigation("Recipe")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SerenityHospital.Core.Entities.Department", b =>
                 {
                     b.Navigation("DoctorRooms");
@@ -877,6 +1008,12 @@ namespace SerenityHospital.DAL.Migrations
                     b.Navigation("Doctors");
                 });
 
+            modelBuilder.Entity("SerenityHospital.Core.Entities.Recipe", b =>
+                {
+                    b.Navigation("PatientHistory")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SerenityHospital.Core.Entities.Service", b =>
                 {
                     b.Navigation("Departments");
@@ -887,11 +1024,19 @@ namespace SerenityHospital.DAL.Migrations
                     b.Navigation("Appoinments");
 
                     b.Navigation("AppointmentsAsPatient");
+
+                    b.Navigation("PatientHistories");
+
+                    b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Patient", b =>
                 {
                     b.Navigation("Appoinments");
+
+                    b.Navigation("PatientHistories");
+
+                    b.Navigation("Recipes");
                 });
 #pragma warning restore 612, 618
         }

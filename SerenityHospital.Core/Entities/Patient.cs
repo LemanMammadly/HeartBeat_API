@@ -9,5 +9,9 @@ public class Patient:AppUser
     public PatientRoom? PatientRoom { get; set; }
     public int? PatientRoomId { get; set; }
     public ICollection<Appoinment> Appoinments { get; set; }
+    public ICollection<Recipe> Recipes { get; set; }
+    public ICollection<PatientHistory> PatientHistories { get; set; }
 }
+
+
 

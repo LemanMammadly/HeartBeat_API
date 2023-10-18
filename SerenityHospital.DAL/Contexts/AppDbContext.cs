@@ -20,6 +20,8 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<Nurse> Nurses { get; set; }
     public DbSet<DoctorRoom> DoctorRooms { get; set; }
     public DbSet<Appoinment> Appoinments { get; set; }
+    public DbSet<Recipe> Recipes { get; set; }
+    public DbSet<PatientHistory> PatientHistories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

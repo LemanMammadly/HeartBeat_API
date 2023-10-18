@@ -10,6 +10,7 @@ public class PatientMappingProfile:Profile
     {
         CreateMap<PatientCreateDto, Patient>().ReverseMap();
         CreateMap<Patient, PatientListItemDto>().ReverseMap();
+        CreateMap<PatientHistory, PatientListItemDto>().ReverseMap();
         CreateMap<Patient, PatientInfoDto>().ReverseMap();
         CreateMap<Patient, PatientDetailItemDto>().ReverseMap();
         CreateMap<PatientUpdateDto, Patient>().ReverseMap();

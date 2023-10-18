@@ -1,5 +1,6 @@
 ﻿using SerenityHospital.Business.Dtos.DoctorDtos;
 using SerenityHospital.Business.Dtos.PatientDtos;
+using SerenityHospital.Business.Dtos.RecipeDtos;
 using SerenityHospital.Core.Enums;
 
 namespace SerenityHospital.Business.Dtos.AppoinmentDtos;
@@ -16,6 +17,8 @@ public record AppoinmentListItemDto
     public AppoinmentStatus Status { get; set; }
     public decimal AppoinmentMoney { get; set; }
     public bool IsDeleted { get; set; }
+    public RecipeDetailItemDto Recipe { get; set; }
 }
+
 
 

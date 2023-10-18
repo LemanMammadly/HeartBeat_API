@@ -12,6 +12,7 @@ public class AppoinmentMappingProfile:Profile
         CreateMap<AppoinmentUpdateDto, Appoinment>().ReverseMap();
         CreateMap<Appoinment, AppoinmentListItemDto>().ReverseMap();
         CreateMap<Appoinment, AppoinmentDetailItemDto>().ReverseMap();
+        CreateMap<Appoinment, AppoinmentInfoDto>().ReverseMap();
     }
 }
 

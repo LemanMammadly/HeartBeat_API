@@ -17,12 +17,13 @@ public class AppoinmentService : IAppoinmentService
 {
     readonly UserManager<Patient> _patUserManager;
     readonly UserManager<Doctor> _docUserManager;
+    readonly IPatientHistoryRepository _patientHistoryRepository;
     readonly IHttpContextAccessor _context;
     readonly string? userId;
     readonly IAppoinmentRepository _repo;
     readonly IMapper _mapper;
 
-    public AppoinmentService(IHttpContextAccessor context, UserManager<Patient> userManager, IAppoinmentRepository repo, UserManager<Doctor> docUserManager, IMapper mapper)
+    public AppoinmentService(IHttpContextAccessor context, UserManager<Patient> userManager, IAppoinmentRepository repo, UserManager<Doctor> docUserManager, IMapper mapper, IPatientHistoryRepository patientHistoryRepository)
     {
         _repo = repo;
         _context = context;
@@ -30,6 +31,7 @@ public class AppoinmentService : IAppoinmentService
         _patUserManager = userManager;
         _docUserManager = docUserManager;
         _mapper = mapper;
+        _patientHistoryRepository = patientHistoryRepository;
     }
 
     public async Task CreateAsync(AppoinmentCreateDto dto)
@@ -104,6 +106,19 @@ public class AppoinmentService : IAppoinmentService
         appoinment.Doctor = targetDoctor; 
         appoinment.Status = AppoinmentStatus.Pending;
 
+
+        if (appoinment.PatientId != null && appoinment.DoctorId != null)
+        {
+            var patientHistory = new PatientHistory
+            {
+                Recipe = appoinment.Recipe,
+                PatientId = appoinment.PatientId,
+                DoctorId = appoinment.DoctorId,
+                Date = appoinment.AppoinmentDate
+            };
+            await _patientHistoryRepository.CreateAsync(patientHistory);
+        }
+
         await _repo.CreateAsync(appoinment);
         await _repo.SaveAsync();
     }
@@ -127,12 +142,12 @@ public class AppoinmentService : IAppoinmentService
     {
        if(takeAll)
        {
-            return _mapper.Map<ICollection<AppoinmentListItemDto>>(_repo.GetAll("Doctor","Patient",
+            return _mapper.Map<ICollection<AppoinmentListItemDto>>(_repo.GetAll("Doctor","Patient","Recipe",
                 "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department"));
        }
        else
        {
-            return _mapper.Map<ICollection<AppoinmentListItemDto>>(_repo.FindAll(a => a.IsDeleted == false,"Doctor",
+            return _mapper.Map<ICollection<AppoinmentListItemDto>>(_repo.FindAll(a => a.IsDeleted == false,"Doctor", "Recipe",
                 "Patient", "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department"));
        }
     }
@@ -143,13 +158,13 @@ public class AppoinmentService : IAppoinmentService
         Appoinment? entity;
         if(takeAll)
         {
-            entity = await _repo.GetByIdAsync(id, "Doctor", "Patient",
+            entity = await _repo.GetByIdAsync(id, "Doctor", "Patient", "Recipe",
                 "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department");
             if (entity is null) throw new NotFoundException<Appoinment>();
         }
         else
         {
-            entity = await _repo.GetSingleAsync(a => a.IsDeleted == false && a.Id == id, "Doctor", "Patient",
+            entity = await _repo.GetSingleAsync(a => a.IsDeleted == false && a.Id == id, "Doctor", "Patient", "Recipe",
                 "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department");
             if (entity is null) throw new NotFoundException<Appoinment>();
         }

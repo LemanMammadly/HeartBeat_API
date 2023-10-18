@@ -16,4 +16,6 @@ public class Appoinment:BaseEntity
     public int Duration { get; set; }
     public AppoinmentStatus Status { get; set; }
     public decimal AppoinmentMoney { get; set; }
+    public Recipe Recipe { get; set; }
 }
+

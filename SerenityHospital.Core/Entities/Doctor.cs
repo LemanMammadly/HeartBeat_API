@@ -19,7 +19,11 @@ public class Doctor:AppUser
     public bool IsDeleted { get; set; }
     public ICollection<Appoinment> Appoinments { get; set; }
     public ICollection<Appoinment> AppointmentsAsPatient { get; set; }
+    public ICollection<Recipe> Recipes { get; set; }
+    public ICollection<PatientHistory> PatientHistories { get; set; }
 }
+
+
 
 
 

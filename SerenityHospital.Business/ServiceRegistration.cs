@@ -32,6 +32,8 @@ public static class ServiceRegistration
         services.AddScoped<INurseService, NurseService>();
         services.AddScoped<IDoctorRoomService, DoctorRoomService>();
         services.AddScoped<IAppoinmentService, AppoinmentService>();
+        services.AddScoped<IRecipeService, RecipeService>();
+        services.AddScoped<IPatientHistoryService, PatientHistoryService>();
     }
 }
 

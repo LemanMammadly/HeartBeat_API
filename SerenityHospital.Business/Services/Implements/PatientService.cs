@@ -290,8 +290,13 @@ public class PatientService : IPatientService
         var user = await _userManager.FindByIdAsync(id);
         if (user is null) throw new AppUserNotFoundException<Patient>();
 
-        if (await _userManager.Users.AnyAsync(p => p.UserName == dto.UserName && p.Id != id || p.Email == dto.Email && p.Id != id || p.PhoneNumber == dto.PhoneNumber && p.Id != id)) throw new AppUserIsAlreadyExistException<Patient>();
-        if (await _AppUserManager.Users.AnyAsync(a => a.UserName == dto.UserName && a.Id != id || a.Email == dto.Email && a.Id != id || a.PhoneNumber == dto.PhoneNumber && a.Id != id)) throw new AppUserIsAlreadyExistException<Patient>();
+        if (await _userManager.Users.AnyAsync(p => p.UserName == dto.UserName && p.Id != id ||
+        p.Email == dto.Email && p.Id != id || p.PhoneNumber == dto.PhoneNumber && p.Id != id))
+            throw new AppUserIsAlreadyExistException<Patient>();
+
+        if (await _AppUserManager.Users.AnyAsync(a => a.UserName == dto.UserName && a.Id != id ||
+        a.Email == dto.Email && a.Id != id || a.PhoneNumber == dto.PhoneNumber && a.Id != id))
+            throw new AppUserIsAlreadyExistException<Patient>();
 
         if (dto.ImageFile != null)
         {

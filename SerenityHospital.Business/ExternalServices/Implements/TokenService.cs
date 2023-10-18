@@ -101,8 +101,8 @@ public class TokenService : ITokenService
         SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         JwtSecurityToken jwtSecurity = new JwtSecurityToken(
-            _configuration["Jwt:issuer"],
-            _configuration["Jwt:audience"],
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
             claims,
             DateTime.UtcNow.AddHours(4),
             DateTime.UtcNow.AddHours(4).AddMinutes(expires),
@@ -143,8 +143,8 @@ public class TokenService : ITokenService
         SigningCredentials credentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
 
         JwtSecurityToken jwtSecurity = new JwtSecurityToken(
-            _configuration["Jwt:issuer"],
-            _configuration["Jwt:audience"],
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
             claims,
             DateTime.UtcNow.AddHours(4),
             DateTime.UtcNow.AddHours(4).AddMinutes(expires),
@@ -187,8 +187,8 @@ public class TokenService : ITokenService
         SigningCredentials credentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
 
         JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
-            _configuration["Jwt:issuer"],
-            _configuration["Jwt:audience"],
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
             claims,
             DateTime.UtcNow.AddHours(4),
             DateTime.UtcNow.AddHours(4).AddMinutes(expires),

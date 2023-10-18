@@ -177,6 +177,11 @@ public class DoctorService : IDoctorService
     {
         var doctor = await _userManager.FindByNameAsync(dto.UserName);
 
+        if (doctor.IsDeleted)
+        {
+            throw new LoginFailedException<Doctor>("This user is delete");
+        };
+
         if (doctor == null) throw new LoginFailedException<Doctor>("Username or password is wrong");
 
         var result = await _userManager.CheckPasswordAsync(doctor, dto.Password);
@@ -300,11 +305,15 @@ public class DoctorService : IDoctorService
     public async Task UpdateByAdminAsync(string id,DoctorUpdateByAdminDto dto)
     {
         if (string.IsNullOrWhiteSpace(id)) throw new ArgumentIsNullException();
-        var user = await _userManager.Users.Include(d=>d.DoctorRoom).FirstOrDefaultAsync(d=>d.Id==id);
-        if (user == null) throw new AppUserNotFoundException<Adminstrator>();
+        var user = await _userManager.Users.FirstOrDefaultAsync(d=>d.Id==id);
+        if (user == null) throw new AppUserNotFoundException<Doctor>();
 
 
-        if (await _userManager.Users.AnyAsync(d => (d.UserName == dto.UserName && d.Id != id) || (d.Email == dto.Email && d.Id != id))) throw new AppUserIsAlreadyExistException<Doctor>();
+        if (await _userManager.Users.AnyAsync(d => (d.UserName == dto.UserName && d.Id != id) ||
+        (d.Email == dto.Email && d.Id != id))) throw new AppUserIsAlreadyExistException<Doctor>();
+
+        if (await _appUserManager.Users.AnyAsync(d => (d.UserName == dto.UserName && d.Id != id) ||
+        (d.Email == dto.Email && d.Id != id))) throw new AppUserIsAlreadyExistException<Doctor>();
 
         if (dto.ImageFile != null)
         {

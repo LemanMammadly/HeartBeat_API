@@ -9,8 +9,5 @@ public interface IRecipeService
     Task<RecipeDetailItemDto> GetByIdAsync(int id, bool takeAll);
     Task CreateAsync(RecipeCreateDto dto);
     Task UpdateAsync(int id, RecipeUpdateDto dto);
-    Task DeleteAsync(int id);
-    Task SoftDeleteAsync(int id);
-    Task ReverteSoftDeleteAsync(int id);
 }
 

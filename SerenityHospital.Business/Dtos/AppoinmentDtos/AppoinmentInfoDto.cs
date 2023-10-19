@@ -7,6 +7,7 @@ public record AppoinmentInfoDto
 {
     public int Id { get; set; }
     public PatientInfoDto Patient { get; set; }
+    public DoctorInfoDto Doctor { get; set; }
     public string ProblemDesc { get; set; }
     public DateTime AppoinmentDate { get; set; }
 }

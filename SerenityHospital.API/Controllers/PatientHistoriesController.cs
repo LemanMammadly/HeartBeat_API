@@ -12,11 +12,11 @@ namespace SerenityHospital.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class IPatientHistoriesController : ControllerBase
+    public class PatientHistoriesController : ControllerBase
     {
         readonly IPatientHistoryService _service;
 
-        public IPatientHistoriesController(IPatientHistoryService service)
+        public PatientHistoriesController(IPatientHistoryService service)
         {
             _service = service;
         }

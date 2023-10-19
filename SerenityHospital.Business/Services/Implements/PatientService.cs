@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.AppoinmentDtos;
 using SerenityHospital.Business.Dtos.PatientDtos;
+using SerenityHospital.Business.Dtos.PatientHistoryDtos;
 using SerenityHospital.Business.Dtos.PatientRoomDtos;
 using SerenityHospital.Business.Dtos.RecipeDtos;
 using SerenityHospital.Business.Dtos.RoleDtos;
@@ -161,7 +162,7 @@ public class PatientService : IPatientService
     {
         ICollection<PatientListItemDto> patients = new List<PatientListItemDto>();
 
-            foreach (var patient in await _userManager.Users.Include(p=>p.PatientRoom).Include(p => p.Recipes).Include(p=>p.Appoinments).ThenInclude(a=>a.Doctor).ToListAsync())
+            foreach (var patient in await _userManager.Users.Include(p=>p.PatientRoom).Include(p=>p.PatientHistories).Include(p => p.Recipes).Include(p=>p.Appoinments).ThenInclude(a=>a.Doctor).ToListAsync())
             {
                 var patientDto = new PatientListItemDto
                 {
@@ -176,8 +177,9 @@ public class PatientService : IPatientService
                     BloodType = patient.BloodType,
                     Roles = await _userManager.GetRolesAsync(patient),
                     PatientRoom = _mapper.Map<PatientRoomInfoDto>(patient.PatientRoom),
-                    Appoinments=_mapper.Map<ICollection<AppoinmentListItemDto>>(patient.Appoinments),
-                    Recipes=_mapper.Map<ICollection<RecipeListItemDto>>(patient.Recipes)
+                    Appoinments=_mapper.Map<ICollection<AppoinmentInfoDto>>(patient.Appoinments),
+                    Recipes=_mapper.Map<ICollection<RecipeListItemDto>>(patient.Recipes),
+                    PatientHistories=_mapper.Map<ICollection<PatientHistoryListItemDto>>(patient.PatientHistories)
                 };
                 patients.Add(patientDto);
             }
@@ -187,7 +189,7 @@ public class PatientService : IPatientService
     public async Task<PatientDetailItemDto> GetById(string id)
     {
         if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
-        var user = await _userManager.Users.Include(p => p.PatientRoom).Include(p=>p.Recipes).Include(p=>p.Appoinments).ThenInclude(a=>a.Doctor).SingleOrDefaultAsync(p => p.Id == id);
+        var user = await _userManager.Users.Include(p => p.PatientRoom).Include(p => p.PatientHistories).Include(p=>p.Recipes).Include(p=>p.Appoinments).ThenInclude(a=>a.Doctor).SingleOrDefaultAsync(p => p.Id == id);
         if (user is null) throw new AppUserNotFoundException<Patient>();
         var userDto = new PatientDetailItemDto
         {
@@ -202,8 +204,9 @@ public class PatientService : IPatientService
             BloodType = user.BloodType,
             Roles = await _userManager.GetRolesAsync(user),
             PatientRoom = _mapper.Map<PatientRoomInfoDto>(user.PatientRoom),
-            Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
-            Recipes = _mapper.Map<ICollection<RecipeListItemDto>>(user.Recipes)
+            Appoinments = _mapper.Map<ICollection<AppoinmentInfoDto>>(user.Appoinments),
+            Recipes = _mapper.Map<ICollection<RecipeListItemDto>>(user.Recipes),
+            PatientHistories=_mapper.Map<ICollection<PatientHistoryListItemDto>>(user.PatientHistories)
         };
         return userDto;
     }

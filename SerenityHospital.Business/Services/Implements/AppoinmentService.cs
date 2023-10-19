@@ -19,11 +19,12 @@ public class AppoinmentService : IAppoinmentService
     readonly UserManager<Doctor> _docUserManager;
     readonly IPatientHistoryRepository _patientHistoryRepository;
     readonly IHttpContextAccessor _context;
+    readonly IRecipeRepository _recipRepo;
     readonly string? userId;
     readonly IAppoinmentRepository _repo;
     readonly IMapper _mapper;
 
-    public AppoinmentService(IHttpContextAccessor context, UserManager<Patient> userManager, IAppoinmentRepository repo, UserManager<Doctor> docUserManager, IMapper mapper, IPatientHistoryRepository patientHistoryRepository)
+    public AppoinmentService(IHttpContextAccessor context, UserManager<Patient> userManager, IAppoinmentRepository repo, UserManager<Doctor> docUserManager, IMapper mapper, IPatientHistoryRepository patientHistoryRepository, IRecipeRepository recipRepo)
     {
         _repo = repo;
         _context = context;
@@ -32,6 +33,7 @@ public class AppoinmentService : IAppoinmentService
         _docUserManager = docUserManager;
         _mapper = mapper;
         _patientHistoryRepository = patientHistoryRepository;
+        _recipRepo = recipRepo;
     }
 
     public async Task CreateAsync(AppoinmentCreateDto dto)
@@ -107,17 +109,21 @@ public class AppoinmentService : IAppoinmentService
         appoinment.Status = AppoinmentStatus.Pending;
 
 
-        if (appoinment.PatientId != null && appoinment.DoctorId != null)
-        {
-            var patientHistory = new PatientHistory
-            {
-                Recipe = appoinment.Recipe,
-                PatientId = appoinment.PatientId,
-                DoctorId = appoinment.DoctorId,
-                Date = appoinment.AppoinmentDate
-            };
-            await _patientHistoryRepository.CreateAsync(patientHistory);
-        }
+        //if (appoinment.PatientId != null && appoinment.DoctorId != null)
+        //{
+        //    var patientHistory = new PatientHistory
+        //    {
+        //        Recipe = appoinment.Recipe,
+        //        PatientId = appoinment.PatientId,
+        //        DoctorId = appoinment.DoctorId,
+        //        Date = appoinment.AppoinmentDate
+        //    };
+
+        //    Recipe recipe = await _recipRepo.GetSingleAsync(r => r.Id == patientHistory.RecipeId);
+        //    patientHistory.Recipe = recipe;
+
+        //    await _patientHistoryRepository.CreateAsync(patientHistory);
+        //}
 
         await _repo.CreateAsync(appoinment);
         await _repo.SaveAsync();

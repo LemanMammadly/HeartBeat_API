@@ -9,6 +9,7 @@ using SerenityHospital.Business.Exceptions.Recipes;
 using SerenityHospital.Business.Exceptions.Services;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
+using SerenityHospital.DAL.Repositories.Implements;
 using SerenityHospital.DAL.Repositories.Interfaces;
 
 namespace SerenityHospital.Business.Services.Implements;
@@ -17,13 +18,14 @@ public class RecipeService : IRecipeService
 {
     readonly IRecipeRepository _repo;
     readonly IAppoinmentRepository _appoinmentRepo;
+    readonly IPatientHistoryRepository _patHistoryRepo;
     readonly UserManager<Doctor> _docManager;
     readonly UserManager<Patient> _patManager;
     readonly IHttpContextAccessor _context;
     readonly string? userId;
     readonly IMapper _mapper;
 
-    public RecipeService(IRecipeRepository repo, IMapper mapper, IAppoinmentRepository appoinmentRepo, UserManager<Doctor> docManager, UserManager<Patient> patManager, IHttpContextAccessor context)
+    public RecipeService(IRecipeRepository repo, IMapper mapper, IAppoinmentRepository appoinmentRepo, UserManager<Doctor> docManager, UserManager<Patient> patManager, IHttpContextAccessor context, IPatientHistoryRepository patHistoryRepo)
     {
         _repo = repo;
         _mapper = mapper;
@@ -32,6 +34,7 @@ public class RecipeService : IRecipeService
         _patManager = patManager;
         _context = context;
         userId = _context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        _patHistoryRepo = patHistoryRepo;
     }
 
     public async Task CreateAsync(RecipeCreateDto dto)
@@ -55,20 +58,25 @@ public class RecipeService : IRecipeService
         }
 
         var recipe = _mapper.Map<Recipe>(dto);
+
+        var appoinmentDate = await _appoinmentRepo.GetSingleAsync(a => a.Id == recipe.AppoinmentId);
+
+        if (recipe.PatientId != null && recipe.DoctorId != null)
+        {
+            var patientHistory = new PatientHistory
+            {
+                Recipe = recipe,
+                PatientId = recipe.PatientId,
+                DoctorId = recipe.DoctorId,
+                Date =appoinmentDate.AppoinmentDate
+            };
+
+            await _patHistoryRepo.CreateAsync(patientHistory);
+        }
         await _repo.CreateAsync(recipe);
         await _repo.SaveAsync();
     }
 
-    public async Task DeleteAsync(int id)
-    {
-        if (id <= 0) throw new NegativeIdException<Recipe>();
-        var recipe = await _repo.GetByIdAsync(id);
-        if (recipe is null) throw new NotFoundException<Recipe>();
-
-
-        _repo.Delete(recipe);
-        await _repo.SaveAsync();
-    }
 
     public async Task<IEnumerable<RecipeListItemDto>> GetAllAsync(bool takeAll)
     {
@@ -101,28 +109,6 @@ public class RecipeService : IRecipeService
         return _mapper.Map<RecipeDetailItemDto>(entity);
     }
 
-    public async Task ReverteSoftDeleteAsync(int id)
-    {
-        if (id <= 0) throw new NegativeIdException<Recipe>();
-        var recipe = await _repo.GetByIdAsync(id);
-        if (recipe is null) throw new NotFoundException<Recipe>();
-
-
-        _repo.RevertSoftDelete(recipe);
-        await _repo.SaveAsync();
-    }
-
-    public async Task SoftDeleteAsync(int id)
-    {
-        if (id <= 0) throw new NegativeIdException<Recipe>();
-        var recipe = await _repo.GetByIdAsync(id);
-        if (recipe is null) throw new NotFoundException<Recipe>();
-
-
-        _repo.SoftDelete(recipe);
-        await _repo.SaveAsync();
-    }
-
     public async Task UpdateAsync(int id, RecipeUpdateDto dto)
     {
         if (string.IsNullOrEmpty(userId))
@@ -137,6 +123,15 @@ public class RecipeService : IRecipeService
         if (recipe is null) throw new NotFoundException<Recipe>();
 
         _mapper.Map(dto, recipe);
+
+        var patientHistory = await _patHistoryRepo.GetSingleAsync(p => p.RecipeId == id);
+
+        if (patientHistory != null && patientHistory.Recipe !=null) 
+        {
+            patientHistory.Recipe.RecipeDesc = recipe.RecipeDesc;
+            await _patHistoryRepo.SaveAsync();
+        }
+
         await _repo.SaveAsync();
     }
 }

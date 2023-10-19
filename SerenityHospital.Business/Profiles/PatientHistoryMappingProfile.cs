@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SerenityHospital.Business.Dtos.PatientHistoryDtos;
 using SerenityHospital.Business.Dtos.RecipeDtos;
 using SerenityHospital.Core.Entities;
 
@@ -8,9 +9,9 @@ public class PatientHistoryMappingProfile:Profile
 {
     public PatientHistoryMappingProfile()
     {
-        CreateMap<RecipeCreateDto, Recipe>().ReverseMap();
-        CreateMap<Recipe, RecipeDetailItemDto>().ReverseMap();
-        CreateMap<Recipe, RecipeListItemDto>().ReverseMap();
+        CreateMap<PatientHistoryCreateDto, PatientHistory>().ReverseMap();
+        CreateMap<PatientHistory, PatientHistoryDetailtemDto>().ReverseMap();
+        CreateMap<PatientHistory, PatientHistoryListItemDto>().ReverseMap();
     }
 }
 

@@ -48,27 +48,6 @@ namespace SerenityHospital.API.Controllers
             await _service.UpdateAsync(id,dto);
             return NoContent();
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _service.DeleteAsync(id);
-            return NoContent();
-        }
-
-        [HttpPatch("[action]/{id}")]
-        public async Task<IActionResult> SoftDelete(int id)
-        {
-            await _service.SoftDeleteAsync(id);
-            return NoContent();
-        }
-
-        [HttpPatch("[action]/{id}")]
-        public async Task<IActionResult> RevertSoftDelete(int id)
-        {
-            await _service.ReverteSoftDeleteAsync(id);
-            return NoContent();
-        }
     }
 }
 

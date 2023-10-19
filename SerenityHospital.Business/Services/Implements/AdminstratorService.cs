@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Security.Claims;
 using System.Text;
+using System.Web;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -21,6 +22,7 @@ using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
 using SerenityHospital.Core.Enums;
+using SerenityHospital.DAL.Contexts;
 using SerenityHospital.DAL.Repositories.Interfaces;
 
 namespace SerenityHospital.Business.Services.Implements;
@@ -37,8 +39,11 @@ public class AdminstratorService : IAdminstratorService
     readonly IHospitalRepository _hospitalRepository;
     readonly ITokenService _tokenService;
     readonly SignInManager<Adminstrator> _signInManager;
+    readonly AppDbContext _appDbContext;
+    readonly IConfiguration _config;
+    readonly IEmailSenderService _emailSenderService;
 
-    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, UserManager<AppUser> appUserManager, SignInManager<Adminstrator> signInManager)
+    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, UserManager<AppUser> appUserManager, SignInManager<Adminstrator> signInManager, AppDbContext appDbContext, IConfiguration config, IEmailSenderService emailSenderService)
     {
         this.userManager = userManager;
         _context = context;
@@ -50,6 +55,9 @@ public class AdminstratorService : IAdminstratorService
         _roleManager = roleManager;
         _appUserManager = appUserManager;
         _signInManager = signInManager;
+        _appDbContext = appDbContext;
+        _config = config;
+        _emailSenderService = emailSenderService;
     }
 
     public async Task CreateAsync(CreateAdminstratorDto dto)
@@ -81,8 +89,8 @@ public class AdminstratorService : IAdminstratorService
 
         adminstrator.HospitalId = hospital.Id;
 
-
         var result = await userManager.CreateAsync(adminstrator, dto.Password);
+
 
         if(!result.Succeeded)
         {
@@ -92,6 +100,23 @@ public class AdminstratorService : IAdminstratorService
                 a += item.Description + " ";
             }
             throw new RegisterFailedException<Adminstrator>(a);
+        }
+        else
+        {
+            var userFromDb = await userManager.FindByNameAsync(adminstrator.UserName);
+
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
+
+            var uriBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]);
+            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+            query["token"] = token;
+            query["userid"] = userFromDb.Id;
+            uriBuilder.Query = query.ToString();
+            var urlString = uriBuilder.ToString();
+
+            var senderEmail = _config["ReturnPaths:SenderEmail"];
+
+            await _emailSenderService.SendEmailAsync(senderEmail, userFromDb.Email, "Confirm your email address", urlString);
         }
     }
 
@@ -110,7 +135,7 @@ public class AdminstratorService : IAdminstratorService
             {
                 a += item.Description + " ";
             }
-            throw new AppUserUpdateFailedException<Doctor>(a);
+            throw new AppUserUpdateFailedException<Nurse>(a);
         }
     }
 
@@ -134,7 +159,7 @@ public class AdminstratorService : IAdminstratorService
             {
                 a += item.Description + " ";
             }
-            throw new AppUserUpdateFailedException<Doctor>(a);
+            throw new AppUserUpdateFailedException<Nurse>(a);
         }
     }
 

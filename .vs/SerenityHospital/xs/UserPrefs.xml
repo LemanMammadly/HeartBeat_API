@@ -1,32 +1,21 @@
 ﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Dtos/PatientDtos/PatientDetailItemDto.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/ExternalServices/Implements/EmailService.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Interfaces/IPatientHistoryService.cs" Line="13" Column="2" />
-      <File FileName="SerenityHospital.Business/Services/Implements/PatientService.cs" Line="189" Column="30" />
-      <File FileName="SerenityHospital.Business/Dtos/PatientDtos/PatientListItemDto.cs" Line="22" Column="41" />
-      <File FileName="SerenityHospital.Business/Dtos/AppoinmentDtos/AppoinmentListItemDto.cs" Line="15" Column="49" />
-      <File FileName="SerenityHospital.Business/Dtos/AppoinmentDtos/AppoinmentInfoDto.cs" Line="10" Column="32" />
-      <File FileName="SerenityHospital.Business/Dtos/PatientDtos/PatientDetailItemDto.cs" Line="26" Column="1" />
+      <File FileName="SerenityHospital.Business/ExternalServices/Interfaces/IEmailService.cs" Line="5" Column="86" />
+      <File FileName="SerenityHospital.Business/ExternalServices/Implements/EmailService.cs" Line="5" Column="42" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
             <Node name="SerenityHospital.Business">
-              <Node name="Dtos">
-                <Node name="DoctorDtos" expanded="True" />
-                <Node name="PatientDtos">
-                  <Node name="PatientDetailItemDto.cs" selected="True" />
+              <Node name="ExternalServices" expanded="True">
+                <Node name="Implements" expanded="True">
+                  <Node name="EmailService.cs" selected="True" />
                 </Node>
-                <Node name="RecipeDtos" expanded="True" />
-              </Node>
-              <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True" />
                 <Node name="Interfaces" expanded="True" />
               </Node>
             </Node>
-            <Node name="SerenityHospital.Core" expanded="True" />
-            <Node name="SerenityHospital.DAL" expanded="True" />
           </Node>
         </State>
       </Pad>

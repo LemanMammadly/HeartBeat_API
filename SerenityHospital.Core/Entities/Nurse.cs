@@ -1,4 +1,5 @@
-﻿using SerenityHospital.Core.Enums;
+﻿using Microsoft.AspNetCore.Identity;
+using SerenityHospital.Core.Enums;
 
 namespace SerenityHospital.Core.Entities;
 
@@ -14,6 +15,7 @@ public class Nurse:AppUser
     public Department Department { get; set; }
     public int DepartmentId { get; set; }
     public bool IsDeleted { get; set; }
+
 }
 
 

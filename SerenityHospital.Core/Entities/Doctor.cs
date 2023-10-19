@@ -1,4 +1,5 @@
-﻿using SerenityHospital.Core.Enums;
+﻿using Microsoft.AspNetCore.Identity;
+using SerenityHospital.Core.Enums;
 
 namespace SerenityHospital.Core.Entities;
 

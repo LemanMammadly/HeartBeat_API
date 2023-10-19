@@ -34,6 +34,7 @@ public static class ServiceRegistration
         services.AddScoped<IAppoinmentService, AppoinmentService>();
         services.AddScoped<IRecipeService, RecipeService>();
         services.AddScoped<IPatientHistoryService, PatientHistoryService>();
+        services.AddSingleton<IEmailSenderService, EmailSenderService>();
     }
 }
 

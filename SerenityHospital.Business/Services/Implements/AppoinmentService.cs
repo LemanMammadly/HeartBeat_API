@@ -53,7 +53,7 @@ public class AppoinmentService : IAppoinmentService
 
         var targetDoctor = await _docUserManager.FindByIdAsync(dto.DoctorId);
         if (targetDoctor == null || targetDoctor.IsDeleted)
-            throw new AppUserNotFoundException<Doctor>();
+            throw new AppUserNotFoundException<Nurse>();
 
         var appoinmentStart = dto.AppoinmentDate;
         var appoinmentEnd = dto.AppoinmentDate.AddMinutes(20);
@@ -108,22 +108,6 @@ public class AppoinmentService : IAppoinmentService
         appoinment.Doctor = targetDoctor; 
         appoinment.Status = AppoinmentStatus.Pending;
 
-
-        //if (appoinment.PatientId != null && appoinment.DoctorId != null)
-        //{
-        //    var patientHistory = new PatientHistory
-        //    {
-        //        Recipe = appoinment.Recipe,
-        //        PatientId = appoinment.PatientId,
-        //        DoctorId = appoinment.DoctorId,
-        //        Date = appoinment.AppoinmentDate
-        //    };
-
-        //    Recipe recipe = await _recipRepo.GetSingleAsync(r => r.Id == patientHistory.RecipeId);
-        //    patientHistory.Recipe = recipe;
-
-        //    await _patientHistoryRepository.CreateAsync(patientHistory);
-        //}
 
         await _repo.CreateAsync(appoinment);
         await _repo.SaveAsync();
@@ -211,8 +195,8 @@ public class AppoinmentService : IAppoinmentService
         if (appoinment.IsDeleted == true) throw new NotFoundException<Appoinment>();
 
         var doctor = await _docUserManager.FindByIdAsync(dto.DoctorId);
-        if (doctor is null) throw new NotFoundException<Doctor>();
-        if (doctor.IsDeleted == true) throw new NotFoundException<Doctor>();
+        if (doctor is null) throw new NotFoundException<Nurse>();
+        if (doctor.IsDeleted == true) throw new NotFoundException<Nurse>();
 
 
         if (dto.PatientId != null)
@@ -224,7 +208,7 @@ public class AppoinmentService : IAppoinmentService
         if (dto.AppoinmentAsDoctorId != null)
         {
             var patientAsDoctor = await _docUserManager.FindByIdAsync(dto.AppoinmentAsDoctorId);
-            if (patientAsDoctor is null) throw new NotFoundException<Doctor>();
+            if (patientAsDoctor is null) throw new NotFoundException<Nurse>();
         }
 
         if (dto.AppoinmentAsDoctorId != null && dto.AppoinmentAsDoctorId == doctor.Id)

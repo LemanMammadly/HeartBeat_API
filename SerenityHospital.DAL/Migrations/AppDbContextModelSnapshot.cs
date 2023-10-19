@@ -203,7 +203,7 @@ namespace SerenityHospital.DAL.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Appoinments");
+                    b.ToTable("Appoinments", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.AppUser", b =>
@@ -332,7 +332,7 @@ namespace SerenityHospital.DAL.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.DoctorRoom", b =>
@@ -362,7 +362,7 @@ namespace SerenityHospital.DAL.Migrations
                     b.HasIndex("Number")
                         .IsUnique();
 
-                    b.ToTable("DoctorRooms");
+                    b.ToTable("DoctorRooms", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Hospital", b =>
@@ -384,7 +384,7 @@ namespace SerenityHospital.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Hospitals");
+                    b.ToTable("Hospitals", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.PatientHistory", b =>
@@ -422,7 +422,7 @@ namespace SerenityHospital.DAL.Migrations
                         .IsUnique()
                         .HasFilter("[RecipeId] IS NOT NULL");
 
-                    b.ToTable("PatientHistories");
+                    b.ToTable("PatientHistories", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.PatientRoom", b =>
@@ -465,7 +465,7 @@ namespace SerenityHospital.DAL.Migrations
                     b.HasIndex("Number")
                         .IsUnique();
 
-                    b.ToTable("PatientRooms");
+                    b.ToTable("PatientRooms", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Position", b =>
@@ -485,7 +485,7 @@ namespace SerenityHospital.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Positions");
+                    b.ToTable("Positions", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Recipe", b =>
@@ -523,7 +523,7 @@ namespace SerenityHospital.DAL.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Service", b =>
@@ -563,7 +563,7 @@ namespace SerenityHospital.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Setting", b =>
@@ -598,7 +598,7 @@ namespace SerenityHospital.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Settings");
+                    b.ToTable("Settings", (string)null);
                 });
 
             modelBuilder.Entity("SerenityHospital.Core.Entities.Adminstrator", b =>

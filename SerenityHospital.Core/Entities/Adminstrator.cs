@@ -1,4 +1,5 @@
-﻿using SerenityHospital.Core.Enums;
+﻿using Microsoft.AspNetCore.Identity;
+using SerenityHospital.Core.Enums;
 
 namespace SerenityHospital.Core.Entities;
 
@@ -12,6 +13,7 @@ public class Adminstrator:AppUser
     public Hospital? Hospital { get; set; }
     public int? HospitalId { get; set; }
     public bool IsDeleted { get; set; }
+
 }
 
 

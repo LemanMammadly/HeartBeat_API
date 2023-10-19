@@ -22,6 +22,9 @@ public static class PersistenceServiceRegistration
         services.AddIdentityCore<AppUser>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
+            options.Lockout.MaxFailedAccessAttempts = 1;
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = true;
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
@@ -31,6 +34,9 @@ public static class PersistenceServiceRegistration
         services.AddIdentityCore<Adminstrator>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
+            options.Lockout.MaxFailedAccessAttempts = 1;
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = true;
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
@@ -40,6 +46,9 @@ public static class PersistenceServiceRegistration
         services.AddIdentityCore<Doctor>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
+            options.Lockout.MaxFailedAccessAttempts = 1;
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = true;
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
@@ -49,6 +58,9 @@ public static class PersistenceServiceRegistration
         services.AddIdentityCore<Patient>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
+            options.Lockout.MaxFailedAccessAttempts = 1;
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = true;
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
@@ -58,10 +70,13 @@ public static class PersistenceServiceRegistration
         services.AddIdentityCore<Nurse>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
+            options.Lockout.MaxFailedAccessAttempts = 1;
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = true;
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
         .AddSignInManager<SignInManager<Nurse>>()
         .AddDefaultTokenProviders();
-         }
+    }
 }

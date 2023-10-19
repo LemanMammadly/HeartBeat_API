@@ -15,7 +15,7 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<Position> Positions { get; set; }
     public DbSet<PatientRoom> PatientRooms { get; set; }
     public DbSet<Adminstrator> Adminstrators { get; set; }
-    public DbSet<Doctor> Doctors { get; set; }
+    public DbSet<Nurse> Doctors { get; set; }
     public DbSet<Patient> Patients { get; set; }
     public DbSet<Nurse> Nurses { get; set; }
     public DbSet<DoctorRoom> DoctorRooms { get; set; }
@@ -29,6 +29,7 @@ public class AppDbContext:IdentityDbContext<AppUser>
         base.OnModelCreating(modelBuilder);
     }
 }
+
 
 
 

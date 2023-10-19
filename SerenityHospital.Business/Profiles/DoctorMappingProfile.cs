@@ -8,13 +8,13 @@ public class DoctorMappingProfile:Profile
 {
     public DoctorMappingProfile()
     {
-        CreateMap<DoctorCreateDto, Doctor>().ReverseMap();
-        CreateMap<DoctorUpdateDto, Doctor>().ReverseMap();
-        CreateMap<DoctorUpdateByAdminDto, Doctor>().ReverseMap();
-        CreateMap<Doctor, DoctorInfoDto>().ReverseMap();
-        CreateMap<Doctor, DoctorDetailItemDto>().ReverseMap();
-        CreateMap<Doctor, DoctorListItemDto>().ReverseMap();
-        CreateMap<Doctor, AppoinmentAsDoctorDto>().ReverseMap();
+        CreateMap<DoctorCreateDto, Nurse>().ReverseMap();
+        CreateMap<DoctorUpdateDto, Nurse>().ReverseMap();
+        CreateMap<DoctorUpdateByAdminDto, Nurse>().ReverseMap();
+        CreateMap<Nurse, DoctorInfoDto>().ReverseMap();
+        CreateMap<Nurse, DoctorDetailItemDto>().ReverseMap();
+        CreateMap<Nurse, DoctorListItemDto>().ReverseMap();
+        CreateMap<Nurse, AppoinmentAsDoctorDto>().ReverseMap();
     }
 }
 

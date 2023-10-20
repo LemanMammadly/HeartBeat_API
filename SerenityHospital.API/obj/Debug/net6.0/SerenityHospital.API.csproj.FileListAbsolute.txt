@@ -107,3 +107,14 @@
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/tr-TR/Hangfire.Core.resources.dll
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/zh-TW/Hangfire.Core.resources.dll
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/zh/Hangfire.Core.resources.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/MailKit.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/MimeKit.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/NETCore.MailKit.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/BouncyCastle.Crypto.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.AspNetCore.Razor.Language.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.CodeAnalysis.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.CodeAnalysis.CSharp.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.CodeAnalysis.Razor.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.DotNet.PlatformAbstractions.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.Extensions.DependencyModel.dll

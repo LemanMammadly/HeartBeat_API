@@ -15,7 +15,6 @@
     <None Remove="Services\" />
     <None Remove="Services\Interfaces\" />
     <None Remove="Services\Implements\" />
-    <None Remove="Profiles\" />
     <None Remove="Exceptions\" />
     <None Remove="Exceptions\Common\" />
     <None Remove="Exceptions\HospitalExceptions\" />
@@ -54,6 +53,7 @@
     <None Remove="Dtos\RecipeDtos\" />
     <None Remove="Exceptions\Recipes\" />
     <None Remove="Dtos\PatientHistoryDtos\" />
+    <None Remove="Exceptions\Confirms\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -61,7 +61,6 @@
     <Folder Include="Services\" />
     <Folder Include="Services\Interfaces\" />
     <Folder Include="Services\Implements\" />
-    <Folder Include="Profiles\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Exceptions\Common\" />
     <Folder Include="Exceptions\HospitalExceptions\" />
@@ -100,6 +99,7 @@
     <Folder Include="Dtos\RecipeDtos\" />
     <Folder Include="Exceptions\Recipes\" />
     <Folder Include="Dtos\PatientHistoryDtos\" />
+    <Folder Include="Exceptions\Confirms\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
@@ -108,5 +108,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Stripe.net" Version="42.9.0" />
+    <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
   </ItemGroup>
 </Project>

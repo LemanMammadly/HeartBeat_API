@@ -1,31 +1,36 @@
 ﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/ExternalServices/Implements/EmailService.cs">
+  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.API/Program.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/ExternalServices/Interfaces/IEmailService.cs" Line="5" Column="86" />
-      <File FileName="SerenityHospital.Business/ExternalServices/Implements/EmailService.cs" Line="5" Column="42" />
+      <File FileName="SerenityHospital.API/Controllers/AdminstratorAuthsController.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/AdminstratorService.cs" />
+      <File FileName="SerenityHospital.API/Program.cs" Line="168" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.Business">
-              <Node name="ExternalServices" expanded="True">
-                <Node name="Implements" expanded="True">
-                  <Node name="EmailService.cs" selected="True" />
-                </Node>
-                <Node name="Interfaces" expanded="True" />
+            <Node name="SerenityHospital.API" expanded="True">
+              <Node name="Controllers" expanded="True" />
+              <Node name="Program.cs" selected="True" />
+            </Node>
+            <Node name="SerenityHospital.Business" expanded="True">
+              <Node name="Services" expanded="True">
+                <Node name="Implements" expanded="True" />
               </Node>
+            </Node>
+            <Node name="SerenityHospital.Core" expanded="True">
+              <Node name="Entities" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
 </Properties>

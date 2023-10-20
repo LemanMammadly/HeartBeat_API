@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Dtos.NurseDtos;
 using SerenityHospital.Business.Dtos.RoleDtos;
+using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
+using SerenityHospital.Core.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,10 +19,14 @@ namespace SerenityHospital.API.Controllers
     public class NurseAuthsController : ControllerBase
     {
         readonly INurseService _service;
+        readonly UserManager<Nurse> _userManager;
+        readonly IEmailServiceSender _emailService;
 
-        public NurseAuthsController(INurseService service)
+        public NurseAuthsController(INurseService service, UserManager<Nurse> userManager, IEmailServiceSender emailService)
         {
             _service = service;
+            _userManager = userManager;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -52,13 +59,43 @@ namespace SerenityHospital.API.Controllers
         public async Task<IActionResult> Create([FromForm]NurseCreateDto dto)
         {
             await _service.CreateAsync(dto);
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = Url.Action("ConfirmEmail", "NurseAuths", new { token, email = dto.Email }, Request.Scheme);
+            var message = new Message(new string[] { dto.Email! }, "Confirmation email link", confirmationLink!);
+            _emailService.SendEmail(message);
             return StatusCode(StatusCodes.Status201Created);
+        }
+
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    return StatusCode(StatusCodes.Status200OK);
+                }
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm] NurseLoginDto dto)
         {
-            return Ok(await _service.LoginAsync(dto));   
+            var user = await _userManager.FindByNameAsync(dto.UserName);
+
+            if (user.EmailConfirmed == false)
+            {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = Url.Action("ConfirmEmail", "NurseAuths", new { token, email = user.Email }, Request.Scheme);
+                var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+                _emailService.SendEmail(message);
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            return Ok(await _service.LoginAsync(dto));
         }
 
 

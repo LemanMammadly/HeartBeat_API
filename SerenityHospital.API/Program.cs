@@ -22,8 +22,11 @@ using SerenityHospital.API;
 using Microsoft.Extensions.Options;
 using Stripe;
 using Hangfire;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddPersistenceServices(builder.Configuration);
@@ -79,6 +82,26 @@ builder.Services.AddHangfireServer();
 
 builder.Services.AddStripeInfrastructure(builder.Configuration);
 
+
+//add email config
+var emailConfig =configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
+
+builder.Services.AddScoped<IEmailServiceSender, EmailServiceSender>();
+
+builder.Services.AddMailKit(optionBuilder =>
+{
+    optionBuilder.UseMailKit(new MailKitOptions
+    {
+        Server = "smtp.gmail.com",
+        Port = 587,
+        SenderName = "Your Name",
+        SenderEmail = "leman.mammadly23@gmail.com",
+        Account = "leman.mammadly23@gmail.com",
+        Password = "naehtslelvpxpaox",
+        Security = true // Use SSL/TLS
+    });
+});
 // Set your secret key. Remember to switch to your live secret key in production.
 // See your keys here: https://dashboard.stripe.com/apikeys
 StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
@@ -91,12 +114,6 @@ var options = new PaymentIntentCreateOptions
 };
 var service = new PaymentIntentService();
 service.Create(options);
-
-
-builder.Services.AddDbContext<AppDbContext>(opt =>
-{
-    opt.UseSqlServer(builder.Configuration["ConnectionStrings:Default"]);
-});
 
 
 builder.Services.AddAutoMapper(typeof(HospitalMappingProfile).Assembly);
@@ -126,6 +143,12 @@ builder.Services.AddAuthentication(opt =>
     };
 }).AddIdentityCookies();
 builder.Services.AddAuthorization();
+
+
+builder.Services.AddDbContext<AppDbContext>(opt =>
+{
+    opt.UseSqlServer(builder.Configuration["ConnectionStrings:Default"]);
+});
 
 var app = builder.Build();
 

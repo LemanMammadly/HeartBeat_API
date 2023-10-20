@@ -13,6 +13,7 @@ public interface IAdminstratorService
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
     Task<ICollection<AdminstratorListItemDto>> GetAllAsync(bool takeAll);
     Task<AdminstratorDetailItemDto> GetById(string id, bool takeAll);
+    //Task ConfirmEmail(string token,string email);
     Task SoftDeleteAsync(string id);
     Task RevertSoftDeleteAsync(string id);
     Task AddRoleAsync(AddRoleDto dto);

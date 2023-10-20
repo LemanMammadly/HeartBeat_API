@@ -5,6 +5,8 @@ using System.Text;
 using System.Web;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +16,7 @@ using SerenityHospital.Business.Dtos.AdminstratorDtos;
 using SerenityHospital.Business.Dtos.RoleDtos;
 using SerenityHospital.Business.Dtos.TokenDtos;
 using SerenityHospital.Business.Exceptions.Common;
+using SerenityHospital.Business.Exceptions.Confirms;
 using SerenityHospital.Business.Exceptions.Images;
 using SerenityHospital.Business.Exceptions.Roles;
 using SerenityHospital.Business.Exceptions.Tokens;
@@ -24,6 +27,9 @@ using SerenityHospital.Core.Entities;
 using SerenityHospital.Core.Enums;
 using SerenityHospital.DAL.Contexts;
 using SerenityHospital.DAL.Repositories.Interfaces;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Security.Policy;
+using System;
 
 namespace SerenityHospital.Business.Services.Implements;
 
@@ -41,9 +47,9 @@ public class AdminstratorService : IAdminstratorService
     readonly SignInManager<Adminstrator> _signInManager;
     readonly AppDbContext _appDbContext;
     readonly IConfiguration _config;
-    readonly IEmailSenderService _emailSenderService;
+    readonly IEmailServiceSender _emailService;
 
-    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, UserManager<AppUser> appUserManager, SignInManager<Adminstrator> signInManager, AppDbContext appDbContext, IConfiguration config, IEmailSenderService emailSenderService)
+    public AdminstratorService(UserManager<Adminstrator> userManager, IMapper mapper, IFileService fileService, IHospitalRepository hospitalRepository, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, UserManager<AppUser> appUserManager, SignInManager<Adminstrator> signInManager, AppDbContext appDbContext, IConfiguration config, IEmailServiceSender emailService)
     {
         this.userManager = userManager;
         _context = context;
@@ -57,7 +63,7 @@ public class AdminstratorService : IAdminstratorService
         _signInManager = signInManager;
         _appDbContext = appDbContext;
         _config = config;
-        _emailSenderService = emailSenderService;
+        _emailService = emailService;
     }
 
     public async Task CreateAsync(CreateAdminstratorDto dto)
@@ -91,8 +97,15 @@ public class AdminstratorService : IAdminstratorService
 
         var result = await userManager.CreateAsync(adminstrator, dto.Password);
 
+        //var token = await userManager.GenerateEmailConfirmationTokenAsync(adminstrator);
 
-        if(!result.Succeeded)
+        //var confirmationLink = $"https://localhost:7227/api/AdminstratorAuths/ConfirmEmail?token={token}&email={HttpUtility.UrlEncode(dto.Email)}";
+
+        //var message = new Message(new string[] { dto.Email! }, "Confirmation email link", confirmationLink!);
+        //_emailService.SendEmail(message);
+
+
+        if (!result.Succeeded)
         {
             string a = " ";
             foreach (var item in result.Errors)
@@ -100,23 +113,6 @@ public class AdminstratorService : IAdminstratorService
                 a += item.Description + " ";
             }
             throw new RegisterFailedException<Adminstrator>(a);
-        }
-        else
-        {
-            var userFromDb = await userManager.FindByNameAsync(adminstrator.UserName);
-
-            var token = await userManager.GenerateEmailConfirmationTokenAsync(userFromDb);
-
-            var uriBuilder = new UriBuilder(_config["ReturnPaths:ConfirmEmail"]);
-            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-            query["token"] = token;
-            query["userid"] = userFromDb.Id;
-            uriBuilder.Query = query.ToString();
-            var urlString = uriBuilder.ToString();
-
-            var senderEmail = _config["ReturnPaths:SenderEmail"];
-
-            await _emailSenderService.SendEmailAsync(senderEmail, userFromDb.Email, "Confirm your email address", urlString);
         }
     }
 
@@ -415,5 +411,16 @@ public class AdminstratorService : IAdminstratorService
             return userDto;
         }
     }
+
+    //public async Task ConfirmEmail(string token, string email)
+    //{
+    //    var user =await  userManager.FindByEmailAsync(email);
+    //    if(user is not null)
+    //    {
+    //        var result = await userManager.ConfirmEmailAsync(user, token);
+    //        if (!result.Succeeded) throw new EmailConfirmationFailedException();
+    //    }
+    //    throw new NotFoundException<Adminstrator>();
+    //}
 }
 

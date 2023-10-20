@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 using SerenityHospital.Business.Dtos.AdminstratorDtos;
 using SerenityHospital.Business.Dtos.RoleDtos;
+using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
+using SerenityHospital.Core.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,10 +22,14 @@ namespace SerenityHospital.API.Controllers
     public class AdminstratorAuthsController : ControllerBase
     {
         readonly IAdminstratorService _service;
+        readonly UserManager<Adminstrator> _userManager;
+        readonly IEmailServiceSender _emailService;
 
-        public AdminstratorAuthsController(IAdminstratorService service)
+        public AdminstratorAuthsController(IAdminstratorService service, IEmailServiceSender emailService, UserManager<Adminstrator> userManager)
         {
             _service = service;
+            _emailService = emailService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -57,8 +66,29 @@ namespace SerenityHospital.API.Controllers
         public async Task<IActionResult> Create([FromForm]CreateAdminstratorDto dto)
         {
             await _service.CreateAsync(dto);
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var confirmationLink = Url.Action("ConfirmEmail", "AdminstratorAuths", new { token, email = dto.Email }, Request.Scheme);
+            var message = new Message(new string[] { dto.Email! }, "Confirmation email link", confirmationLink!);
+            _emailService.SendEmail(message);
             return StatusCode(StatusCodes.Status201Created);
         }
+
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    return StatusCode(StatusCodes.Status200OK);
+                }
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
 
         [HttpPut("[action]")]
         public async Task<IActionResult> Put([FromForm] AdminstratorUpdateDto dto)
@@ -78,6 +108,16 @@ namespace SerenityHospital.API.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm] LoginAdminstratorDto dto)
         {
+            var user = await _userManager.FindByNameAsync(dto.UserName);
+
+            if(user.EmailConfirmed == false)
+            {
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmationLink = Url.Action("ConfirmEmail", "AdminstratorAuths", new { token, email = user.Email }, Request.Scheme);
+                var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+                _emailService.SendEmail(message);
+                return StatusCode(StatusCodes.Status201Created);
+            }
             return Ok(await _service.LoginAsync(dto));
         }
 

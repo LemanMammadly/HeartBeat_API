@@ -28,8 +28,8 @@ public static class PersistenceServiceRegistration
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
-        .AddSignInManager<SignInManager<AppUser>>()
-        .AddDefaultTokenProviders();
+        //.AddDefaultTokenProviders()
+        .AddSignInManager<SignInManager<AppUser>>();
 
         services.AddIdentityCore<Adminstrator>(options =>
         {
@@ -40,8 +40,8 @@ public static class PersistenceServiceRegistration
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
-        .AddSignInManager<SignInManager<Adminstrator>>()
-        .AddDefaultTokenProviders();
+        .AddDefaultTokenProviders()
+        .AddSignInManager<SignInManager<Adminstrator>>();
 
         services.AddIdentityCore<Doctor>(options =>
         {
@@ -52,8 +52,8 @@ public static class PersistenceServiceRegistration
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
-        .AddSignInManager<SignInManager<Doctor>>()
-        .AddDefaultTokenProviders();
+        .AddDefaultTokenProviders()
+        .AddSignInManager<SignInManager<Doctor>>();
 
         services.AddIdentityCore<Patient>(options =>
         {
@@ -64,8 +64,8 @@ public static class PersistenceServiceRegistration
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
-        .AddSignInManager<SignInManager<Patient>>()
-        .AddDefaultTokenProviders();
+        .AddDefaultTokenProviders()
+        .AddSignInManager<SignInManager<Patient>>();
 
         services.AddIdentityCore<Nurse>(options =>
         {
@@ -76,7 +76,7 @@ public static class PersistenceServiceRegistration
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
-        .AddSignInManager<SignInManager<Nurse>>()
-        .AddDefaultTokenProviders();
+        .AddDefaultTokenProviders()
+        .AddSignInManager<SignInManager<Nurse>>();
     }
 }

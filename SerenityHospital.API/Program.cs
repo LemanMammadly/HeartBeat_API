@@ -24,15 +24,25 @@ using Stripe;
 using Hangfire;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
+using Microsoft.Extensions.DependencyInjection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-// Add services to the container.
-builder.Services.AddPersistenceServices(builder.Configuration);
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); ;
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+builder.Services.AddPersistenceServices(builder.Configuration);
+
+//confirm email
+builder.Services.AddTransient<UserManager<AppUser>>();
+builder.Services.AddTransient<UserManager<Doctor>>();
+builder.Services.AddTransient<UserManager<Patient>>();
+builder.Services.AddTransient<UserManager<Adminstrator>>();
+builder.Services.AddTransient<UserManager<Nurse>>();
+
 
 builder.Services.AddFluentValidation(opt =>
 {
@@ -71,49 +81,51 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 
-builder.Services.AddHangfire(configuration => configuration
-    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-    .UseSimpleAssemblyNameTypeSerializer()
-    .UseRecommendedSerializerSettings()
-    .UseSqlServerStorage(builder.Configuration.GetConnectionString("Default")));
+//builder.Services.AddHangfire(configuration => configuration
+//    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+//    .UseSimpleAssemblyNameTypeSerializer()
+//    .UseRecommendedSerializerSettings()
+//    .UseSqlServerStorage(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddHangfireServer();
+//builder.Services.AddHangfireServer();
 
 
+//stripe
 builder.Services.AddStripeInfrastructure(builder.Configuration);
 
 
 //add email config
-var emailConfig =configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 
 builder.Services.AddScoped<IEmailServiceSender, EmailServiceSender>();
 
-builder.Services.AddMailKit(optionBuilder =>
-{
-    optionBuilder.UseMailKit(new MailKitOptions
-    {
-        Server = "smtp.gmail.com",
-        Port = 587,
-        SenderName = "Your Name",
-        SenderEmail = "leman.mammadly23@gmail.com",
-        Account = "leman.mammadly23@gmail.com",
-        Password = "naehtslelvpxpaox",
-        Security = true // Use SSL/TLS
-    });
-});
-// Set your secret key. Remember to switch to your live secret key in production.
-// See your keys here: https://dashboard.stripe.com/apikeys
-StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
+//builder.Services.AddMailKit(optionBuilder =>
+//{
+//    optionBuilder.UseMailKit(new MailKitOptions
+//    {
+//        Server = "smtp.gmail.com",
+//        Port = 587,
+//        SenderName = "Your Name",
+//        SenderEmail = "leman.mammadly23@gmail.com",
+//        Account = "leman.mammadly23@gmail.com",
+//        Password = "naehtslelvpxpaox",
+//        Security = true // Use SSL/TLS
+//    });
+//});
 
-var options = new PaymentIntentCreateOptions
-{
-    Amount = 500,
-    Currency = "gbp",
-    PaymentMethod = "pm_card_visa",
-};
-var service = new PaymentIntentService();
-service.Create(options);
+
+
+//StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
+
+//var options = new PaymentIntentCreateOptions
+//{
+//    Amount = 500,
+//    Currency = "gbp",
+//    PaymentMethod = "pm_card_visa",
+//};
+//var service = new PaymentIntentService();
+//service.Create(options);
 
 
 builder.Services.AddAutoMapper(typeof(HospitalMappingProfile).Assembly);
@@ -150,6 +162,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration["ConnectionStrings:Default"]);
 });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -164,10 +177,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseHangfireDashboard();
-app.MapHangfireDashboard();
-
-RecurringJob.AddOrUpdate<IDoctorService>(x => x.DoctorStatusUpdater("be79adb2-ecb0-4133-8a91-927ab27ba95e"), Cron.MinuteInterval(1));
+//app.UseHangfireDashboard();
+//app.MapHangfireDashboard();
 
 app.UseAuthentication();
 app.UseAuthorization();

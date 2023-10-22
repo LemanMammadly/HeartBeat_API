@@ -9,6 +9,7 @@ public interface ITokenService
     TokenResponseDto CreateDoctorToken(Doctor doctor, int expires = 60);
     TokenResponseDto CreatePatientToken(Patient patient, int expires = 60);
     TokenResponseDto CreateNurseToken(Nurse nurse, int expires = 60);
+    TokenResponseDto CreateAdminToken(Admin admin, int expires = 60);
     string CreateRefreshToken();
 }
 

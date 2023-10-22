@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Services.Interfaces;
 
@@ -20,18 +21,24 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             return Ok(await _service.GetAllAsync());
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post(string name)
         {
@@ -39,7 +46,8 @@ namespace SerenityHospital.API.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, string name)
         {
@@ -47,6 +55,8 @@ namespace SerenityHospital.API.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

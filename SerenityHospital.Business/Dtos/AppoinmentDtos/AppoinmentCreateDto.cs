@@ -30,9 +30,9 @@ public class AppoinmentCreateDtoValidator:AbstractValidator<AppoinmentCreateDto>
     private bool BeValidAppointmentTime(DateTime appoinmentDate)
     {
         TimeSpan validStartTime = new TimeSpan(9, 0, 0);
-        TimeSpan validEndTime = new TimeSpan(18, 0, 0);
+        TimeSpan validEndTime = new TimeSpan(24, 0, 0);
 
-        if (appoinmentDate.DayOfWeek >= DayOfWeek.Monday && appoinmentDate.DayOfWeek <= DayOfWeek.Friday)
+        if (appoinmentDate.DayOfWeek >= DayOfWeek.Monday && appoinmentDate.DayOfWeek <= DayOfWeek.Saturday)
         {
             TimeSpan appointmentTime = appoinmentDate.TimeOfDay;
 

@@ -28,32 +28,9 @@ public static class PersistenceServiceRegistration
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
-        //.AddDefaultTokenProviders()
-        .AddSignInManager<SignInManager<AppUser>>();
+        .AddSignInManager<SignInManager<AppUser>>()
+        .AddDefaultTokenProviders();
 
-        services.AddIdentityCore<Adminstrator>(options =>
-        {
-            options.Password.RequireNonAlphanumeric = false;
-            options.Lockout.MaxFailedAccessAttempts = 1;
-            options.User.RequireUniqueEmail = true;
-            options.SignIn.RequireConfirmedEmail = true;
-        })
-        .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<AppDbContext>()
-        .AddDefaultTokenProviders()
-        .AddSignInManager<SignInManager<Adminstrator>>();
-
-        services.AddIdentityCore<Doctor>(options =>
-        {
-            options.Password.RequireNonAlphanumeric = false;
-            options.Lockout.MaxFailedAccessAttempts = 1;
-            options.User.RequireUniqueEmail = true;
-            options.SignIn.RequireConfirmedEmail = true;
-        })
-        .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<AppDbContext>()
-        .AddDefaultTokenProviders()
-        .AddSignInManager<SignInManager<Doctor>>();
 
         services.AddIdentityCore<Patient>(options =>
         {
@@ -64,8 +41,32 @@ public static class PersistenceServiceRegistration
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
-        .AddDefaultTokenProviders()
-        .AddSignInManager<SignInManager<Patient>>();
+        .AddSignInManager<SignInManager<Patient>>()
+        .AddDefaultTokenProviders();
+
+        services.AddIdentityCore<Adminstrator>(options =>
+        {
+            options.Password.RequireNonAlphanumeric = false;
+            options.Lockout.MaxFailedAccessAttempts = 1;
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = true;
+        })
+        .AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddSignInManager<SignInManager<Adminstrator>>()
+         .AddDefaultTokenProviders();
+
+        services.AddIdentityCore<Doctor>(options =>
+        {
+            options.Password.RequireNonAlphanumeric = false;
+            options.Lockout.MaxFailedAccessAttempts = 1;
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = true;
+        })
+        .AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddSignInManager<SignInManager<Doctor>>()
+        .AddDefaultTokenProviders();
 
         services.AddIdentityCore<Nurse>(options =>
         {
@@ -76,7 +77,20 @@ public static class PersistenceServiceRegistration
         })
         .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
-        .AddDefaultTokenProviders()
-        .AddSignInManager<SignInManager<Nurse>>();
-    }
+        .AddSignInManager<SignInManager<Nurse>>()
+        .AddDefaultTokenProviders();
+
+
+        services.AddIdentityCore<Admin>(options =>
+        {
+            options.Password.RequireNonAlphanumeric = false;
+            options.Lockout.MaxFailedAccessAttempts = 1;
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = true;
+        })
+        .AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddSignInManager<SignInManager<Admin>>()
+        .AddDefaultTokenProviders();
+         }
 }

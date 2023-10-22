@@ -22,6 +22,7 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<Appoinment> Appoinments { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<PatientHistory> PatientHistories { get; set; }
+    public DbSet<Admin> Admins { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Dtos.PositionDtos;
 using SerenityHospital.Business.Services.Interfaces;
@@ -33,6 +34,8 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetByIdAsync(id, true));
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm]PositionCreateDto dto)
         {
@@ -40,6 +43,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]PositionUpdateDto dto)
         {
@@ -47,6 +52,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -54,6 +61,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPatch("[action]/{id}")]
         public async Task<IActionResult> SoftDelete(int id)
         {
@@ -61,6 +70,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPatch("[action]/{id}")]
         public async Task<IActionResult> RevertSoftDelete(int id)
         {

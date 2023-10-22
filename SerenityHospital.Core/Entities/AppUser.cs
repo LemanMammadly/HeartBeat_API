@@ -12,6 +12,7 @@ public class AppUser:IdentityUser
     public string? ImageUrl { get; set; }
     public string? RefreshToken { get; set; }
     public DateTime? RefreshTokenExpiresDate { get; set; }
+
 }
 
 

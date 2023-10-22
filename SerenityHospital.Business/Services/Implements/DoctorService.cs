@@ -482,7 +482,7 @@ public class DoctorService : IDoctorService
         {
             if(currentDate>=app.AppoinmentDate && currentDate<=app.AppoinmentDate.Add(TimeSpan.FromMinutes(app.Duration)))
             {
-                newStatus = DoctorAvailabilityStatus.Busy;
+                doctor.AvailabilityStatus= DoctorAvailabilityStatus.Busy;
                 break;
             }
         }

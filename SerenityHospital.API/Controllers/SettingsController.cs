@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Dtos.SettingDtos;
 using SerenityHospital.Business.Services.Interfaces;
@@ -27,6 +28,8 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetAllAsync());
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm]SettingCreateDto dto)
         {
@@ -34,6 +37,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]SettingUpdateDto dto)
         {

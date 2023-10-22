@@ -8,6 +8,7 @@ using SerenityHospital.Core.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
+using System.Numerics;
 
 namespace SerenityHospital.Business.ExternalServices.Implements;
 
@@ -18,14 +19,16 @@ public class TokenService : ITokenService
     readonly UserManager<Doctor> _doctorUserManager;
     readonly UserManager<Patient> _patientUserManager;
     readonly UserManager<Nurse> _nurseUserManager;
+    readonly UserManager<Admin> _adminUserManager;
 
-    public TokenService(IConfiguration configuration, UserManager<Adminstrator> userManager, UserManager<Doctor> doctorUserManager, UserManager<Patient> patientUserManager, UserManager<Nurse> nurseUserManager)
+    public TokenService(IConfiguration configuration, UserManager<Adminstrator> userManager, UserManager<Doctor> doctorUserManager, UserManager<Patient> patientUserManager, UserManager<Nurse> nurseUserManager, UserManager<Admin> adminUserManager)
     {
         _configuration = configuration;
         _adminstratorUserManager = userManager;
         _doctorUserManager = doctorUserManager;
         _patientUserManager = patientUserManager;
         _nurseUserManager = nurseUserManager;
+        _adminUserManager = adminUserManager;
     }
 
     public string CreateRefreshToken()
@@ -138,6 +141,11 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.Surname,patient.Surname)
         };
 
+        foreach (var userRole in _patientUserManager.GetRolesAsync(patient).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
+
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
 
         SigningCredentials credentials = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
@@ -181,6 +189,10 @@ public class TokenService : ITokenService
             new Claim(ClaimTypes.Surname,nurse.Surname),
         };
 
+        foreach (var userRole in _nurseUserManager.GetRolesAsync(nurse).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
 
         SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
 
@@ -209,6 +221,53 @@ public class TokenService : ITokenService
             Username = nurse.UserName,
             RefreshToken = refreshToken,
             RefreshTokenExpires = refreshTokenExpires
+        };
+    }
+
+    public TokenResponseDto CreateAdminToken(Admin admin, int expires = 60)
+    {
+
+        List<Claim> claims = new List<Claim>()
+        {
+            new Claim(ClaimTypes.Name,admin.UserName),
+            new Claim(ClaimTypes.NameIdentifier,admin.Id),
+            new Claim(ClaimTypes.Email,admin.Email),
+            new Claim(ClaimTypes.GivenName,admin.Name),
+            new Claim(ClaimTypes.Surname,admin.Surname)
+        };
+
+        foreach (var userRole in _adminUserManager.GetRolesAsync(admin).Result)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
+
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
+
+        SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
+            _configuration["Jwt:Issuer"],
+            _configuration["Jwt:Audience"],
+            claims,
+            DateTime.UtcNow.AddHours(4),
+            DateTime.UtcNow.AddHours(4).AddMinutes(expires),
+            credentials);
+
+        JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+        string token = tokenHandler.WriteToken(jwtSecurityToken);
+        string refreshToken = CreateRefreshToken();
+        var refreshTokenExpires = jwtSecurityToken.ValidTo.AddMinutes(expires / 3);
+        admin.RefreshToken = refreshToken;
+        admin.RefreshTokenExpiresDate = refreshTokenExpires;
+        _adminUserManager.UpdateAsync(admin).Wait();
+
+        return new()
+        {
+            Token=token,
+            Expires=jwtSecurityToken.ValidTo,
+            Username=admin.UserName,
+            RefreshToken=refreshToken,
+            RefreshTokenExpires=refreshTokenExpires
         };
     }
 }

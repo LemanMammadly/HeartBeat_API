@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
@@ -21,13 +22,20 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Patient")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             return Ok(await _service.GetAllAsync());
         }
 
-
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Patient")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

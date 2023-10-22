@@ -11,6 +11,7 @@ namespace SerenityHospital.Business.Constants
         public static string DoctorImageRoot = Path.Combine("imgs", "doctor");
         public static string PatientImageRoot = Path.Combine("imgs", "patient");
         public static string NurseImageRoot = Path.Combine("imgs", "nurse");
+        public static string AdminImageRoot = Path.Combine("imgs", "admin");
     }
 }
 

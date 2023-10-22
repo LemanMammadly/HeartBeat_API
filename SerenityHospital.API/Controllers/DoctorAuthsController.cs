@@ -43,55 +43,61 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetById(id,true));
         }
 
+
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm] DoctorCreateDto dto)
         {
-            await _service.CreateAsync(dto);
-            var user = await _userManager.FindByEmailAsync(dto.Email);
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var confirmationLink = Url.Action("ConfirmEmail", "DoctorAuths", new { token, email = dto.Email }, Request.Scheme);
-            var message = new Message(new string[] { dto.Email! }, "Confirmation email link", confirmationLink!);
-            _emailService.SendEmail(message);
+            //await _service.CreateAsync(dto);
+            //var user = await _userManager.FindByEmailAsync(dto.Email);
+            //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //var confirmationLink = Url.Action("ConfirmEmail", "DoctorAuths", new { token, email = dto.Email }, Request.Scheme);
+            //var message = new Message(new string[] { dto.Email! }, "Confirmation email link", confirmationLink!);
+            //_emailService.SendEmail(message);
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        [HttpGet("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string token, string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user != null)
-            {
-                var result = await _userManager.ConfirmEmailAsync(user, token);
-                if (result.Succeeded)
-                {
-                    return StatusCode(StatusCodes.Status200OK);
-                }
-            }
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
+        //[HttpGet("ConfirmEmail")]
+        //public async Task<IActionResult> ConfirmEmail(string token, string email)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(email);
+        //    if (user != null)
+        //    {
+        //        var result = await _userManager.ConfirmEmailAsync(user, token);
+        //        if (result.Succeeded)
+        //        {
+        //            return StatusCode(StatusCodes.Status200OK);
+        //        }
+        //    }
+        //    return StatusCode(StatusCodes.Status500InternalServerError);
+        //}
 
+        [Authorize(Roles = "Doctor")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm]DoctorLoginDto dto)
         {
-            var user = await _userManager.FindByNameAsync(dto.UserName);
+            //var user = await _userManager.FindByNameAsync(dto.UserName);
 
-            if (user.EmailConfirmed == false)
-            {
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = Url.Action("ConfirmEmail", "DoctorAuths", new { token, email = user.Email }, Request.Scheme);
-                var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
-                _emailService.SendEmail(message);
-                return StatusCode(StatusCodes.Status201Created);
-            }
+            //if (user.EmailConfirmed == false)
+            //{
+            //    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //    var confirmationLink = Url.Action("ConfirmEmail", "DoctorAuths", new { token, email = user.Email }, Request.Scheme);
+            //    var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+            //    _emailService.SendEmail(message);
+            //    return StatusCode(StatusCodes.Status201Created);
+            //}
             return Ok(await _service.LoginAsync(dto));
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpPost("[action]")]
         public async Task<IActionResult> LoginWithRefreshToken(string refreshToken)
         {
             return Ok(await _service.LoginWithRefreshTokenAsync(refreshToken));
         }
 
+        [Authorize(Roles = "Superadmin")]
         [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
@@ -100,6 +106,7 @@ namespace SerenityHospital.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Superadmin")]
         [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
@@ -108,6 +115,8 @@ namespace SerenityHospital.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddDoctorRoom([FromForm] AddDoctorRoomDto dto)
         {
@@ -115,7 +124,7 @@ namespace SerenityHospital.API.Controllers
             return Ok();
         }
 
-
+        [Authorize(Roles = "Doctor")]
         [HttpPut("[action]")]
         public async Task<IActionResult> Put([FromForm] DoctorUpdateDto dto)
         {
@@ -123,6 +132,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("[action]")]
         public async Task<IActionResult> PutByAdmin(string id,[FromForm] DoctorUpdateByAdminDto dto)
         {
@@ -130,6 +141,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Superadmin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -137,6 +150,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Doctor")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {

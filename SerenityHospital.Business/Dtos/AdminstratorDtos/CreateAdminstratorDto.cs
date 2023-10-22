@@ -34,7 +34,7 @@ public class CreateAdminstratorDtoValidator:AbstractValidator<CreateAdminstrator
                 .WithMessage("Adminstrator name length greater than 2")
             .MaximumLength(25)
                 .WithMessage("Adminstrator name length less than 25");
-        RuleFor(a => a.Name)
+        RuleFor(a => a.Surname)
             .NotEmpty()
                 .WithMessage("Adminstrator surname dont be empty")
             .NotNull()

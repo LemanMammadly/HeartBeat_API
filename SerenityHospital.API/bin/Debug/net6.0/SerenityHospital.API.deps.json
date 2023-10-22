@@ -11,6 +11,7 @@
           "FluentValidation.AspNetCore": "11.3.0",
           "Hangfire": "1.8.5",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.22",
+          "Microsoft.AspNetCore.Identity": "2.2.0",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "6.0.23",
           "Microsoft.EntityFrameworkCore": "6.0.22",
           "Microsoft.EntityFrameworkCore.Design": "6.0.22",

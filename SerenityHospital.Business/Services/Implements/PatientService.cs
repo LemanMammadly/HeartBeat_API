@@ -109,7 +109,7 @@ public class PatientService : IPatientService
         }
 
         if (await _userManager.Users.AnyAsync(p => p.UserName == dto.UserName || p.Email == dto.Email || p.PhoneNumber ==dto.PhoneNumber)) throw new AppUserIsAlreadyExistException<Patient>();
-        if (await _AppUserManager.Users.AnyAsync(a => a.UserName == dto.UserName || a.Email == dto.Email || a.PhoneNumber == dto.PhoneNumber)) throw new AppUserIsAlreadyExistException<Patient>();
+        if (await _AppUserManager.Users.AnyAsync(a => a.UserName == dto.UserName || a.Email == dto.Email)) throw new AppUserIsAlreadyExistException<Patient>();
 
         var patient = _mapper.Map<Patient>(dto);
 

@@ -82,8 +82,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm] AdminLoginDto dto)
         {

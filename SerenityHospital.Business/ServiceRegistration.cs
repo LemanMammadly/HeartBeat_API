@@ -17,6 +17,16 @@ public static class ServiceRegistration
 {
     public static void AddServices(this IServiceCollection services)
     {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+        });
         services.AddScoped<IHospitalService, HospitalService>();
         services.AddScoped<ISettingService, SettingService>();
         services.AddScoped<IFileService, FileService>();

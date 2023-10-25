@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.SettingDtos;
 using SerenityHospital.Business.Exceptions.Common;
@@ -13,15 +15,17 @@ namespace SerenityHospital.Business.Services.Implements;
 
 public class SettingService : ISettingService
 {
+    readonly IConfiguration _config;
     readonly ISettingRepository _repo;
     readonly IMapper _mapper;
     readonly IFileService _fileService;
 
-    public SettingService(ISettingRepository repo, IMapper mapper, IFileService fileService)
+    public SettingService(ISettingRepository repo, IMapper mapper, IFileService fileService, IConfiguration config)
     {
         _repo = repo;
         _mapper = mapper;
         _fileService = fileService;
+        _config = config;
     }
 
     public async Task CreateAsync(SettingCreateDto dto)
@@ -43,7 +47,18 @@ public class SettingService : ISettingService
 
     public async Task<IEnumerable<SettingDetailItemDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<SettingDetailItemDto>>(_repo.GetAll());
+        var settings = await _repo.GetAll().ToListAsync();
+        var map = _mapper.Map<IEnumerable<SettingDetailItemDto>>(settings);
+
+        foreach (var setting in settings)
+        {
+            foreach (var item in map)
+            {
+                item.HeaderLogoUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.HeaderLogoUrl;
+                item.FooterLogoUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.FooterLogoUrl;
+            }
+        }
+        return map;
     }
 
     public async Task UpdateAsync(int id, SettingUpdateDto dto)

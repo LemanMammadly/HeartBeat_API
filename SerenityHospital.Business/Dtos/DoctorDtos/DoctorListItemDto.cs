@@ -9,6 +9,7 @@ namespace SerenityHospital.Business.Dtos.DoctorDtos;
 
 public record DoctorListItemDto
 {
+    public string Id { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
     public string UserName { get; set; }
@@ -16,6 +17,7 @@ public record DoctorListItemDto
     public DateTime? EndDate { get; set; }
     public bool IsDeleted { get; set; }
     public WorkStatus Status { get; set; }
+    public string Email { get; set; }
     public PositionInfoDto Position { get; set; }
     public DepartmentInfoDto Department { get; set; }
     public DoctorRoomDetailItemDto DoctorRoom { get; set; }

@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.DepartmentDtos;
 using SerenityHospital.Business.Exceptions.Common;
@@ -11,6 +14,7 @@ using SerenityHospital.Business.ExternalServices.Interfaces;
 using SerenityHospital.Business.Services.Interfaces;
 using SerenityHospital.Core.Entities;
 using SerenityHospital.DAL.Repositories.Interfaces;
+using Stripe.Tax;
 
 namespace SerenityHospital.Business.Services.Implements;
 
@@ -22,8 +26,9 @@ public class DepartmentService : IDepartmentService
     readonly IMapper _mapper;
     readonly IFileService _fileService;
     readonly IServiceRepository _serviceRepo;
+    readonly IConfiguration _config;
 
-    public DepartmentService(IDepartmentRepository repo, IMapper mapper, IFileService fileService, IServiceRepository serviceRepo, IPatientRoomRepository patientRepo, IDoctorRoomRepository doctorRoomRepo)
+    public DepartmentService(IDepartmentRepository repo, IMapper mapper, IFileService fileService, IServiceRepository serviceRepo, IPatientRoomRepository patientRepo, IDoctorRoomRepository doctorRoomRepo, IConfiguration config)
     {
         _repo = repo;
         _mapper = mapper;
@@ -31,6 +36,7 @@ public class DepartmentService : IDepartmentService
         _serviceRepo = serviceRepo;
         _patientRepo = patientRepo;
         _doctorRoomRepo = doctorRoomRepo;
+        _config = config;
     }
 
     public async Task CreateAsync(DepartmentCreateDto dto)
@@ -69,11 +75,29 @@ public class DepartmentService : IDepartmentService
     {
         if(takeAll)
         {
-            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.GetAll("PatientRooms","Doctors","Doctors.Position", "DoctorRooms"));
+            var departments = await _repo.GetAll("PatientRooms", "Doctors", "Doctors.Position", "DoctorRooms").ToListAsync();
+            var map = _mapper.Map<IEnumerable<DepartmentListItemDto>>(departments);
+            foreach (var depart in departments)
+            {
+                foreach (var item in map)
+                {
+                    item.IconUrl = _config["Jwt:Issuer"] + "wwwroot/" + depart.IconUrl;
+                }
+            }
+            return map;
         }
         else
         {
-            return _mapper.Map<IEnumerable<DepartmentListItemDto>>(_repo.FindAll(d => d.IsDeleted == false,"PatientRooms","Doctors","Doctors.Position", "DoctorRooms"));
+            var departments = await _repo.FindAll(d => d.IsDeleted == false, "PatientRooms", "Doctors", "Doctors.Position", "DoctorRooms").ToListAsync();
+            var map = _mapper.Map<IEnumerable<DepartmentListItemDto>>(departments);
+            foreach (var depart in departments)
+            {
+                foreach (var item in map)
+                {
+                    item.IconUrl = _config["Jwt:Issuer"] + "wwwroot/" + depart.IconUrl;
+                }
+            }
+            return map;
         }
     }
 
@@ -92,7 +116,12 @@ public class DepartmentService : IDepartmentService
             if (entity is null) throw new NotFoundException<Department>();
         }
 
-        return _mapper.Map<DepartmentDetailItemDto>(entity);
+        var map = _mapper.Map<DepartmentDetailItemDto>(entity);
+
+        map.IconUrl= _config["Jwt:Issuer"] + "wwwroot/" + map.IconUrl;
+
+        return map;
+
     }
 
     public async Task ReverteSoftDeleteAsync(int id)

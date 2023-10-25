@@ -21,24 +21,21 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Superadmin,Admin")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             return Ok(await _service.GetAllAsync());
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Superadmin,Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             return Ok(await _service.GetByIdAsync(id));
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Superadmin,Admin")]
         [HttpPost]
         public async Task<IActionResult> Post(string name)
         {
@@ -46,8 +43,7 @@ namespace SerenityHospital.API.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Superadmin,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, string name)
         {
@@ -55,8 +51,7 @@ namespace SerenityHospital.API.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Superadmin,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {

@@ -54,8 +54,8 @@ public class SettingService : ISettingService
         {
             foreach (var item in map)
             {
-                item.HeaderLogoUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.HeaderLogoUrl;
-                item.FooterLogoUrl = _config["Jwt:Issuer"] + "wwwroot/" + item.FooterLogoUrl;
+                item.HeaderLogoUrl = _config["Jwt:Issuer"] + "wwwroot/" + setting.HeaderLogoUrl;
+                item.FooterLogoUrl = _config["Jwt:Issuer"] + "wwwroot/" + setting.FooterLogoUrl;
             }
         }
         return map;

@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.AdminstratorDtos;
 using SerenityHospital.Business.Dtos.AppoinmentDtos;
@@ -43,8 +44,9 @@ public class DoctorService : IDoctorService
     readonly ITokenService _tokenService;
     readonly SignInManager<Doctor> _signInManager;
     readonly IDoctorRoomRepository _doctorRoomRepository;
+    readonly IConfiguration _config;
 
-    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, SignInManager<Doctor> signInManager, IDoctorRoomRepository doctorRoomRepository)
+    public DoctorService(UserManager<Doctor> userManager, IMapper mapper, IFileService fileService, IDepartmentRepository departmentRepository, IPositionRepository positionRepository, UserManager<AppUser> appUserManager, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, SignInManager<Doctor> signInManager, IDoctorRoomRepository doctorRoomRepository, IConfiguration config)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -58,6 +60,7 @@ public class DoctorService : IDoctorService
         userId = _context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _signInManager = signInManager;
         _doctorRoomRepository = doctorRoomRepository;
+        _config = config;
     }
 
     public async Task AddRole(AddRoleDto dto)
@@ -132,12 +135,14 @@ public class DoctorService : IDoctorService
             {
                 var userDto = new DoctorListItemDto
                 {
+                    Id = user.Id,
                     Name = user.Name,
                     Surname = user.Surname,
-                    ImageUrl = user.ImageUrl,
+                    ImageUrl =  _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                     UserName = user.UserName,
                     IsDeleted = user.IsDeleted,
                     Status = user.Status,
+                    Email=user.Email,
                     AvailabilityStatus = user.AvailabilityStatus,
                     Roles = await _userManager.GetRolesAsync(user),
                     DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
@@ -157,11 +162,13 @@ public class DoctorService : IDoctorService
             {
                 var userDto = new DoctorListItemDto
                 {
+                    Id = user.Id,
                     Name = user.Name,
                     Surname = user.Surname,
-                    ImageUrl = user.ImageUrl,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                     UserName = user.UserName,
                     Status = user.Status,
+                    Email = user.Email,
                     AvailabilityStatus = user.AvailabilityStatus,
                     Roles = await _userManager.GetRolesAsync(user),
                     Department = _mapper.Map<DepartmentInfoDto>(user.Department),
@@ -431,11 +438,13 @@ public class DoctorService : IDoctorService
             if (user is null) throw new AppUserNotFoundException<Doctor>();
             var userDto = new DoctorDetailItemDto
             {
+                Id = user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 UserName = user.UserName,
                 IsDeleted = user.IsDeleted,
+                Email = user.Email,
                 AvailabilityStatus = user.AvailabilityStatus,
                 Roles = await _userManager.GetRolesAsync(user),
                 DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
@@ -452,11 +461,13 @@ public class DoctorService : IDoctorService
             if (user is null) throw new AppUserNotFoundException<Doctor>();
             var userDto = new DoctorDetailItemDto
             {
+                Id=user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 UserName = user.UserName,
                 IsDeleted = user.IsDeleted,
+                Email = user.Email,
                 AvailabilityStatus = user.AvailabilityStatus,
                 Roles = await _userManager.GetRolesAsync(user),
                 DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),

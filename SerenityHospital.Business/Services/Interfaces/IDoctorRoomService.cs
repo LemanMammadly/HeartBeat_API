@@ -9,6 +9,7 @@ public interface IDoctorRoomService
     Task CreateAsync(DoctorRoomCreateDro dto);
     Task UpdateAsync(int id, DoctorRoomUpdateDto dto);
     Task SoftDeleteAsync(int id);
+    Task<int> Count();
     Task RevertSoftDeleteAsync(int id);
     Task DeleteAsync(int id);
 }

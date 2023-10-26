@@ -45,8 +45,15 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Count()
+        {
+            return Ok(await _service.Count());
+        }
+
         [Authorize(Roles = "Superadmin,Admin")]
-        [HttpPut("{id}")]
+        [HttpPut("[action]/{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]ServiceUpdateDto dto)
         {
             await _service.UpdateAsync(id, dto);
@@ -54,7 +61,7 @@ namespace SerenityHospital.API.Controllers
         }
 
         [Authorize(Roles = "Superadmin,Admin")]
-        [HttpDelete("{id}")]
+        [HttpDelete("[action]/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);

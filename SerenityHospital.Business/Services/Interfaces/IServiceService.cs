@@ -9,6 +9,7 @@ public interface IServiceService
     Task CreateAsync(ServiceCreateDto dto);
     Task UpdateAsync(int id,ServiceUpdateDto dto);
     Task DeleteAsync(int id);
+    Task<int> Count();
     Task SoftDeleteAsync(int id);
     Task ReverteSoftDeleteAsync(int id);
 }

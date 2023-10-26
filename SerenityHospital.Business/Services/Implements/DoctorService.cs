@@ -508,5 +508,11 @@ public class DoctorService : IDoctorService
             throw new AppUserUpdateFailedException<Doctor>();
         }
     }
+
+    public async Task<int> Count()
+    {
+        var users = await _userManager.Users.ToListAsync();
+        return users.Count();
+    }
 }
 

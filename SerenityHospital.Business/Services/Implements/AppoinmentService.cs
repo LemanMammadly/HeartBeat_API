@@ -245,5 +245,11 @@ public class AppoinmentService : IAppoinmentService
         _mapper.Map(dto, appoinment);
         await _repo.SaveAsync();
     }
+
+    public async Task<int> Count()
+    {
+        var rooms = _repo.GetAll();
+        return rooms.Count();
+    }
 }
 

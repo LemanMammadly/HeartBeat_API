@@ -50,6 +50,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+
         [Authorize(Roles = "Superadmin")]
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
@@ -76,6 +77,13 @@ namespace SerenityHospital.API.Controllers
             await _service.SoftDeleteAsync(id);
             return NoContent();
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Count()
+        {
+            return Ok(await _service.Count());
+        }
+
 
 
         [Authorize(Roles = "Superadmin")]

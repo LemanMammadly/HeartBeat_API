@@ -12,6 +12,7 @@ public interface INurseService
     Task<ICollection<NurseListItemDto>> GetAllAsync(bool takeAll);
     Task<NurseDetailItemDto> GetById(bool takeAll,string id);
     Task UpdateAsync(NurseUpdateDto dto);
+    Task<int> Count();
     Task UpdateByAdminAsync(string id,NurseUpdateByAdminDto dto);
     Task AddRole(AddRoleDto dto);
     Task RemoveRole(RemoveRoleDto dto);

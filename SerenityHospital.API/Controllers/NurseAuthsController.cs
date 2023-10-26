@@ -42,6 +42,13 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetById(true,id));
         }
 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Count()
+        {
+            return Ok(await _service.Count());
+        }
+
+
         [Authorize(Roles = "Nurse")]
         [HttpPut("[action]")]
         public async Task<IActionResult> Put([FromForm]NurseUpdateDto dto)

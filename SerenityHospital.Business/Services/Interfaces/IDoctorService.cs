@@ -12,6 +12,7 @@ public interface IDoctorService
     Task<ICollection<DoctorListItemDto>> GetAllAsync(bool takeAll);
     Task<DoctorDetailItemDto> GetById(string id, bool takeAll);
     Task AddDoctorRoom(AddDoctorRoomDto dto);
+    Task<int> Count();
     Task UpdateAsync(DoctorUpdateDto dto);
     Task UpdateByAdminAsync(string id,DoctorUpdateByAdminDto dto);
     Task AddRole(AddRoleDto dto);

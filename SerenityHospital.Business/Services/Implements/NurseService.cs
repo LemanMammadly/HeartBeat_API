@@ -403,5 +403,11 @@ public class NurseService : INurseService
         var result = await _userManager.UpdateAsync(user);
         if (!result.Succeeded) throw new LogoutFaileException<Nurse>();
     }
+
+    public async Task<int> Count()
+    {
+        var users = await _userManager.Users.ToListAsync();
+        return users.Count();
+    }
 }
 

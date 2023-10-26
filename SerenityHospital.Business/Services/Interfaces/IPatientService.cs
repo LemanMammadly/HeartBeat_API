@@ -13,6 +13,7 @@ public interface IPatientService
     Task<ICollection<PatientListItemDto>> GetAllAsync();
     Task<PatientDetailItemDto> GetById(string id);
     Task AddRole(AddRoleDto dto);
+    Task<int> Count();
     Task RemoveRole(RemoveRoleDto dto);
     Task UpdateAsync(PatientUpdateDto dto);
     Task UpdateByAdminAsync(string id,PatientUpdateByAdminDto dto);

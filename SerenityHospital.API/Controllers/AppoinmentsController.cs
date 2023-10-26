@@ -70,6 +70,13 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> Count()
+        {
+            return Ok(await _service.Count());
+        }
+
         [Authorize(Roles = "Superadmin")]
         [Authorize(Roles = "Admin")]
         [HttpPatch("[action]/{id}")]

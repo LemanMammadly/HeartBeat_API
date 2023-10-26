@@ -173,5 +173,11 @@ public class DepartmentService : IDepartmentService
         _mapper.Map(dto, entity);
         await _repo.SaveAsync();
     }
+
+    public async Task<int> Count()
+    {
+        var rooms = _repo.GetAll();
+        return rooms.Count();
+    }
 }
 

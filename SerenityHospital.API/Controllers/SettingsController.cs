@@ -28,7 +28,7 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetAllAsync());
         }
 
-        [Authorize(Roles = "Superadmin,Admin")]
+        //[Authorize(Roles = "Superadmin,Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm]SettingCreateDto dto)
         {
@@ -36,12 +36,12 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Superadmin,Admin")]
-        [HttpPut("{id}")]
+        //[Authorize(Roles = "Superadmin,Admin")]
+        [HttpPut("[action]/{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]SettingUpdateDto dto)
         {
             await _service.UpdateAsync(id, dto);
-            return NoContent();
+            return Ok();
         }
     }
 }

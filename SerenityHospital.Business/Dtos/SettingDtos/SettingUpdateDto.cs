@@ -32,13 +32,13 @@ public class SettingUpdateDtoValidator:AbstractValidator<SettingUpdateDto>
                 .WithMessage("Email dont be empty")
             .NotNull()
                 .WithMessage("Email dont be null")
-            .Must(s =>
-            {
-                Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-                var result = regex.Match(s);
-                return result.Success;
-            })
-                 .WithMessage("Please enter valid email");
+        .Must(s =>
+        {
+            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            var result = regex.Match(s);
+            return result.Success;
+        })
+             .WithMessage("Please enter valid email");
         RuleFor(s => s.Phone)
             .NotEmpty()
                 .WithMessage("Phone number dont be empty")

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SerenityHospital.DAL.Contexts;
 
@@ -11,9 +12,10 @@ using SerenityHospital.DAL.Contexts;
 namespace SerenityHospital.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231027213834_DepartmentTableUpdated")]
+    partial class DepartmentTableUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -326,6 +328,7 @@ namespace SerenityHospital.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ServiceId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -847,7 +850,8 @@ namespace SerenityHospital.DAL.Migrations
                     b.HasOne("SerenityHospital.Core.Entities.Service", "Service")
                         .WithMany("Departments")
                         .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Service");
                 });

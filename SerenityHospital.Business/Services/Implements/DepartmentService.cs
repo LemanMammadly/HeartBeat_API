@@ -46,9 +46,13 @@ public class DepartmentService : IDepartmentService
         if (!dto.IconFile.IsSizeValid(3)) throw new SizeNotValidException();
         if (!dto.IconFile.IsTypeValid("image")) throw new TypeNotValidException();
 
-        var service = await _serviceRepo.GetByIdAsync(dto.ServiceId);
-        if (service == null) throw new NotFoundException<Service>();
-        if(service.IsDeleted==true) throw new NotFoundException<Service>();
+        if(dto.ServiceId != null)
+        {
+            var service = await _serviceRepo.GetSingleAsync(s=>s.Id==dto.ServiceId);
+            if (service == null) throw new NotFoundException<Service>();
+            if(service.IsDeleted==true) throw new NotFoundException<Service>();
+        }
+
 
         var department = _mapper.Map<Department>(dto);
         department.IconUrl = await _fileService.UploadAsync(dto.IconFile, RootConstant.DepartmentImageRoot);

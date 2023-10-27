@@ -104,18 +104,19 @@ public class ServiceService : IServiceService
     public async Task UpdateAsync(int id, ServiceUpdateDto dto)
     {
         if (id <= 0) throw new NegativeIdException<Service>();
-        var entity = await _repo.GetByIdAsync(id);
+        var entity = await _repo.GetByIdAsync(id,"Departments");
         if (entity is null) throw new NotFoundException<Service>();
 
         if (await _repo.IsExistAsync(s => s.Name == dto.Name && s.Id != id)) throw new ServiceNameIsExistException();
 
         entity.Departments?.Clear();
-        if(dto.DepartmentIds != null)
+        if (dto.DepartmentIds != null)
         {
             foreach (var itemId in dto.DepartmentIds)
             {
                 var item = await _departRepo.GetByIdAsync(itemId);
                 if (item is null) throw new NotFoundException<Department>();
+                if (item.IsDeleted == true) throw new NotFoundException<Department>();
 
                 var isDepartmentInOtherService = await _repo.IsExistAsync(s => s.Id != id && s.Departments.Any(d => d.Id == item.Id));
                 if (isDepartmentInOtherService) throw new DepartmentIsInOtherSereviceException();

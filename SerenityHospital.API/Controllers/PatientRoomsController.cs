@@ -22,9 +22,9 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Doctor")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Doctor")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -41,8 +41,8 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetByIdAsync(id, true));
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm]PatientRoomCreateDto dto)
         {
@@ -51,8 +51,8 @@ namespace SerenityHospital.API.Controllers
         }
 
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]PatientRoomUpdateDto dto)
         {

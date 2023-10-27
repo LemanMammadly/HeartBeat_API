@@ -10,7 +10,7 @@ public record DepartmentCreateDto
     public string Name { get; set; }
     public string Description { get; set; }
     public IFormFile IconFile { get; set; }
-    public int ServiceId { get; set; }
+    public int? ServiceId { get; set; }
 }
 
 public class DepartmentCreateDtoValidator:AbstractValidator<DepartmentCreateDto>
@@ -34,10 +34,6 @@ public class DepartmentCreateDtoValidator:AbstractValidator<DepartmentCreateDto>
                  .WithMessage("Icon file dont be null")
             .SetValidator(new FileValidator());
         RuleFor(d => d.ServiceId)
-            .NotNull()
-                .WithMessage("ServiceId dont be null")
-            .NotEmpty()
-                 .WithMessage("ServiceId dont be null")
             .GreaterThan(0)
                 .WithMessage("ServiceId must be greater than 0");
     }

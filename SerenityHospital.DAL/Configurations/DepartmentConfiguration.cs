@@ -18,8 +18,7 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
         builder.HasOne(b => b.Service)
             .WithMany(s => s.Departments)
             .HasForeignKey(b => b.ServiceId)
-            .OnDelete(DeleteBehavior.NoAction)
-            .IsRequired();
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
 

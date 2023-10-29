@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.DepartmentDtos;
+using SerenityHospital.Business.Dtos.DoctorDtos;
+using SerenityHospital.Business.Dtos.DoctorRoom;
+using SerenityHospital.Business.Dtos.PatientRoomDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Departments;
 using SerenityHospital.Business.Exceptions.Doctors;
@@ -77,31 +80,48 @@ public class DepartmentService : IDepartmentService
 
     public async Task<IEnumerable<DepartmentListItemDto>> GetAllAsync(bool takeAll)
     {
-        if(takeAll)
+
+        ICollection<DepartmentListItemDto> departs = new List<DepartmentListItemDto>();
+
+        if (takeAll)
         {
-            var departments = await _repo.GetAll("PatientRooms", "Doctors", "Doctors.Position", "DoctorRooms").ToListAsync();
-            var map = _mapper.Map<IEnumerable<DepartmentListItemDto>>(departments);
-            foreach (var depart in departments)
+            foreach (var dep in await _repo.GetAll("PatientRooms", "Doctors", "Doctors.Position", "DoctorRooms").ToListAsync())
             {
-                foreach (var item in map)
+                var departDto = new DepartmentListItemDto
                 {
-                    item.IconUrl = _config["Jwt:Issuer"] + "wwwroot/" + depart.IconUrl;
-                }
+                    Id = dep.Id,
+                    Name = dep.Name,
+                    Description = dep.Description,
+                    IconUrl = _config["Jwt:Issuer"] + "wwwroot/" + dep.IconUrl,
+                    ServiceId = dep.ServiceId,
+                    IsDeleted = dep.IsDeleted,
+                    PatientRooms = _mapper.Map<ICollection<PatientRoomListItemDto>>(dep.PatientRooms),
+                    Doctors = _mapper.Map<ICollection<DoctorInfoDto>>(dep.Doctors),
+                    DoctorRooms = _mapper.Map<ICollection<DoctorRoomDetailItemDto>>(dep.DoctorRooms)
+                };
+                departs.Add(departDto);
             }
-            return map;
+            return departs;
         }
         else
         {
-            var departments = await _repo.FindAll(d => d.IsDeleted == false, "PatientRooms", "Doctors", "Doctors.Position", "DoctorRooms").ToListAsync();
-            var map = _mapper.Map<IEnumerable<DepartmentListItemDto>>(departments);
-            foreach (var depart in departments)
+            foreach (var dep in await _repo.FindAll(d => d.IsDeleted == false, "PatientRooms", "Doctors", "Doctors.Position", "DoctorRooms").ToListAsync())
             {
-                foreach (var item in map)
+                var departDto = new DepartmentListItemDto
                 {
-                    item.IconUrl = _config["Jwt:Issuer"] + "wwwroot/" + depart.IconUrl;
-                }
+                    Id = dep.Id,
+                    Name = dep.Name,
+                    Description = dep.Description,
+                    IconUrl = _config["Jwt:Issuer"] + "wwwroot/" + dep.IconUrl,
+                    ServiceId = dep.ServiceId,
+                    IsDeleted = dep.IsDeleted,
+                    PatientRooms = _mapper.Map<ICollection<PatientRoomListItemDto>>(dep.PatientRooms),
+                    Doctors = _mapper.Map<ICollection<DoctorInfoDto>>(dep.Doctors),
+                    DoctorRooms = _mapper.Map<ICollection<DoctorRoomDetailItemDto>>(dep.DoctorRooms)
+                };
+                departs.Add(departDto);
             }
-            return map;
+            return departs;
         }
     }
 
@@ -160,7 +180,7 @@ public class DepartmentService : IDepartmentService
         if (entity is null) throw new NotFoundException<Department>();
 
         if (await _repo.IsExistAsync(d => d.Name == dto.Name && d.Id != id)) throw new DepartmentNameIsExistException();
-        if(dto.IconFile!=null)
+        if (dto.IconFile != null) 
         {
             _fileService.Delete(entity.IconUrl);
             if (!dto.IconFile.IsSizeValid(3)) throw new SizeNotValidException();

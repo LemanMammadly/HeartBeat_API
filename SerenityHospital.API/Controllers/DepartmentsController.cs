@@ -46,7 +46,7 @@ namespace SerenityHospital.API.Controllers
 
         //[Authorize(Roles = "Superadmin")]
         //[Authorize(Roles = "Admin")]
-        [HttpPut("{id}")]
+        [HttpPut("[action]/{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]DepartmentUpdateDto dto)
         {
             await _service.UpdateAsync(id,dto);

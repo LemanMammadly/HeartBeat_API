@@ -12,7 +12,7 @@ public record DepartmentListItemDto
     public string Name { get; set; }
     public string Description { get; set; }
     public string IconUrl { get; set; }
-    public int ServiceId { get; set; }
+    public int? ServiceId { get; set; }
     public bool IsDeleted { get; set; }
     public IEnumerable<PatientRoomListItemDto> PatientRooms { get; set; }
     public IEnumerable<DoctorInfoDto> Doctors { get; set; }

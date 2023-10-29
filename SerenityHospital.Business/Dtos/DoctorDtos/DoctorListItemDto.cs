@@ -12,6 +12,9 @@ public record DoctorListItemDto
     public string Id { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
+    public int Age { get; set; }
+    public Gender Gender { get; set; }
+    public DateTime StartDate { get; set; }
     public string UserName { get; set; }
     public string? ImageUrl { get; set; }
     public DateTime? EndDate { get; set; }

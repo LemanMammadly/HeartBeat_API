@@ -139,6 +139,10 @@ public class DoctorService : IDoctorService
                     Name = user.Name,
                     Surname = user.Surname,
                     ImageUrl =  _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
+                    Age=user.Age,
+                    Gender=user.Gender,
+                    StartDate=user.StartDate,
+                    EndDate=user.EndDate,
                     UserName = user.UserName,
                     IsDeleted = user.IsDeleted,
                     Status = user.Status,
@@ -166,6 +170,10 @@ public class DoctorService : IDoctorService
                     Name = user.Name,
                     Surname = user.Surname,
                     ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
+                    Age = user.Age,
+                    Gender = user.Gender,
+                    StartDate = user.StartDate,
+                    EndDate = user.EndDate,
                     UserName = user.UserName,
                     Status = user.Status,
                     Email = user.Email,
@@ -372,7 +380,7 @@ public class DoctorService : IDoctorService
     public async Task DeleteAsync(string id)
     {
         if (string.IsNullOrWhiteSpace(id)) throw new ArgumentIsNullException();
-        var user = await _userManager.Users.Include(d=>d.Appoinments).SingleOrDefaultAsync(u => u.Id == id);
+        var user = await _userManager.Users.Include(d=>d.Appoinments).Include(d=>d.Recipes).SingleOrDefaultAsync(u => u.Id == id);
         if (user is null) throw new NotFoundException<Doctor>();
 
         if (user.ImageUrl != null)
@@ -445,12 +453,18 @@ public class DoctorService : IDoctorService
                 UserName = user.UserName,
                 IsDeleted = user.IsDeleted,
                 Email = user.Email,
+                Password = user.PasswordHash,
+                Description = user.Description,
+                Salary = user.Salary,
+                Age = user.Age,
+                Gender = user.Gender,
+                StartDate = user.StartDate,
                 AvailabilityStatus = user.AvailabilityStatus,
                 Roles = await _userManager.GetRolesAsync(user),
                 DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),
                 Department = _mapper.Map<DepartmentInfoDto>(user.Department),
                 Position = _mapper.Map<PositionInfoDto>(user.Position),
-                Appoinments=_mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
+                Appoinments = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.Appoinments),
                 AppointmentsAsPatient = _mapper.Map<ICollection<AppoinmentListItemDto>>(user.AppointmentsAsPatient)
             };
             return userDto;
@@ -468,6 +482,12 @@ public class DoctorService : IDoctorService
                 UserName = user.UserName,
                 IsDeleted = user.IsDeleted,
                 Email = user.Email,
+                Password=user.PasswordHash,
+                Description=user.Description,
+                Salary=user.Salary,
+                Age=user.Age,
+                Gender=user.Gender,
+                StartDate=user.StartDate,
                 AvailabilityStatus = user.AvailabilityStatus,
                 Roles = await _userManager.GetRolesAsync(user),
                 DoctorRoom = _mapper.Map<DoctorRoomDetailItemDto>(user.DoctorRoom),

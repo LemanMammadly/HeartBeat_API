@@ -78,7 +78,8 @@ public class TokenService : ITokenService
             Expires = jwtSecurity.ValidTo,
             Username = adminstrator.UserName,
             RefreshToken=refreshtoken,
-            RefreshTokenExpires=refreshtokenExpires
+            RefreshTokenExpires=refreshtokenExpires,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 
@@ -99,7 +100,8 @@ public class TokenService : ITokenService
             claims.Add(new Claim(ClaimTypes.Role, userRole));
         }
 
-        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SigningKey"]));
+        SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.
+            GetBytes(_configuration["Jwt:SigningKey"]));
 
         SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -125,7 +127,8 @@ public class TokenService : ITokenService
             Expires = jwtSecurity.ValidTo,
             Username = doctor.UserName,
             RefreshToken = refreshToken,
-            RefreshTokenExpires = refreshTokenExpires
+            RefreshTokenExpires = refreshTokenExpires,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 
@@ -173,7 +176,8 @@ public class TokenService : ITokenService
             Expires = jwtSecurity.ValidTo,
             Username = patient.UserName,
             RefreshToken = refreshToken,
-            RefreshTokenExpires = refreshTokenExpires
+            RefreshTokenExpires = refreshTokenExpires,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 
@@ -220,7 +224,8 @@ public class TokenService : ITokenService
             Expires = jwtSecurityToken.ValidTo,
             Username = nurse.UserName,
             RefreshToken = refreshToken,
-            RefreshTokenExpires = refreshTokenExpires
+            RefreshTokenExpires = refreshTokenExpires,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 
@@ -267,7 +272,8 @@ public class TokenService : ITokenService
             Expires=jwtSecurityToken.ValidTo,
             Username=admin.UserName,
             RefreshToken=refreshToken,
-            RefreshTokenExpires=refreshTokenExpires
+            RefreshTokenExpires=refreshTokenExpires,
+            Roles = claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList()
         };
     }
 }

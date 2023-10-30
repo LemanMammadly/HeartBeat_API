@@ -12,7 +12,6 @@ public record DoctorUpdateByAdminDto
     public string Surname { get; set; }
     public string Email { get; set; }
     public string UserName { get; set; }
-    public string Password { get; set; }
     public string Description { get; set; }
     public int Age { get; set; }
     public DateTime StartDate { get; set; }
@@ -20,8 +19,8 @@ public record DoctorUpdateByAdminDto
     public decimal Salary { get; set; }
     public Gender Gender { get; set; }
     public IFormFile? ImageFile { get; set; }
-    public int DepartmentId { get; set; }
-    public int PositionId { get; set; }
+    public int? DepartmentId { get; set; }
+    public int? PositionId { get; set; }
 }
 
 public class DoctorUpdateByAdminDtoValidator:AbstractValidator<DoctorUpdateByAdminDto>
@@ -65,13 +64,6 @@ public class DoctorUpdateByAdminDtoValidator:AbstractValidator<DoctorUpdateByAdm
                 .WithMessage("Doctor username length must be greater than 2")
            .MaximumLength(45)
                 .WithMessage("Doctor username length must be less than 45");
-        RuleFor(d => d.Password)
-            .NotEmpty()
-                .WithMessage("Doctor Password dont be empty")
-            .NotNull()
-                .WithMessage("Doctor Password dont be null")
-           .MinimumLength(6)
-                .WithMessage("Doctor password length must be greater than 6");
         RuleFor(d => d.Description)
             .NotEmpty()
                 .WithMessage("Doctor Description dont be empty")
@@ -95,20 +87,20 @@ public class DoctorUpdateByAdminDtoValidator:AbstractValidator<DoctorUpdateByAdm
                 .WithMessage("Invalid status");
         RuleFor(d => d.ImageFile)
             .SetValidator(new FileValidator());
-        RuleFor(d => d.DepartmentId)
-            .NotEmpty()
-                .WithMessage("Doctor DepartmentId dont be empty")
-            .NotNull()
-                .WithMessage("Doctor DepartmentId dont be null")
-            .GreaterThan(0)
-                .WithMessage("DepartmentId must be greater than 0");
-        RuleFor(d => d.PositionId)
-            .NotEmpty()
-                .WithMessage("Doctor PositionId dont be empty")
-            .NotNull()
-                .WithMessage("Doctor PositionId dont be null")
-            .GreaterThan(0)
-                .WithMessage("DepartmentId must be greater than 0");
+        //RuleFor(d => d.DepartmentId)
+            //.NotEmpty()
+            //    .WithMessage("Doctor DepartmentId dont be empty")
+            //.NotNull()
+            //    .WithMessage("Doctor DepartmentId dont be null")
+            //.GreaterThan(0)
+            //    .WithMessage("DepartmentId must be greater than 0");
+        //RuleFor(d => d.PositionId)
+            //.NotEmpty()
+            //    .WithMessage("Doctor PositionId dont be empty")
+            //.NotNull()
+            //    .WithMessage("Doctor PositionId dont be null")
+            //.GreaterThan(0)
+            //    .WithMessage("DepartmentId must be greater than 0");
     }
     private bool BeAValidGender(Gender gender)
     {

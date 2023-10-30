@@ -1,46 +1,61 @@
 ﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentUpdateDto.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/PatientService.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Implements/DepartmentService.cs" Line="182" Column="1" />
-      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" Line="131" Column="1" />
-      <File FileName="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentListItemDto.cs" Line="19" Column="47" />
-      <File FileName="SerenityHospital.Business/Dtos/PatientRoomDtos/PatientRoomListItemDto.cs" Line="7" Column="37" />
-      <File FileName="SerenityHospital.Business/Dtos/PatientRoomDtos/PatientRoomInfoDto.cs" Line="5" Column="33" />
-      <File FileName="SerenityHospital.Business/Dtos/DepartmentDtos/DepartmentUpdateDto.cs" Line="12" Column="15" />
-      <File FileName="SerenityHospital.API/Controllers/DepartmentsController.cs" Line="1" Column="1" />
+      <File FileName="SerenityHospital.Business/Services/Implements/AdminstratorService.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorUpdateByAdminDto.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorUpdateDto.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/PatientDtos/PatientUpdateByAdminDto.cs" />
+      <File FileName="SerenityHospital.Business/ExternalServices/Implements/TokenService.cs" />
+      <File FileName="SerenityHospital.API/Controllers/AdminstratorAuthsController.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorDetailItemDto.cs" />
+      <File FileName="SerenityHospital.Core/Enums/WorkStatus.cs" />
+      <File FileName="SerenityHospital.Core/Enums/DoctorAvailabilityStatus.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorListItemDto.cs" />
+      <File FileName="SerenityHospital.Core/Entities/Doctor.cs" />
+      <File FileName="SerenityHospital.DAL/Configurations/DoctorConfiguration.cs" />
+      <File FileName="SerenityHospital.DAL/Migrations/20231027214028_DepartmentTableUpdatedd.Designer.cs" />
+      <File FileName="SerenityHospital.DAL/Migrations/20231030140312_UpdatedTabledDoctors.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DepartmentService.cs" />
+      <File FileName="SerenityHospital.API/Program.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/ServiceService.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DoctorRoomService.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/AppoinmentService.cs" />
+      <File FileName="SerenityHospital.API/Controllers/AppoinmentsController.cs" />
+      <File FileName="SerenityHospital.API/Controllers/DoctorRoomsController.cs" />
+      <File FileName="SerenityHospital.API/Controllers/PatientAuthsController.cs" />
+      <File FileName="SerenityHospital.API/Controllers/PatientHistoriesController.cs" />
+      <File FileName="SerenityHospital.API/Controllers/NurseAuthsController.cs" />
+      <File FileName="SerenityHospital.API/Controllers/DoctorAuthsController.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorLoginDto.cs" />
+      <File FileName="SerenityHospital.Business/Exceptions/Common/LoginFailedException.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/AdminService.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/PatientService.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="SerenityHospital">
-            <Node name="SerenityHospital.API" expanded="True">
-              <Node name="Controllers" expanded="True" />
-            </Node>
-            <Node name="SerenityHospital.Business">
-              <Node name="Dtos" expanded="True">
-                <Node name="DepartmentDtos" expanded="True" />
-                <Node name="PatientRoomDtos" expanded="True" />
-                <Node name="ServiceDtos" expanded="True" />
-              </Node>
+          <Node name="SerenityHospital" expanded="True">
+            <Node name="SerenityHospital.Business" expanded="True">
               <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True" />
+                <Node name="Implements" expanded="True">
+                  <Node name="PatientService.cs" selected="True" />
+                </Node>
               </Node>
             </Node>
             <Node name="SerenityHospital.Core" expanded="True">
               <Node name="Dependencies" expanded="True" />
-              <Node name="Entities" expanded="True" />
             </Node>
-            <Node name="SerenityHospital.DAL" expanded="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

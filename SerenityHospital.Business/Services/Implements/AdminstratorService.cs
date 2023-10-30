@@ -97,14 +97,6 @@ public class AdminstratorService : IAdminstratorService
 
         var result = await userManager.CreateAsync(adminstrator, dto.Password);
 
-        //var token = await userManager.GenerateEmailConfirmationTokenAsync(adminstrator);
-
-        //var confirmationLink = $"https://localhost:7227/api/AdminstratorAuths/ConfirmEmail?token={token}&email={HttpUtility.UrlEncode(dto.Email)}";
-
-        //var message = new Message(new string[] { dto.Email! }, "Confirmation email link", confirmationLink!);
-        //_emailService.SendEmail(message);
-
-
         if (!result.Succeeded)
         {
             string a = " ";
@@ -163,10 +155,10 @@ public class AdminstratorService : IAdminstratorService
     {
         var adminstrator = await userManager.FindByNameAsync(dto.UserName);
 
-        if (adminstrator.IsDeleted)
-        {
-            throw new LoginFailedException<Adminstrator>("This user is delete");
-        };
+        //if (adminstrator.IsDeleted)
+        //{
+        //    throw new LoginFailedException<Adminstrator>("This user is delete");
+        //};
 
         if (adminstrator == null) throw new LoginFailedException<Adminstrator>("Username or password is wrong");
 

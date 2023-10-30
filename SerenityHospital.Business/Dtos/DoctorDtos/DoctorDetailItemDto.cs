@@ -21,6 +21,7 @@ public record DoctorDetailItemDto
     public string Description { get; set; }
     public decimal Salary { get; set; }
     public int Age { get; set; }
+    public WorkStatus Status { get; set; }
     public Gender Gender { get; set; }
     public DateTime StartDate { get; set; }
     public PositionInfoDto Position { get; set; }

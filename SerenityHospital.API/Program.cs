@@ -37,11 +37,11 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 builder.Services.AddPersistenceServices(builder.Configuration);
 
 //confirm email
-builder.Services.AddTransient<UserManager<AppUser>>();
-builder.Services.AddTransient<UserManager<Doctor>>();
-builder.Services.AddTransient<UserManager<Patient>>();
-builder.Services.AddTransient<UserManager<Adminstrator>>();
-builder.Services.AddTransient<UserManager<Nurse>>();
+//builder.Services.AddTransient<UserManager<AppUser>>();
+//builder.Services.AddTransient<UserManager<Doctor>>();
+//builder.Services.AddTransient<UserManager<Patient>>();
+//builder.Services.AddTransient<UserManager<Adminstrator>>();
+//builder.Services.AddTransient<UserManager<Nurse>>();
 
 
 builder.Services.AddFluentValidation(opt =>
@@ -91,7 +91,7 @@ builder.Services.AddSwaggerGen(opt =>
 
 
 //stripe
-builder.Services.AddStripeInfrastructure(builder.Configuration);
+//builder.Services.AddStripeInfrastructure(builder.Configuration);
 
 
 //add email config

@@ -11,10 +11,10 @@ public class Doctor:AppUser
     public DateTime? EndDate { get; set; }
     public WorkStatus Status { get; set; }
     public DoctorAvailabilityStatus AvailabilityStatus { get; set; }
-    public Position Position { get; set; }
-    public int PositionId { get; set; }
-    public Department Department { get; set; }
-    public int DepartmentId { get; set; }
+    public Position? Position { get; set; }
+    public int? PositionId { get; set; }
+    public Department? Department { get; set; }
+    public int? DepartmentId { get; set; }
     public DoctorRoom? DoctorRoom { get; set; }
     public int? DoctorRoomId { get; set; }
     public bool IsDeleted { get; set; }

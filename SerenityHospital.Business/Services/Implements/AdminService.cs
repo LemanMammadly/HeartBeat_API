@@ -157,10 +157,10 @@ public class AdminService : IAdminService
     {
         var admin = await _userManager.FindByNameAsync(dto.UserName);
 
-        if (admin is null) throw new LoginFailedException<Admin>();
+        if (admin is null) throw new LoginFailedException<Admin>("Username or password is wrong");
 
         var result = await _userManager.CheckPasswordAsync(admin, dto.Password);
-        if (!result) throw new LoginFailedException<Admin>();
+        if (!result) throw new LoginFailedException<Admin>("Username or password is wrong");
 
         return _tokenService.CreateAdminToken(admin);
     }

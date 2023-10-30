@@ -30,9 +30,9 @@ namespace SerenityHospital.API.Controllers
             _emailService = emailService;
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Doctor")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Doctor")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -40,18 +40,18 @@ namespace SerenityHospital.API.Controllers
         }
 
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Doctor")]
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Doctor")]
+        //[Authorize(Roles = "Patient")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             return Ok(await _service.GetById(id));
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm]PatientCreateDto dto)
         {
@@ -79,7 +79,7 @@ namespace SerenityHospital.API.Controllers
         //    return StatusCode(StatusCodes.Status500InternalServerError);
         //}
 
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm]PatientLoginDto dto)
         {
@@ -96,7 +96,7 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.LoginAsync(dto));
         }
 
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpPost("[action]")]
         public async Task<IActionResult> LoginWithRefreshToken(string refreshToken)
         {
@@ -110,8 +110,8 @@ namespace SerenityHospital.API.Controllers
         }
 
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
         {
@@ -119,8 +119,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
         {
@@ -128,7 +128,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpPut("[action]")]
         public async Task<IActionResult> Update([FromForm] PatientUpdateDto dto)
         {
@@ -136,8 +136,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("[action]")]
         public async Task<IActionResult> UpdateByAdmin(string id,[FromForm] PatientUpdateByAdminDto dto)
         {
@@ -146,8 +146,8 @@ namespace SerenityHospital.API.Controllers
         }
 
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddPatientRoom([FromForm] AddPatientRoomDto dto)
         {
@@ -155,8 +155,8 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Superadmin")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Superadmin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -164,7 +164,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Patient")]
+        //[Authorize(Roles = "Patient")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {

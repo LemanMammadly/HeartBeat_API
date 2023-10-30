@@ -239,7 +239,7 @@ public class DoctorService : IDoctorService
 
     public async Task SoftDeleteAsync(string id)
     {
-        var doctor = await _userManager.Users.Include(d => d.Appoinments).FirstOrDefaultAsync(d => d.Id == id);
+        var doctor = await _userManager.Users.Include(d => d.Appoinments).Include(d=>d.Recipes).FirstOrDefaultAsync(d => d.Id == id);
         if (doctor is null) throw new NotFoundException<Doctor>();
         doctor.IsDeleted = true;
         doctor.EndDate = DateTime.UtcNow.AddHours(4);
@@ -356,13 +356,19 @@ public class DoctorService : IDoctorService
             await ReverteSoftDeleteAsync(id);
         }
 
-        var position = await _positionRepository.GetSingleAsync(p=>p.Id==dto.PositionId);
-        if (position == null) throw new NotFoundException<Position>();
-        if (position.IsDeleted==true) throw new NotFoundException<Position>();
+        if(dto.PositionId != null)
+        {
+            var position = await _positionRepository.GetSingleAsync(p=>p.Id==dto.PositionId);
+            if (position == null) throw new NotFoundException<Position>();
+            if (position.IsDeleted==true) throw new NotFoundException<Position>();
+        }
 
-        var department = await _departmentRepository.GetSingleAsync(d => d.Id == dto.DepartmentId);
-        if (department == null) throw new NotFoundException<Department>();
-        if (department.IsDeleted==true) throw new NotFoundException<Department>();
+        if(dto.DepartmentId != null)
+        {
+            var department = await _departmentRepository.GetSingleAsync(d => d.Id == dto.DepartmentId);
+            if (department == null) throw new NotFoundException<Department>();
+            if (department.IsDeleted==true) throw new NotFoundException<Department>();
+        }
 
         var newUser = _mapper.Map(dto, user);
         var result = await _userManager.UpdateAsync(newUser);
@@ -455,6 +461,7 @@ public class DoctorService : IDoctorService
                 Email = user.Email,
                 Password = user.PasswordHash,
                 Description = user.Description,
+                Status = user.Status,
                 Salary = user.Salary,
                 Age = user.Age,
                 Gender = user.Gender,
@@ -483,6 +490,7 @@ public class DoctorService : IDoctorService
                 IsDeleted = user.IsDeleted,
                 Email = user.Email,
                 Password=user.PasswordHash,
+                Status=user.Status,
                 Description=user.Description,
                 Salary=user.Salary,
                 Age=user.Age,

@@ -17,6 +17,7 @@ public class AppoinmentService : IAppoinmentService
 {
     readonly UserManager<Patient> _patUserManager;
     readonly UserManager<Doctor> _docUserManager;
+    readonly IDepartmentRepository _deprepo;
     readonly IPatientHistoryRepository _patientHistoryRepository;
     readonly IHttpContextAccessor _context;
     readonly IRecipeRepository _recipRepo;
@@ -24,7 +25,7 @@ public class AppoinmentService : IAppoinmentService
     readonly IAppoinmentRepository _repo;
     readonly IMapper _mapper;
 
-    public AppoinmentService(IHttpContextAccessor context, UserManager<Patient> userManager, IAppoinmentRepository repo, UserManager<Doctor> docUserManager, IMapper mapper, IPatientHistoryRepository patientHistoryRepository, IRecipeRepository recipRepo)
+    public AppoinmentService(IHttpContextAccessor context, UserManager<Patient> userManager, IAppoinmentRepository repo, UserManager<Doctor> docUserManager, IMapper mapper, IPatientHistoryRepository patientHistoryRepository, IRecipeRepository recipRepo, IDepartmentRepository deprepo)
     {
         _repo = repo;
         _context = context;
@@ -34,6 +35,7 @@ public class AppoinmentService : IAppoinmentService
         _mapper = mapper;
         _patientHistoryRepository = patientHistoryRepository;
         _recipRepo = recipRepo;
+        _deprepo = deprepo;
     }
 
     public async Task CreateAsync(AppoinmentCreateDto dto)
@@ -50,6 +52,12 @@ public class AppoinmentService : IAppoinmentService
 
         if (doctor != null && dto.DoctorId == doctor.Id)
             throw new DoctorCannotAppoinmentThemselves();
+
+        if(dto.DepartmentId != null)
+        {
+            var department = await _deprepo.GetSingleAsync(d=>d.Id== dto.DepartmentId);
+            if (department is null || department.IsDeleted == true) throw new NotFoundException<Department>();
+        }
 
         var targetDoctor = await _docUserManager.FindByIdAsync(dto.DoctorId);
         if (targetDoctor == null || targetDoctor.IsDeleted)
@@ -105,8 +113,7 @@ public class AppoinmentService : IAppoinmentService
             appoinment.PatientId = patient.Id;
         }
 
-        appoinment.Doctor = targetDoctor; 
-        appoinment.Status = AppoinmentStatus.Pending;
+        appoinment.Doctor = targetDoctor;
 
 
         await _repo.CreateAsync(appoinment);

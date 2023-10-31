@@ -1,13 +1,16 @@
 ﻿using FluentValidation;
+using SerenityHospital.Business.Dtos.DepartmentDtos;
 
 namespace SerenityHospital.Business.Dtos.AppoinmentDtos;
 
 public record AppoinmentCreateDto
 {
+    public int? DepartmentId { get; set; }
     public string DoctorId { get; set; }
     public string ProblemDesc { get; set; }
     public DateTime AppoinmentDate { get; set; }
 }
+
 
 public class AppoinmentCreateDtoValidator:AbstractValidator<AppoinmentCreateDto>
 {
@@ -17,7 +20,7 @@ public class AppoinmentCreateDtoValidator:AbstractValidator<AppoinmentCreateDto>
             .NotNull()
                 .WithMessage("DoctorId dont be null")
             .NotEmpty()
-                 .WithMessage("DoctorId dont be null");
+                 .WithMessage("DoctorId dont be empty");
         RuleFor(a => a.AppoinmentDate)
             .NotEmpty()
                 .WithMessage("AppoinmentDate dont be empty")

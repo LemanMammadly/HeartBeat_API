@@ -166,6 +166,7 @@ public class PatientService : IPatientService
             {
                 var patientDto = new PatientListItemDto
                 {
+                    Id=patient.Id,
                     Name = patient.Name,
                     Surname = patient.Surname,
                     UserName = patient.UserName,
@@ -193,6 +194,7 @@ public class PatientService : IPatientService
         if (user is null) throw new AppUserNotFoundException<Patient>();
         var userDto = new PatientDetailItemDto
         {
+            Id=user.Id,
             Name = user.Name,
             Surname = user.Surname,
             UserName = user.UserName,

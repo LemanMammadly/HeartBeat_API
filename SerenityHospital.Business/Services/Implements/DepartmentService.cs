@@ -66,12 +66,13 @@ public class DepartmentService : IDepartmentService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Department>();
-        var entity = await _repo.GetByIdAsync(id,"PatientRooms","Doctors");
+        var entity = await _repo.GetByIdAsync(id,"PatientRooms","Doctors","Appoinments");
         if (entity is null) throw new NotFoundException<Department>();
 
 
         if (entity.PatientRooms.Count() > 0) throw new DepartmentIsNotEmptyException();
         if (entity.Doctors.Count() > 0) throw new DepartmentIsNotEmptyException();
+        if (entity.Appoinments.Count() > 0) throw new DepartmentIsNotEmptyException();
 
         _repo.Delete(entity);
         _fileService.Delete(entity.IconUrl);
@@ -163,11 +164,12 @@ public class DepartmentService : IDepartmentService
     public async Task SoftDeleteAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Department>();
-        var entity = await _repo.GetByIdAsync(id,"PatientRooms","Doctors");
+        var entity = await _repo.GetByIdAsync(id,"PatientRooms","Doctors","Appoinments");
         if (entity is null) throw new NotFoundException<Department>();
 
         if (entity.PatientRooms.Count() > 0) throw new DepartmentIsNotEmptyException();
         if (entity.Doctors.Count() > 0) throw new DepartmentIsNotEmptyException();
+        if (entity.Appoinments.Count() > 0) throw new DepartmentIsNotEmptyException();
 
         _repo.SoftDelete(entity);
         await _repo.SaveAsync();

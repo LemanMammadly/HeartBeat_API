@@ -13,7 +13,9 @@ public class Department:BaseEntity
     public ICollection<DoctorRoom> DoctorRooms { get; set; }
     public ICollection<Doctor> Doctors { get; set; }
     public ICollection<Nurse> Nurses { get; set; }
+    public ICollection<Appoinment> Appoinments { get; set; }
 }
+
 
 
 

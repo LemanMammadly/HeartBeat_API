@@ -11,6 +11,7 @@ public interface IDoctorService
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
     Task<ICollection<DoctorListItemDto>> GetAllAsync(bool takeAll);
     Task<DoctorDetailItemDto> GetById(string id, bool takeAll);
+    Task<DoctorDetailItemDto> GetByUsername(string userName, bool takeAll);
     Task AddDoctorRoom(AddDoctorRoomDto dto);
     Task<int> Count();
     Task UpdateAsync(DoctorUpdateDto dto);

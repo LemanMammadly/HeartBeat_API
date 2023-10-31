@@ -44,6 +44,12 @@ namespace SerenityHospital.API.Controllers
         }
 
         [HttpGet("[action]")]
+        public async Task<IActionResult> GetByName(string userName)
+        {
+            return Ok(await _service.GetByUsername(userName, true));
+        }
+
+        [HttpGet("[action]")]
         public async Task<IActionResult> Count()
         {
             return Ok(await _service.Count());

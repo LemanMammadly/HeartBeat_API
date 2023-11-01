@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.AppoinmentDtos;
 using SerenityHospital.Business.Dtos.PatientDtos;
@@ -40,8 +41,9 @@ public class PatientService : IPatientService
     readonly IHttpContextAccessor _httpContext;
     readonly string? userId;
     readonly SignInManager<Patient> _signInManager;
+    readonly IConfiguration _config;
 
-    public PatientService(UserManager<Patient> userManager, UserManager<AppUser> appUserManager, IPatientRoomRepository patientRoomRepository, IFileService fileService, IMapper mapper, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor httpContext, SignInManager<Patient> signInManager)
+    public PatientService(UserManager<Patient> userManager, UserManager<AppUser> appUserManager, IPatientRoomRepository patientRoomRepository, IFileService fileService, IMapper mapper, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor httpContext, SignInManager<Patient> signInManager, IConfiguration config)
     {
         _userManager = userManager;
         _AppUserManager = appUserManager;
@@ -53,6 +55,7 @@ public class PatientService : IPatientService
         _httpContext = httpContext;
         userId = _httpContext.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _signInManager = signInManager;
+        _config = config;
     }
 
     public async Task AddPatientRoom(AddPatientRoomDto dto)
@@ -170,8 +173,8 @@ public class PatientService : IPatientService
                     Name = patient.Name,
                     Surname = patient.Surname,
                     UserName = patient.UserName,
-                    ImageUrl = patient.ImageUrl,
-                    PhoneNumber=patient.PhoneNumber,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + patient.ImageUrl,
+                    PhoneNumber =patient.PhoneNumber,
                     Age = patient.Age,
                     Address = patient.Address,
                     Gender = patient.Gender,
@@ -198,7 +201,7 @@ public class PatientService : IPatientService
             Name = user.Name,
             Surname = user.Surname,
             UserName = user.UserName,
-            ImageUrl = user.ImageUrl,
+            ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
             PhoneNumber = user.PhoneNumber,
             Age = user.Age,
             Address = user.Address,
@@ -335,6 +338,32 @@ public class PatientService : IPatientService
     {
         var users = await _userManager.Users.ToListAsync();
         return users.Count();
+    }
+
+    public async Task<PatientDetailItemDto> GetByName(string userName)
+    {
+        if (string.IsNullOrEmpty(userName)) throw new ArgumentIsNullException();
+        var user = await _userManager.Users.Include(p => p.PatientRoom).Include(p => p.PatientHistories).Include(p => p.Recipes).Include(p => p.Appoinments).ThenInclude(a => a.Doctor).SingleOrDefaultAsync(p => p.UserName == userName);
+        if (user is null) throw new AppUserNotFoundException<Patient>();
+        var userDto = new PatientDetailItemDto
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Surname = user.Surname,
+            UserName = user.UserName,
+            ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
+            PhoneNumber = user.PhoneNumber,
+            Age = user.Age,
+            Address = user.Address,
+            Gender = user.Gender,
+            BloodType = user.BloodType,
+            Roles = await _userManager.GetRolesAsync(user),
+            PatientRoom = _mapper.Map<PatientRoomInfoDto>(user.PatientRoom),
+            Appoinments = _mapper.Map<ICollection<AppoinmentInfoDto>>(user.Appoinments),
+            Recipes = _mapper.Map<ICollection<RecipeListItemDto>>(user.Recipes),
+            PatientHistories = _mapper.Map<ICollection<PatientHistoryListItemDto>>(user.PatientHistories)
+        };
+        return userDto;
     }
 }
 

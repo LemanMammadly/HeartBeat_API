@@ -10,5 +10,6 @@ public record AppoinmentInfoDto
     public DoctorInfoDto Doctor { get; set; }
     public string ProblemDesc { get; set; }
     public DateTime AppoinmentDate { get; set; }
+    public bool IsDeleted { get; set; }
 }
 

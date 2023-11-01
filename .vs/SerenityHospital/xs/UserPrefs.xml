@@ -2,33 +2,36 @@
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/AppoinmentService.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Business/Services/Implements/DoctorService.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Implements/AppoinmentService.cs" Line="49" Column="1" />
-      <File FileName="SerenityHospital.Core/Entities/Appoinment.cs" Line="21" Column="16" />
-      <File FileName="SerenityHospital.Core/Entities/Department.cs" Line="16" Column="35" />
-      <File FileName="SerenityHospital.DAL/Configurations/AppoinmentConfiguration.cs" />
-      <File FileName="SerenityHospital.Business/Services/Implements/DepartmentService.cs" Line="82" Column="65" />
-      <File FileName="SerenityHospital.Business/Dtos/AppoinmentDtos/AppoinmentCreateDto.cs" Line="4" Column="20" />
+      <File FileName="SerenityHospital.Business/Services/Implements/RecipeService.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/RecipeDtos/RecipeCreateDto.cs" />
+      <File FileName="SerenityHospital.API/Program.cs" />
+      <File FileName="SerenityHospital.Core/Entities/Doctor.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorDetailItemDto.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorUpdateByAdminDto.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/DoctorDtos/DoctorUpdateDto.cs" />
+      <File FileName="SerenityHospital.API/Controllers/DoctorAuthsController.cs" />
+      <File FileName="SerenityHospital.Business/Services/Implements/DoctorService.cs" Line="287" Column="63" />
+      <File FileName="SerenityHospital.Business/Exceptions/Common/AppUserIsAlreadyExistException.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="SerenityHospital" expanded="True">
-            <Node name="SerenityHospital.API" expanded="True" />
-            <Node name="SerenityHospital.Business">
-              <Node name="Dtos" expanded="True">
-                <Node name="AppoinmentDtos" expanded="True" />
-              </Node>
+            <Node name="SerenityHospital.Business" expanded="True">
+              <Node name="Exceptions" expanded="True" />
               <Node name="Services" expanded="True">
                 <Node name="Implements" expanded="True">
-                  <Node name="AppoinmentService.cs" selected="True" />
+                  <Node name="DoctorService.cs" selected="True" />
                 </Node>
               </Node>
             </Node>
-            <Node name="SerenityHospital.Core">
+            <Node name="SerenityHospital.Core" expanded="True">
               <Node name="Entities" expanded="True" />
+              <Node name="Enums" expanded="True" />
             </Node>
+            <Node name="SerenityHospital.DAL" expanded="True" />
           </Node>
         </State>
       </Pad>

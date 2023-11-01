@@ -107,7 +107,7 @@ namespace SerenityHospital.API.Controllers
         }
 
         //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {

@@ -137,7 +137,7 @@ namespace SerenityHospital.API.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Doctor")]
         [HttpPut("[action]")]
         public async Task<IActionResult> Put([FromForm] DoctorUpdateDto dto)
         {

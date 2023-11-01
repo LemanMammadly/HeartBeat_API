@@ -12,6 +12,7 @@ public interface IPatientService
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
     Task<ICollection<PatientListItemDto>> GetAllAsync();
     Task<PatientDetailItemDto> GetById(string id);
+    Task<PatientDetailItemDto> GetByName(string userName);
     Task AddRole(AddRoleDto dto);
     Task<int> Count();
     Task RemoveRole(RemoveRoleDto dto);

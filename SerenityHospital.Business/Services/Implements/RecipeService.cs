@@ -19,13 +19,13 @@ public class RecipeService : IRecipeService
     readonly IRecipeRepository _repo;
     readonly IAppoinmentRepository _appoinmentRepo;
     readonly IPatientHistoryRepository _patHistoryRepo;
-    readonly UserManager<Nurse> _docManager;
+    readonly UserManager<Doctor> _docManager;
     readonly UserManager<Patient> _patManager;
     readonly IHttpContextAccessor _context;
     readonly string? userId;
     readonly IMapper _mapper;
 
-    public RecipeService(IRecipeRepository repo, IMapper mapper, IAppoinmentRepository appoinmentRepo, UserManager<Nurse> docManager, UserManager<Patient> patManager, IHttpContextAccessor context, IPatientHistoryRepository patHistoryRepo)
+    public RecipeService(IRecipeRepository repo, IMapper mapper, IAppoinmentRepository appoinmentRepo, UserManager<Doctor> docManager, UserManager<Patient> patManager, IHttpContextAccessor context, IPatientHistoryRepository patHistoryRepo)
     {
         _repo = repo;
         _mapper = mapper;
@@ -42,19 +42,20 @@ public class RecipeService : IRecipeService
         if (string.IsNullOrEmpty(userId))
             throw new ArgumentIsNullException();
 
-        if (!await _docManager.Users.AnyAsync(d => d.Id == userId)) throw new AppUserNotFoundException<Nurse>();
+        if (!await _docManager.Users.AnyAsync(d => d.Id == userId)) throw new AppUserNotFoundException<Doctor>();
 
         var doctorProf = await _docManager.FindByIdAsync(userId);
 
         if (await _repo.IsExistAsync(a => a.AppoinmentId == dto.AppoinmentId)) throw new ThisAppoinmentRecipeHasAlreadyExistException();
 
         var doctor = await _docManager.FindByIdAsync(dto.DoctorId);
-        if (doctor is null || doctor.IsDeleted == true) throw new AppUserNotFoundException<Nurse>();
+        if (doctor is null || doctor.IsDeleted == true) throw new AppUserNotFoundException<Doctor>();
 
-        if(dto.PatientId !=null)
+
+        if (dto.PatientId !=null)
         {
             var patient = await _patManager.FindByIdAsync(dto.PatientId);
-            if (patient is null || doctor.IsDeleted == true) throw new AppUserNotFoundException<Patient>();
+            if (patient is null ) throw new AppUserNotFoundException<Patient>();
         }
 
         var recipe = _mapper.Map<Recipe>(dto);
@@ -114,7 +115,7 @@ public class RecipeService : IRecipeService
         if (string.IsNullOrEmpty(userId))
             throw new ArgumentIsNullException();
 
-        if (!await _docManager.Users.AnyAsync(d => d.Id == userId)) throw new AppUserNotFoundException<Nurse>();
+        if (!await _docManager.Users.AnyAsync(d => d.Id == userId)) throw new AppUserNotFoundException<Doctor>();
 
         var doctorProf = await _docManager.FindByIdAsync(userId);
 

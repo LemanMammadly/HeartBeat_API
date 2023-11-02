@@ -58,6 +58,12 @@ public class RecipeService : IRecipeService
             if (patient is null ) throw new AppUserNotFoundException<Patient>();
         }
 
+        var appoinment = await _appoinmentRepo.GetSingleAsync(a=>a.Id == dto.AppoinmentId);
+
+        var today = DateTime.Today;
+
+        if (appoinment.AppoinmentDate > today) throw new ThisAppoinmentDateIsFutureException();
+
         var recipe = _mapper.Map<Recipe>(dto);
 
         var appoinmentDate = await _appoinmentRepo.GetSingleAsync(a => a.Id == recipe.AppoinmentId);

@@ -4,6 +4,7 @@ namespace SerenityHospital.Business.Dtos.AppoinmentDtos;
 
 public record AppoinmentUpdateDto
 {
+    public int? DepartmentId { get; set; }
     public string DoctorId { get; set; }
     public string? PatientId { get; set; }
     public string? AppoinmentAsDoctorId { get; set; }

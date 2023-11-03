@@ -13,7 +13,7 @@ public record PatientRoomListItemDto
     public int Capacity { get; set; }
     public decimal Price { get; set; }
     public string ImageUrl { get; set; }
-    public int DepartmentId { get; set; }
+    public int? DepartmentId { get; set; }
     public bool IsDeleted { get; set; }
     public ICollection<PatientListItemDto> Patients { get; set; }
 }

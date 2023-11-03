@@ -14,7 +14,6 @@ public record PatientUpdateByAdminDto
     public string PhoneNumber { get; set; }
     public string Email { get; set; }
     public string UserName { get; set; }
-    public string Password { get; set; }
     public string Address { get; set; }
     public Gender Gender { get; set; }
     public BloodType BloodType { get; set; }
@@ -62,13 +61,6 @@ public class PatientUpdateByAdminDtoValidator:AbstractValidator<PatientUpdateByA
                 .WithMessage("Patient username length must be greater than 2")
            .MaximumLength(45)
                 .WithMessage("Patient username length must be less than 45");
-        RuleFor(d => d.Password)
-            .NotEmpty()
-                .WithMessage("Patient Password dont be empty")
-            .NotNull()
-                .WithMessage("Patient Password dont be null")
-           .MinimumLength(6)
-                .WithMessage("Patient password length must be greater than 6");
         RuleFor(s => s.PhoneNumber)
             .NotEmpty()
                 .WithMessage("Phone number dont be empty")

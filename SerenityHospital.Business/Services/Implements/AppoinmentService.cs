@@ -124,12 +124,14 @@ public class AppoinmentService : IAppoinmentService
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Appoinment>();
-        var appoinment = await _repo.GetByIdAsync(id);
+        var appoinment = await _repo.GetByIdAsync(id, "Recipe");
         if (appoinment is null) throw new NotFoundException<Appoinment>();
+
+        if (appoinment.Recipe != null) throw new AppoinmentCouldntBeDeleteException("Appoinment have recipe.Couldnt delete");
 
         var now = DateTime.Now;
 
-        if (now >= appoinment.AppoinmentDate && now <= appoinment.AppoinmentDate.AddMinutes(appoinment.Duration)) throw new AppoinmentCouldntBeDeleteException();
+        if (now >= appoinment.AppoinmentDate && now <= appoinment.AppoinmentDate.AddMinutes(appoinment.Duration)) throw new AppoinmentCouldntBeDeleteException("Now appoinment date.Couldnt delete");
 
         _repo.Delete(appoinment);
         await _repo.SaveAsync();
@@ -181,8 +183,10 @@ public class AppoinmentService : IAppoinmentService
     public async Task SoftDeleteAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Appoinment>();
-        var appoinment = await _repo.GetByIdAsync(id);
+        var appoinment = await _repo.GetByIdAsync(id, "Recipe");
         if (appoinment is null) throw new NotFoundException<Appoinment>();
+
+        if (appoinment.Recipe != null) throw new AppoinmentCouldntBeDeleteException("Appoinment have recipe.Couldnt delete");
 
         var now = DateTime.Now;
 

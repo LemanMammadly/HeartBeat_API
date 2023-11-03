@@ -10,12 +10,12 @@ public record PatientCreateDto
 {
     public string Name { get; set; }
     public string Surname { get; set; }
-    public int Age { get; set; }
     public string Email { get; set; }
-    public string PhoneNumber { get; set; }
     public string UserName { get; set; }
     public string Password { get; set; }
     public string Address { get; set; }
+    public string PhoneNumber { get; set; }
+    public int Age { get; set; }
     public Gender Gender { get; set; }
     public BloodType BloodType { get; set; }
     public IFormFile? ImageFile { get; set; }
@@ -89,9 +89,9 @@ public class PatientCreateDtoValidator:AbstractValidator<PatientCreateDto>
                 .WithMessage("Patient password length must be greater than 6");
         RuleFor(a => a.Address)
             .NotEmpty()
-                .WithMessage("Patient surname dont be empty")
+                .WithMessage("Patient address dont be empty")
             .NotNull()
-                .WithMessage("Patient surname dont be null");
+                .WithMessage("Patient address dont be null");
         RuleFor(d => d.Gender)
             .Must(BeAValidGender)
                 .WithMessage("Invalid gender");

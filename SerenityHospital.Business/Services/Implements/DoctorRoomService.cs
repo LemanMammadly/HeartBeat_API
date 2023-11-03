@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Numerics;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using SerenityHospital.Business.Dtos.DoctorRoom;
 using SerenityHospital.Business.Exceptions.Common;
@@ -109,39 +110,48 @@ public class DoctorRoomService : IDoctorRoomService
     public async Task UpdateAsync(int id, DoctorRoomUpdateDto dto)
     {
         if (id <= 0) throw new NegativeIdException<DoctorRoom>();
-        var entity = await _repo.GetByIdAsync(id,"Doctor");
+        var entity = await _repo.GetByIdAsync(id, "Doctor");
         if (entity is null) throw new NotFoundException<DoctorRoom>();
+
+
+        entity.Department = null;
+        entity.Doctor = null;
+        entity.DoctorRoomStatus = DoctorRoomStatus.Available;
 
         if (await _repo.IsExistAsync(dr => dr.Number == dto.Number && dr.Id != id)) throw new ThisRoomNumberIsAlreadyExistException();
 
-        if(dto.DepartmentId!=null)
+        if (dto.DepartmentId != null)
         {
-            var department = await _departRepo.GetSingleAsync(d=>d.Id== dto.DepartmentId);
-            if (department == null) throw new NotFoundException<Department>();
-            if (department.IsDeleted==true) throw new NotFoundException<Department>();
+            var department = await _departRepo.GetSingleAsync(d => d.Id == dto.DepartmentId);
+            if (department is null) throw new NotFoundException<Department>();
+            if (department.IsDeleted == true) throw new NotFoundException<Department>();
+            if(dto.DoctorId == null)
+            {
+             entity.DoctorRoomStatus = DoctorRoomStatus.Available;   
+            }
+            entity.Department = department;
+            _mapper.Map(dto, entity);
+            await _repo.SaveAsync();
         }
-
 
         if (dto.DoctorId != null)
         {
             var doctor = await _userManager.FindByIdAsync(dto.DoctorId);
             if (doctor is null) throw new NotFoundException<Doctor>();
-            if (doctor.IsDeleted==true) throw new NotFoundException<Doctor>();
-
-            if (entity.DepartmentId != doctor.DepartmentId) throw new DepartmentIdsDifferentException();
-
+            if (doctor.IsDeleted == true) throw new NotFoundException<Doctor>();
+            if (dto.DepartmentId != doctor.DepartmentId) throw new DepartmentIdsDifferentException();
+            if (doctor.DoctorRoomId != null) throw new NotFoundException<Doctor>("Doctor Have Already Room");
             entity.Doctor = doctor;
             entity.DoctorRoomStatus = DoctorRoomStatus.Occupied;
+            _mapper.Map(dto, entity);
+            await _repo.SaveAsync();
         }
-        else
-        {
-            entity.Doctor = null;
-            entity.DoctorRoomStatus = DoctorRoomStatus.Available;
-        }
+
 
         _mapper.Map(dto, entity);
         await _repo.SaveAsync();
     }
+
 
     public async Task<int> Count()
     {

@@ -1,6 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SerenityHospital.Business.Constants;
+using SerenityHospital.Business.Dtos.DepartmentDtos;
+using SerenityHospital.Business.Dtos.DoctorDtos;
+using SerenityHospital.Business.Dtos.DoctorRoom;
+using SerenityHospital.Business.Dtos.PatientDtos;
 using SerenityHospital.Business.Dtos.PatientRoomDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Images;
@@ -22,14 +28,16 @@ public class PatientRoomService : IPatientRoomService
     readonly IMapper _mapper;
     readonly IFileService _fileService;
     readonly UserManager<Patient> _patientUserManager;
+    readonly IConfiguration _config;
 
-    public PatientRoomService(IPatientRoomRepository repo, IMapper mapper, IDepartmentRepository depRepo, IFileService fileService, UserManager<Patient> patientUserManager)
+    public PatientRoomService(IPatientRoomRepository repo, IMapper mapper, IDepartmentRepository depRepo, IFileService fileService, UserManager<Patient> patientUserManager, IConfiguration config)
     {
         _repo = repo;
         _mapper = mapper;
         _depRepo = depRepo;
         _fileService = fileService;
         _patientUserManager = patientUserManager;
+        _config = config;
     }
 
     public async Task CreateAsync(PatientRoomCreateDto dto)
@@ -66,13 +74,49 @@ public class PatientRoomService : IPatientRoomService
 
     public async Task<IEnumerable<PatientRoomListItemDto>> GetAllAsync(bool takeAll)
     {
-        if(takeAll)
+        ICollection<PatientRoomListItemDto> patientRooms = new List<PatientRoomListItemDto>();
+
+        if (takeAll)
         {
-            return _mapper.Map<IEnumerable<PatientRoomListItemDto>>(_repo.GetAll("Patients"));
+            foreach (var room in await _repo.GetAll("Patients").ToListAsync())
+            {
+                var patientRoom = new PatientRoomListItemDto
+                {
+                    Id = room.Id,
+                    Number=room.Number,
+                    Type=room.Type,
+                    Status=room.Status,
+                    Capacity=room.Capacity,
+                    Price=room.Price,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + room.ImageUrl,
+                    DepartmentId=room.DepartmentId,
+                    IsDeleted=room.IsDeleted,
+                    Patients=_mapper.Map<ICollection<PatientListItemDto>>(room.Patients)
+                };
+                patientRooms.Add(patientRoom);
+            }
+            return patientRooms;
         }
         else
         {
-            return _mapper.Map<IEnumerable<PatientRoomListItemDto>>(_repo.FindAll(pr => pr.IsDeleted == false, "Patients"));
+            foreach (var room in await _repo.FindAll(pr => pr.IsDeleted == false, "Patients").ToListAsync())
+            {
+                var patientRoom = new PatientRoomListItemDto
+                {
+                    Id = room.Id,
+                    Number = room.Number,
+                    Type = room.Type,
+                    Status = room.Status,
+                    Capacity = room.Capacity,
+                    Price = room.Price,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + room.ImageUrl,
+                    DepartmentId = room.DepartmentId,
+                    IsDeleted = room.IsDeleted,
+                    Patients = _mapper.Map<ICollection<PatientListItemDto>>(room.Patients)
+                };
+                patientRooms.Add(patientRoom);
+            }
+            return patientRooms;
         }
     }
 
@@ -93,7 +137,12 @@ public class PatientRoomService : IPatientRoomService
             if (entity is null) throw new NotFoundException<PatientRoom>();
         }
 
-        return _mapper.Map<PatientRoomDetailItemDto>(entity);
+        var map = _mapper.Map<PatientRoomDetailItemDto>(entity);
+
+        map.ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + map.ImageUrl;
+
+        return map;
+
     }
 
     public async Task RevertSoftDeleteAsync(int id)
@@ -102,7 +151,7 @@ public class PatientRoomService : IPatientRoomService
         var entity = await _repo.GetByIdAsync(id);
         if (entity is null) throw new NotFoundException<PatientRoom>();
 
-        _repo.SoftDelete(entity);
+        _repo.RevertSoftDelete(entity);
         await _repo.SaveAsync();
     }
 

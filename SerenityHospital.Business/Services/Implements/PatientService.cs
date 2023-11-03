@@ -138,7 +138,7 @@ public class PatientService : IPatientService
     public async Task DeleteAsync(string id)
     {
         if (string.IsNullOrEmpty(id)) throw new ArgumentIsNullException();
-        var user = await _userManager.Users.Include(p=>p.Appoinments).Include(p=>p.PatientRoom).SingleOrDefaultAsync(p=>p.Id==id);
+        var user = await _userManager.Users.Include(p=>p.Appoinments).Include(p=>p.PatientRoom).Include(p=>p.Recipes).SingleOrDefaultAsync(p=>p.Id==id);
         if (user is null) throw new AppUserNotFoundException<Patient>();
         if(user.ImageUrl != null)
         {
@@ -175,6 +175,7 @@ public class PatientService : IPatientService
                     UserName = patient.UserName,
                     ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + patient.ImageUrl,
                     PhoneNumber =patient.PhoneNumber,
+                    Email = patient.Email,
                     Age = patient.Age,
                     Address = patient.Address,
                     Gender = patient.Gender,
@@ -203,6 +204,7 @@ public class PatientService : IPatientService
             UserName = user.UserName,
             ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
             PhoneNumber = user.PhoneNumber,
+            Email = user.Email,
             Age = user.Age,
             Address = user.Address,
             Gender = user.Gender,
@@ -353,6 +355,7 @@ public class PatientService : IPatientService
             UserName = user.UserName,
             ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
             PhoneNumber = user.PhoneNumber,
+            Email=user.Email,
             Age = user.Age,
             Address = user.Address,
             Gender = user.Gender,

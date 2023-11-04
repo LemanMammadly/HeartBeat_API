@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SerenityHospital.Business.Dtos.PositionDtos;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Positions;
@@ -17,6 +18,12 @@ public class PositionService : IPositionService
     {
         _repo = repo;
         _mapper = mapper;
+    }
+
+    public async Task<int> Count()
+    {
+        var positions = await _repo.GetAll().ToListAsync();
+        return positions.Count();
     }
 
     public async Task CreateAsync(PositionCreateDto dto)

@@ -8,7 +8,9 @@ public interface IPatientHistoryService
 {
     Task<ICollection<PatientHistoryListItemDto>> GetAllAsync();
     Task<PatientHistoryDetailtemDto> GetByIdAsync(int id);
+    Task<ICollection<PatientHistoryListItemDto>> GetByNameAsync(string userName);
     Task CreateAsync(PatientHistory patientHistory);
+    Task<int> Count();
     Task UpdateAsync(PatientHistory patientHistory);
 }
 

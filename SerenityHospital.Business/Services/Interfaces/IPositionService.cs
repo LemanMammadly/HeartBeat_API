@@ -9,6 +9,7 @@ public interface IPositionService
     Task CreateAsync(PositionCreateDto dto);
     Task UpdateAsync(int id, PositionUpdateDto dto);
     Task DeleteAsync(int id);
+    Task<int> Count();
     Task SoftDeleteAsync(int id);
     Task ReverteSoftDeleteAsync(int id);
 }

@@ -266,6 +266,11 @@ public class AppoinmentService : IAppoinmentService
         if (dto.AppoinmentAsDoctorId != null && dto.AppoinmentAsDoctorId == doctor.Id)
             throw new DoctorCannotAppoinmentThemselves();
 
+
+                var now = DateTime.Now;
+
+        if (dto.AppoinmentDate <= now) throw new ConflictingAppointmentException("Appointment date cannot be past");
+
         var appoinmentStart = dto.AppoinmentDate;
         var appoinmentEnd = dto.AppoinmentDate.AddMinutes(dto.Duration);
 

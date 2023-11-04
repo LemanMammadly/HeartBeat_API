@@ -22,27 +22,21 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
-        //[Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Admin,Doctor")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             return Ok(await _service.GetAllAsync(true));
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
-        //[Authorize(Roles = "Doctor")]
-        //[Authorize(Roles = "Patient")]
+        [Authorize(Roles = "Admin,Doctor,Patient")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await _service.GetByIdAsync(id, true));
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm]PatientRoomCreateDto dto)
         {
@@ -51,8 +45,7 @@ namespace SerenityHospital.API.Controllers
         }
 
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]PatientRoomUpdateDto dto)
         {
@@ -60,8 +53,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -69,8 +61,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPatch("[action]/{id}")]
         public async Task<IActionResult> SoftDelete(int id)
         {
@@ -86,7 +77,6 @@ namespace SerenityHospital.API.Controllers
 
 
 
-        //[Authorize(Roles = "Superadmin")]
         [Authorize(Roles = "Admin")]
         [HttpPatch("[action]/{id}")]
         public async Task<IActionResult> RevertSoftDelete(int id)

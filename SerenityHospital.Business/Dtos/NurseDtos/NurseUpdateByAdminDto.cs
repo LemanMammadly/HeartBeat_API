@@ -13,9 +13,8 @@ public record NurseUpdateByAdminDto
     public string Surname { get; set; }
     public string Email { get; set; }
     public string UserName { get; set; }
-    public string Password { get; set; }
-    public int Age { get; set; }
     public decimal Salary { get; set; }
+    public int Age { get; set; }
     public Gender Gender { get; set; }
     public WorkStatus Status { get; set; }
     public IFormFile? ImageFile { get; set; }
@@ -65,13 +64,6 @@ public class NurseUpdateByAdminDtoValidator:AbstractValidator<NurseUpdateByAdmin
                 .WithMessage("Nurse username length must be greater than 2")
            .MaximumLength(45)
                 .WithMessage("Nurse username length must be less than 45");
-        RuleFor(d => d.Password)
-            .NotEmpty()
-                .WithMessage("Nurse Password dont be empty")
-            .NotNull()
-                .WithMessage("Nurse Password dont be null")
-           .MinimumLength(6)
-                .WithMessage("Nurse password length must be greater than 6");
         RuleFor(d => d.Age)
             .NotEmpty()
                 .WithMessage("Nurse ager dont be empty")

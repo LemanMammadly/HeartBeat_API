@@ -22,18 +22,25 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Doctor,Patient")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             return Ok(await _service.GetAllAsync(true));
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Doctor,Patient")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         { 
             return Ok(await _service.GetByIdAsync(id,true));
+        }
+
+        [Authorize(Roles = "Doctor")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetByUsername(string userName)
+        {
+            return Ok(await _service.GetByUsernameAsync(userName));
         }
 
 
@@ -51,6 +58,22 @@ namespace SerenityHospital.API.Controllers
         {
             await _service.CreateAsync(dto);
             return StatusCode(StatusCodes.Status201Created);
+        }
+
+        [Authorize(Roles = "Doctor")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AcceptAppoinment(int id)
+        {
+            await _service.AcceptAppoinment(id);
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Doctor")]
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RejectAppoinment(int id)
+        {
+            await _service.RejectAppoinment(id);
+            return NoContent();
         }
 
         [Authorize(Roles = "Admin")]

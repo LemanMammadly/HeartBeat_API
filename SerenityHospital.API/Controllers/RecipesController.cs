@@ -23,7 +23,7 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
-        //[Authorize(Roles = "Superadmin,Admin,Doctor,Patient")]
+        [Authorize(Roles = "Admin,Doctor,Patient")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -31,14 +31,14 @@ namespace SerenityHospital.API.Controllers
         }
 
 
-        //[Authorize(Roles = "Superadmin,Admin,Doctor,Patient")]
+        [Authorize(Roles = "Admin,Doctor,Patient")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await _service.GetByIdAsync(id,true));
         }
 
-        //[Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Doctor")]
         [HttpPost]
         public async Task<IActionResult> Post([FromForm]RecipeCreateDto dto)
         {
@@ -46,7 +46,7 @@ namespace SerenityHospital.API.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        //[Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Doctor")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id,[FromForm]RecipeUpdateDto dto)
         {

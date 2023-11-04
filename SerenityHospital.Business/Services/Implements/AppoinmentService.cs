@@ -38,6 +38,7 @@ public class AppoinmentService : IAppoinmentService
         _deprepo = deprepo;
     }
 
+
     public async Task CreateAsync(AppoinmentCreateDto dto)
     {
         if (string.IsNullOrEmpty(userId))
@@ -48,20 +49,24 @@ public class AppoinmentService : IAppoinmentService
             throw new AppUserNotFoundException<Patient>();
 
         var patient = await _patUserManager.FindByIdAsync(userId);
-        var doctor = await _docUserManager.FindByIdAsync(userId);
+        var appoinmentAsDoctor = await _docUserManager.FindByIdAsync(userId);
 
-        if (doctor != null && dto.DoctorId == doctor.Id)
+        if (appoinmentAsDoctor != null && dto.DoctorId == appoinmentAsDoctor.Id)
             throw new DoctorCannotAppoinmentThemselves();
 
-        if(dto.DepartmentId != null)
+        if (dto.DepartmentId != null)
         {
-            var department = await _deprepo.GetSingleAsync(d=>d.Id== dto.DepartmentId);
+            var department = await _deprepo.GetSingleAsync(d => d.Id == dto.DepartmentId);
             if (department is null || department.IsDeleted == true) throw new NotFoundException<Department>();
         }
 
         var targetDoctor = await _docUserManager.FindByIdAsync(dto.DoctorId);
         if (targetDoctor == null || targetDoctor.IsDeleted)
-            throw new AppUserNotFoundException<Nurse>();
+            throw new AppUserNotFoundException<Doctor>();
+
+        var now = DateTime.Now;
+
+        if (dto.AppoinmentDate <= now) throw new ConflictingAppointmentException("Appointment date cannot be past");
 
         var appoinmentStart = dto.AppoinmentDate;
         var appoinmentEnd = dto.AppoinmentDate.AddMinutes(20);
@@ -80,18 +85,19 @@ public class AppoinmentService : IAppoinmentService
         if (conflict)
             throw new ConflictingAppointmentException();
 
-       if(patient!=null)
-       {
+        var appoinment = _mapper.Map<Appoinment>(dto);
+
+        if (patient != null)
+        {
             var conflictPatient = await _repo.IsExistAsync(a => a.DoctorId != dto.DoctorId
            && a.PatientId == userId &&
            (dto.AppoinmentDate <= a.AppoinmentDate.AddMinutes(a.Duration)
            && dto.AppoinmentDate >= a.AppoinmentDate));
             if (conflictPatient)
                 throw new ConflictingAppointmentException();
-       }
+        }
 
-
-       if(doctor!=null)
+        if (appoinmentAsDoctor != null)
         {
             var conflictDoctor = await _repo.IsExistAsync(a => a.DoctorId != dto.DoctorId
             && a.AppoinmentAsDoctorId == userId &&
@@ -101,31 +107,31 @@ public class AppoinmentService : IAppoinmentService
                 throw new ConflictingAppointmentException();
         }
 
-        var appoinment = _mapper.Map<Appoinment>(dto);
 
-        if(doctor!=null)
+        if (appoinmentAsDoctor != null)
         {
-            appoinment.AppoinmentAsDoctorId = doctor.Id;
+            appoinment.AppoinmentAsDoctorId = appoinmentAsDoctor.Id;
         }
 
-        if(patient!=null)
+        if (patient != null)
         {
             appoinment.PatientId = patient.Id;
         }
 
         appoinment.Doctor = targetDoctor;
-
+        appoinment.Status = AppoinmentStatus.Pending;
 
         await _repo.CreateAsync(appoinment);
         await _repo.SaveAsync();
     }
-
 
     public async Task DeleteAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Appoinment>();
         var appoinment = await _repo.GetByIdAsync(id, "Recipe");
         if (appoinment is null) throw new NotFoundException<Appoinment>();
+
+        if (appoinment.Status == AppoinmentStatus.Approved) throw new AppoinmentCouldntBeDeleteException("Appoinment has aproved.Couldnt delete");
 
         if (appoinment.Recipe != null) throw new AppoinmentCouldntBeDeleteException("Appoinment have recipe.Couldnt delete");
 
@@ -141,14 +147,36 @@ public class AppoinmentService : IAppoinmentService
     {
        if(takeAll)
        {
-            return _mapper.Map<ICollection<AppoinmentListItemDto>>(_repo.GetAll("Doctor","Patient","Recipe",
-                "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department"));
-       }
+            var appoinments= _mapper.Map<ICollection<AppoinmentListItemDto>>(await _repo.GetAll("Doctor","Patient","Recipe",
+                "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department").ToListAsync());
+
+            foreach (var appointment in appoinments)
+            {
+                var currentDate = DateTime.Now;
+
+                if (appointment.Status ==AppoinmentStatus.Approved && appointment.AppoinmentDate <= currentDate)
+                {
+                    appointment.Status = AppoinmentStatus.Completed;
+                }
+            }
+            return appoinments;
+        }
        else
        {
-            return _mapper.Map<ICollection<AppoinmentListItemDto>>(_repo.FindAll(a => a.IsDeleted == false,"Doctor", "Recipe",
-                "Patient", "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department"));
-       }
+           var appoinments= _mapper.Map<ICollection<AppoinmentListItemDto>>(await _repo.FindAll(a => a.IsDeleted == false,"Doctor", "Recipe",
+                "Patient", "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department").ToListAsync());
+
+            foreach (var appointment in appoinments)
+            {
+                var currentDate = DateTime.Now;
+
+                if (appointment.Status == AppoinmentStatus.Approved && appointment.AppoinmentDate <= currentDate)
+                {
+                    appointment.Status = AppoinmentStatus.Completed;
+                }
+            }
+            return appoinments;
+        }
     }
 
     public async Task<AppoinmentDetailItemDto> GetByIdAsync(int id, bool takeAll)
@@ -186,6 +214,8 @@ public class AppoinmentService : IAppoinmentService
         var appoinment = await _repo.GetByIdAsync(id, "Recipe");
         if (appoinment is null) throw new NotFoundException<Appoinment>();
 
+        if(appoinment.Status==AppoinmentStatus.Approved) throw new AppoinmentCouldntBeDeleteException("Appoinment has aproved.Couldnt delete");
+
         if (appoinment.Recipe != null) throw new AppoinmentCouldntBeDeleteException("Appoinment have recipe.Couldnt delete");
 
         var now = DateTime.Now;
@@ -204,6 +234,11 @@ public class AppoinmentService : IAppoinmentService
         var appoinment = await _repo.GetByIdAsync(id);
         if (appoinment is null) throw new NotFoundException<Appoinment>();
         if (appoinment.IsDeleted == true) throw new NotFoundException<Appoinment>();
+
+
+        if (appoinment.Status == AppoinmentStatus.Approved) throw new NotFoundException<Appoinment>("Appoinment Approved.Coulndt be Update");
+        if (appoinment.Status == AppoinmentStatus.Rejected) throw new NotFoundException<Appoinment>("Appoinment Rejected.Coulndt be Update");
+
 
         var doctor = await _docUserManager.FindByIdAsync(dto.DoctorId);
         if (doctor is null) throw new NotFoundException<Doctor>();
@@ -267,6 +302,47 @@ public class AppoinmentService : IAppoinmentService
     {
         var rooms = _repo.GetAll();
         return rooms.Count();
+    }
+
+
+    public async Task AcceptAppoinment(int id)
+    {
+        if (id <= 0) throw new NegativeIdException<Appoinment>();
+        var appoinment = await _repo.GetByIdAsync(id);
+        if (appoinment is null) throw new NotFoundException<Appoinment>();
+        if (appoinment.IsDeleted == true) throw new NotFoundException<Appoinment>();
+
+        var doctor = appoinment.DoctorId;
+        if (doctor is null) throw new AppUserNotFoundException<Doctor>();
+
+        appoinment.Status = AppoinmentStatus.Approved;
+        await _repo.SaveAsync();
+    }
+
+    public async Task RejectAppoinment(int id)
+    {
+        if (id <= 0) throw new NegativeIdException<Appoinment>();
+        var appoinment = await _repo.GetByIdAsync(id);
+        if (appoinment is null) throw new NotFoundException<Appoinment>();
+        if (appoinment.IsDeleted == true) throw new NotFoundException<Appoinment>();
+
+        var doctor = appoinment.DoctorId;
+        if (doctor is null) throw new AppUserNotFoundException<Doctor>();
+
+        appoinment.Status = AppoinmentStatus.Rejected;
+        await _repo.SaveAsync();
+    }
+
+    public async Task<ICollection<AppoinmentListItemDto>> GetByUsernameAsync(string userName)
+    {
+        if (String.IsNullOrWhiteSpace(userName)) throw new ArgumentIsNullException();
+        var doctor = await _docUserManager.FindByNameAsync(userName);
+        if (doctor is null) throw new AppUserNotFoundException<Doctor>();
+
+        var appoinment = await _repo.FindAll(a => a.Doctor.UserName == doctor.UserName, "Doctor", "Patient", "Recipe",
+                "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department").ToListAsync();
+        if (appoinment is null) throw new NotFoundException<Appoinment>();
+        return _mapper.Map<ICollection<AppoinmentListItemDto>>(appoinment);
     }
 }
 

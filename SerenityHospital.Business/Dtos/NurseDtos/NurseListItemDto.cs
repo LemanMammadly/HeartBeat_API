@@ -1,10 +1,12 @@
 ﻿using SerenityHospital.Business.Dtos.DepartmentDtos;
 using SerenityHospital.Business.Dtos.PositionDtos;
+using SerenityHospital.Core.Enums;
 
 namespace SerenityHospital.Business.Dtos.NurseDtos;
 
 public record NurseListItemDto
 {
+    public string Id { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
     public int Age { get; set; }
@@ -15,6 +17,7 @@ public record NurseListItemDto
     public DateTime EndWork { get; set; }
     public DateTime? EndDate { get; set; }
     public bool IsDeleted { get; set; }
+    public WorkStatus Status { get; set; }
     public DepartmentInfoDto Department { get; set; }
     public IEnumerable<string> Roles { get; set; }
 }

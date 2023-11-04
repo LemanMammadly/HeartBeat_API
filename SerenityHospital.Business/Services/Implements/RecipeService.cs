@@ -21,11 +21,12 @@ public class RecipeService : IRecipeService
     readonly IPatientHistoryRepository _patHistoryRepo;
     readonly UserManager<Doctor> _docManager;
     readonly UserManager<Patient> _patManager;
+    readonly UserManager<AppUser> _appuserManager;
     readonly IHttpContextAccessor _context;
     readonly string? userId;
     readonly IMapper _mapper;
 
-    public RecipeService(IRecipeRepository repo, IMapper mapper, IAppoinmentRepository appoinmentRepo, UserManager<Doctor> docManager, UserManager<Patient> patManager, IHttpContextAccessor context, IPatientHistoryRepository patHistoryRepo)
+    public RecipeService(IRecipeRepository repo, IMapper mapper, IAppoinmentRepository appoinmentRepo, UserManager<Doctor> docManager, UserManager<Patient> patManager, IHttpContextAccessor context, IPatientHistoryRepository patHistoryRepo, UserManager<AppUser> appuserManager)
     {
         _repo = repo;
         _mapper = mapper;
@@ -35,6 +36,7 @@ public class RecipeService : IRecipeService
         _context = context;
         userId = _context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _patHistoryRepo = patHistoryRepo;
+        _appuserManager = appuserManager;
     }
 
     public async Task CreateAsync(RecipeCreateDto dto)
@@ -54,7 +56,7 @@ public class RecipeService : IRecipeService
 
         if (dto.PatientId !=null)
         {
-            var patient = await _patManager.FindByIdAsync(dto.PatientId);
+            var patient = await _appuserManager.FindByIdAsync(dto.PatientId);
             if (patient is null ) throw new AppUserNotFoundException<Patient>();
         }
 

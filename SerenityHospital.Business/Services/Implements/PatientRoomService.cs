@@ -195,6 +195,7 @@ public class PatientRoomService : IPatientRoomService
 
         if (dto.Patientids != null)
         {
+            if (entity.IsDeleted == true) throw new NotFoundException<PatientRoom>();
             foreach (var patientId in dto.Patientids)
             {
                 var patient = await _patientUserManager.FindByIdAsync(patientId);

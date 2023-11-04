@@ -23,6 +23,7 @@ public interface IDoctorService
     Task DeleteAsync(string id);
     Task Logout();
     Task DoctorStatusUpdater(string id);
+
 }
 
 

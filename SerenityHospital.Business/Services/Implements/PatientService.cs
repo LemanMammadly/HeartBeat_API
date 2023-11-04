@@ -133,6 +133,8 @@ public class PatientService : IPatientService
             }
             throw new RegisterFailedException<Patient>();
         }
+
+        await _userManager.AddToRoleAsync(patient, "Patient");
     }
 
     public async Task DeleteAsync(string id)

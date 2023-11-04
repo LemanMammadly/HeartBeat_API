@@ -51,7 +51,7 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetByName(userName));
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm]PatientCreateDto dto)
         {

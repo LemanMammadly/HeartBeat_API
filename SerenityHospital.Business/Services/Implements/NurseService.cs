@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SerenityHospital.Business.Constants;
 using SerenityHospital.Business.Dtos.DepartmentDtos;
 using SerenityHospital.Business.Dtos.NurseDtos;
@@ -34,8 +35,9 @@ public class NurseService : INurseService
     readonly IHttpContextAccessor _context;
     readonly string? userId;
     readonly SignInManager<Nurse> _signInManager;
+    readonly IConfiguration _config;
 
-    public NurseService(UserManager<Nurse> userManager, UserManager<AppUser> appUserManager, IDepartmentRepository departmentRepository, IMapper mapper, IFileService fileService, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, SignInManager<Nurse> signInManager)
+    public NurseService(UserManager<Nurse> userManager, UserManager<AppUser> appUserManager, IDepartmentRepository departmentRepository, IMapper mapper, IFileService fileService, ITokenService tokenService, RoleManager<IdentityRole> roleManager, IHttpContextAccessor context, SignInManager<Nurse> signInManager, IConfiguration config)
     {
         _userManager = userManager;
         _appUserManager = appUserManager;
@@ -47,6 +49,7 @@ public class NurseService : INurseService
         _context = context;
         userId = _context.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         _signInManager = signInManager;
+        _config = config;
     }
 
     public async Task AddRole(AddRoleDto dto)
@@ -95,6 +98,7 @@ public class NurseService : INurseService
         }
 
         var result = await _userManager.CreateAsync(nurse,dto.Password);
+
         if(!result.Succeeded)
         {
             string a = " ";
@@ -116,12 +120,14 @@ public class NurseService : INurseService
             {
                 var userDto = new NurseListItemDto()
                 {
+                    Id=user.Id,
                     Name = user.Name,
                     Surname = user.Surname,
                     Age = user.Age,
                     UserName = user.UserName,
                     Email = user.Email,
-                    ImageUrl = user.ImageUrl,
+                    Status=user.Status,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                     StartWork = user.StartWork,
                     EndWork = user.EndWork,
                     IsDeleted = user.IsDeleted,
@@ -142,7 +148,8 @@ public class NurseService : INurseService
                     Age = user.Age,
                     UserName = user.UserName,
                     Email = user.Email,
-                    ImageUrl = user.ImageUrl,
+                    Status = user.Status,
+                    ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                     StartWork = user.StartWork,
                     EndWork = user.EndWork,
                     IsDeleted = user.IsDeleted,
@@ -164,12 +171,16 @@ public class NurseService : INurseService
             if (user is null) throw new AppUserNotFoundException<Nurse>();
             var userDto = new NurseDetailItemDto()
             {
+                Id=user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
                 Age = user.Age,
+                Salary=user.Salary,
+                Gender=user.Gender,
+                Status=user.Status,
                 UserName = user.UserName,
                 Email = user.Email,
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 StartWork = user.StartWork,
                 EndWork = user.EndWork,
                 IsDeleted = user.IsDeleted,
@@ -184,12 +195,13 @@ public class NurseService : INurseService
             if (user is null) throw new AppUserNotFoundException<Nurse>();
             var userDto = new NurseDetailItemDto()
             {
+                Id = user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
                 Age = user.Age,
                 UserName = user.UserName,
                 Email = user.Email,
-                ImageUrl = user.ImageUrl,
+                ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
                 StartWork = user.StartWork,
                 EndWork = user.EndWork,
                 IsDeleted = user.IsDeleted,

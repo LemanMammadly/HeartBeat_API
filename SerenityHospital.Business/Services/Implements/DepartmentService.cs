@@ -191,9 +191,12 @@ public class DepartmentService : IDepartmentService
             entity.IconUrl = await _fileService.UploadAsync(dto.IconFile, RootConstant.DepartmentImageRoot);
         }
 
-        var service = await _serviceRepo.GetByIdAsync(dto.ServiceId);
-        if (service == null) throw new NotFoundException<Service>();
-        if (service.IsDeleted==true) throw new NotFoundException<Service>();
+        if(dto.ServiceId !=null)
+        {
+            var service = await _serviceRepo.GetSingleAsync(s=>s.Id==dto.ServiceId);
+            if (service == null) throw new NotFoundException<Service>();
+            if (service.IsDeleted==true) throw new NotFoundException<Service>();
+        }
 
         entity.ServiceId = dto.ServiceId;
 

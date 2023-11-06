@@ -58,7 +58,7 @@ namespace SerenityHospital.API.Controllers
 
 
         //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm] DoctorCreateDto dto)
         {
@@ -110,8 +110,7 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.LoginWithRefreshTokenAsync(refreshToken));
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddRole([FromForm]AddRoleDto dto)
         {
@@ -119,8 +118,7 @@ namespace SerenityHospital.API.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> RemoveRole([FromForm] RemoveRoleDto dto)
         {
@@ -128,8 +126,7 @@ namespace SerenityHospital.API.Controllers
             return Ok();
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> AddDoctorRoom([FromForm] AddDoctorRoomDto dto)
         {
@@ -145,8 +142,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("[action]")]
         public async Task<IActionResult> PutByAdmin(string id,[FromForm] DoctorUpdateByAdminDto dto)
         {
@@ -154,12 +150,27 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        //[Authorize(Roles = "Superadmin")]
-        //[Authorize(Roles = "Admin")]
-        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("[action]/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             await _service.DeleteAsync(id);
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPatch("[action]/{id}")]
+        public async Task<IActionResult> SoftDelete(string id)
+        {
+            await _service.SoftDeleteAsync(id);
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPatch("[action]/{id}")]
+        public async Task<IActionResult> ReverteSoftDelete(string id)
+        {
+            await _service.ReverteSoftDeleteAsync(id);
             return NoContent();
         }
 

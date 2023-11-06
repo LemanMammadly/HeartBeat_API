@@ -223,6 +223,7 @@ public class PatientService : IPatientService
     public async Task<TokenResponseDto> LoginAsync(PatientLoginDto dto)
     {
         var patient = await _userManager.FindByNameAsync(dto.UserName);
+
         if (patient == null) throw new LoginFailedException<Patient>("Username or password is wrong");
 
         var result = await _userManager.CheckPasswordAsync(patient, dto.Password);

@@ -62,7 +62,7 @@ public class RecipeService : IRecipeService
 
         var appoinment = await _appoinmentRepo.GetSingleAsync(a=>a.Id == dto.AppoinmentId);
 
-        var today = DateTime.Today;
+        var today = DateTime.Now;
 
         if (appoinment.AppoinmentDate > today) throw new ThisAppoinmentDateIsFutureException();
 

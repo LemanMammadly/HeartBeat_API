@@ -36,7 +36,7 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetByIdAsync(id,true));
         }
 
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Doctor,Patient")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetByUsername(string userName)
         {

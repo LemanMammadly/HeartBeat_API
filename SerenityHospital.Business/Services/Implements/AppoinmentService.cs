@@ -149,7 +149,15 @@ public class AppoinmentService : IAppoinmentService
        {
             var appoinments= _mapper.Map<ICollection<AppoinmentListItemDto>>(await _repo.GetAll("Doctor","Patient","Recipe",
                 "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department").ToListAsync());
+            foreach (var appointment in appoinments)
+            {
+                var currentDate = DateTime.Now;
 
+                if (appointment.Status == AppoinmentStatus.Approved && appointment.AppoinmentDate <= currentDate)
+                {
+                    appointment.Status = AppoinmentStatus.Completed;
+                }
+            }
             return appoinments;
         }
        else

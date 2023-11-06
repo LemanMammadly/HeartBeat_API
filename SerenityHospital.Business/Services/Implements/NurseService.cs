@@ -421,5 +421,31 @@ public class NurseService : INurseService
         var users = await _userManager.Users.ToListAsync();
         return users.Count();
     }
+
+    public async Task<NurseDetailItemDto> GetByName(string username)
+    {
+        if (String.IsNullOrWhiteSpace(username)) throw new ArgumentIsNullException();
+        var user = await _userManager.Users.Include(u => u.Department).FirstOrDefaultAsync(u => u.UserName == username);
+        if (user is null) throw new AppUserNotFoundException<Nurse>();
+        var userDto = new NurseDetailItemDto()
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Surname = user.Surname,
+            Age = user.Age,
+            Salary = user.Salary,
+            Gender = user.Gender,
+            Status = user.Status,
+            UserName = user.UserName,
+            Email = user.Email,
+            ImageUrl = _config["Jwt:Issuer"] + "wwwroot/" + user.ImageUrl,
+            StartWork = user.StartWork,
+            EndWork = user.EndWork,
+            IsDeleted = user.IsDeleted,
+            Department = _mapper.Map<DepartmentInfoDto>(user.Department),
+            Roles = await _userManager.GetRolesAsync(user)
+        };
+        return userDto;
+    }
 }
 

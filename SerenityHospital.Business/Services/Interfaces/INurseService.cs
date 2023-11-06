@@ -11,6 +11,7 @@ public interface INurseService
     Task<TokenResponseDto> LoginWithRefreshTokenAsync(string refreshToken);
     Task<ICollection<NurseListItemDto>> GetAllAsync(bool takeAll);
     Task<NurseDetailItemDto> GetById(bool takeAll,string id);
+    Task<NurseDetailItemDto> GetByName(string username);
     Task UpdateAsync(NurseUpdateDto dto);
     Task<int> Count();
     Task UpdateByAdminAsync(string id,NurseUpdateByAdminDto dto);

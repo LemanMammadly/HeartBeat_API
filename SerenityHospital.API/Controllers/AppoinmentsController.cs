@@ -22,21 +22,21 @@ namespace SerenityHospital.API.Controllers
             _service = service;
         }
 
-        [Authorize(Roles = "Admin,Doctor,Patient")]
+        [Authorize(Roles = "Admin,Doctor,Patient,Receptionist")]
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             return Ok(await _service.GetAllAsync(true));
         }
 
-        [Authorize(Roles = "Admin,Doctor,Patient")]
+        [Authorize(Roles = "Admin,Doctor,Patient,Receptionist")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         { 
             return Ok(await _service.GetByIdAsync(id,true));
         }
 
-        [Authorize(Roles = "Doctor,Patient")]
+        [Authorize(Roles = "Doctor,Patient,Receptionist")]
         [HttpGet("[action]")]
         public async Task<IActionResult> GetByUsername(string userName)
         {
@@ -44,7 +44,7 @@ namespace SerenityHospital.API.Controllers
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Receptionist")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromForm]AppoinmentUpdateDto dto)
         {
@@ -76,7 +76,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Receptionist")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -91,7 +91,7 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.Count());
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Receptionist")]
         [HttpPatch("[action]/{id}")]
         public async Task<IActionResult> SoftDelete(int id)
         {
@@ -99,7 +99,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Receptionist")]
         [HttpPatch("[action]/{id}")]
         public async Task<IActionResult> ReverteSoftDelete(int id)
         {

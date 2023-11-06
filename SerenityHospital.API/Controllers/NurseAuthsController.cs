@@ -49,7 +49,7 @@ namespace SerenityHospital.API.Controllers
         }
 
 
-        [Authorize(Roles = "Nurse")]
+        [Authorize(Roles = "Receptionist")]
         [HttpPut("[action]")]
         public async Task<IActionResult> Put([FromForm]NurseUpdateDto dto)
         {
@@ -93,7 +93,6 @@ namespace SerenityHospital.API.Controllers
         //    return StatusCode(StatusCodes.Status500InternalServerError);
         //}
 
-        //[Authorize(Roles = "Nurse")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm] NurseLoginDto dto)
         {
@@ -110,7 +109,6 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.LoginAsync(dto));
         }
 
-        //[Authorize(Roles = "Nurse")]
         [HttpPost("[action]")]
         public async Task<IActionResult> LoginWithRefreshToken(string refreshToken)
         {
@@ -141,7 +139,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Nurse")]
+        [Authorize(Roles = "Receptionist")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Logout()
         {

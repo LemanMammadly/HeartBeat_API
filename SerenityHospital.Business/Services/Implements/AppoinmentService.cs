@@ -115,6 +115,14 @@ public class AppoinmentService : IAppoinmentService
         }
 
 
+        //maybe
+        if (appoinmentAsDoctor != null)
+        {
+            var conflictAsDoctorPatient = await _repo.IsExistAsync(a => a.DoctorId != dto.DoctorId && a.DoctorId == appoinmentAsDoctor.Id && (dto.AppoinmentDate<=a.AppoinmentDate && dto.AppoinmentDate.AddMinutes(20) >= a.AppoinmentDate));
+            if (conflictAsDoctorPatient) throw new ConflictingAppointmentException();
+        }
+
+
 
 
         if (appoinmentAsDoctor != null)

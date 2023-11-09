@@ -36,13 +36,6 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 
-//confirm email
-//builder.Services.AddTransient<UserManager<AppUser>>();
-//builder.Services.AddTransient<UserManager<Doctor>>();
-//builder.Services.AddTransient<UserManager<Patient>>();
-//builder.Services.AddTransient<UserManager<Adminstrator>>();
-//builder.Services.AddTransient<UserManager<Nurse>>();
-
 
 builder.Services.AddFluentValidation(opt =>
 {
@@ -80,52 +73,10 @@ builder.Services.AddSwaggerGen(opt =>
     });
 });
 
-
-//builder.Services.AddHangfire(configuration => configuration
-//    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-//    .UseSimpleAssemblyNameTypeSerializer()
-//    .UseRecommendedSerializerSettings()
-//    .UseSqlServerStorage(builder.Configuration.GetConnectionString("Default")));
-
-//builder.Services.AddHangfireServer();
-
-
-//stripe
-//builder.Services.AddStripeInfrastructure(builder.Configuration);
-
-
-//add email config
 var emailConfig = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);
 
 builder.Services.AddScoped<IEmailServiceSender, EmailServiceSender>();
-
-//builder.Services.AddMailKit(optionBuilder =>
-//{
-//    optionBuilder.UseMailKit(new MailKitOptions
-//    {
-//        Server = "smtp.gmail.com",
-//        Port = 587,
-//        SenderName = "Your Name",
-//        SenderEmail = "leman.mammadly23@gmail.com",
-//        Account = "leman.mammadly23@gmail.com",
-//        Password = "naehtslelvpxpaox",
-//        Security = true // Use SSL/TLS
-//    });
-//});
-
-
-
-//StripeConfiguration.ApiKey = builder.Configuration.GetValue<string>("StripeSettings:SecretKey");
-
-//var options = new PaymentIntentCreateOptions
-//{
-//    Amount = 500,
-//    Currency = "gbp",
-//    PaymentMethod = "pm_card_visa",
-//};
-//var service = new PaymentIntentService();
-//service.Create(options);
 
 
 builder.Services.AddAutoMapper(typeof(HospitalMappingProfile).Assembly);
@@ -187,9 +138,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/wwwroot/imgs"
 });
 
-
-//app.UseHangfireDashboard();
-//app.MapHangfireDashboard();
 
 app.UseAuthentication();
 app.UseAuthorization();

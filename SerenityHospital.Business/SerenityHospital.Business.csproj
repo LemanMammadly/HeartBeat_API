@@ -48,8 +48,6 @@
     <None Remove="Exceptions\Doctors\" />
     <None Remove="Dtos\AppoinmentDtos\" />
     <None Remove="Exceptions\Appoinments\" />
-    <None Remove="Contracts\" />
-    <None Remove="Application\" />
     <None Remove="Dtos\RecipeDtos\" />
     <None Remove="Exceptions\Recipes\" />
     <None Remove="Dtos\PatientHistoryDtos\" />
@@ -95,8 +93,6 @@
     <Folder Include="Exceptions\Doctors\" />
     <Folder Include="Dtos\AppoinmentDtos\" />
     <Folder Include="Exceptions\Appoinments\" />
-    <Folder Include="Contracts\" />
-    <Folder Include="Application\" />
     <Folder Include="Dtos\RecipeDtos\" />
     <Folder Include="Exceptions\Recipes\" />
     <Folder Include="Dtos\PatientHistoryDtos\" />

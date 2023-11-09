@@ -114,15 +114,13 @@ public class AppoinmentService : IAppoinmentService
             if (conflictAsDoctorPatient) throw new ConflictingAppointmentException();
         }
 
-
-        //maybe
         if (appoinmentAsDoctor != null)
         {
-            var conflictAsDoctorPatient = await _repo.IsExistAsync(a => a.DoctorId != dto.DoctorId && a.DoctorId == appoinmentAsDoctor.Id && (dto.AppoinmentDate<=a.AppoinmentDate && dto.AppoinmentDate.AddMinutes(20) >= a.AppoinmentDate));
+            var conflictAsDoctorPatient = await _repo.IsExistAsync
+                (a => a.DoctorId != dto.DoctorId && a.DoctorId == appoinmentAsDoctor.Id &&
+                (dto.AppoinmentDate<=a.AppoinmentDate && dto.AppoinmentDate.AddMinutes(20) >= a.AppoinmentDate));
             if (conflictAsDoctorPatient) throw new ConflictingAppointmentException();
         }
-
-
 
 
         if (appoinmentAsDoctor != null)
@@ -258,7 +256,7 @@ public class AppoinmentService : IAppoinmentService
 
         var doctor = await _docUserManager.FindByIdAsync(dto.DoctorId);
         if (doctor is null) throw new NotFoundException<Doctor>();
-        if (doctor.IsDeleted == true) throw new NotFoundException<Doctor>("hekim hekim");
+        if (doctor.IsDeleted == true) throw new NotFoundException<Doctor>();
 
 
         if (dto.PatientId != null)
@@ -322,6 +320,27 @@ public class AppoinmentService : IAppoinmentService
             ((dto.AppoinmentDate>=a.AppoinmentDate  && dto.AppoinmentDate <= a.AppoinmentDate.AddMinutes(a.Duration) && a.Id != id)));
 
         if (conflict) throw new ConflictingAppointmentException();
+
+
+        var conflicttime = await _repo.IsExistAsync
+            (a => a.DoctorId == dto.DoctorId &&
+            ((dto.AppoinmentDate.AddMinutes(dto.Duration) >= a.AppoinmentDate) && a.Id != id));
+
+
+        if (conflicttime) throw new ConflictingAppointmentException("Durations problem.Change time");
+
+
+        if (dto.AppoinmentAsDoctorId != null)
+        {
+            var conflicttimedoctor = await _repo.IsExistAsync
+                (a => a.DoctorId == dto.AppoinmentAsDoctorId &&
+                ((dto.AppoinmentDate.AddMinutes(dto.Duration) >= a.AppoinmentDate) && a.Id != id));
+
+            if (conflicttimedoctor) throw new ConflictingAppointmentException("Durations problem.Change time");
+
+        }
+
+
 
         _mapper.Map(dto, appoinment);
         await _repo.SaveAsync();

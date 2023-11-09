@@ -11,7 +11,7 @@ public class ConflictingAppointmentException : Exception, IBaseException
 
     public ConflictingAppointmentException()
     {
-        ErrorMessage = "Conflicting Appointment Exception";
+        ErrorMessage = "Doctor or you busy at this time";
     }
 
     public ConflictingAppointmentException(string? message) : base(message)

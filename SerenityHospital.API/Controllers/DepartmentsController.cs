@@ -13,7 +13,6 @@ namespace SerenityHospital.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     public class DepartmentsController : ControllerBase
     {
         readonly IDepartmentService _service;

@@ -51,48 +51,16 @@ namespace SerenityHospital.API.Controllers
             return Ok(await _service.GetByName(userName));
         }
 
-        //[Authorize(Roles = "Admin")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromForm]PatientCreateDto dto)
         {
             await _service.CreateAsync(dto);
-            //var user = await _userManager.FindByNameAsync(dto.UserName);
-            //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //var confirmationLink = Url.Action("ConfirmEmail", "PatientAuths", new { token, email = user.Email }, Request.Scheme);
-            //var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
-            //_emailService.SendEmail(message);
             return StatusCode(StatusCodes.Status201Created);
         }
 
-        //[HttpGet("ConfirmEmail")]
-        //public async Task<IActionResult> ConfirmEmail(string token, string email)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(email);
-        //    if (user != null)
-        //    {
-        //        var result = await _userManager.ConfirmEmailAsync(user, token);
-        //        if (result.Succeeded)
-        //        {
-        //            return StatusCode(StatusCodes.Status200OK);
-        //        }
-        //    }
-        //    return StatusCode(StatusCodes.Status500InternalServerError);
-        //}
-
-        //[Authorize(Roles = "Patient")]
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm]PatientLoginDto dto)
         {
-            //var user = await _userManager.FindByNameAsync(dto.UserName);
-
-            //if (user.EmailConfirmed == false)
-            //{
-            //    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //    var confirmationLink = Url.Action("ConfirmEmail", "PatientAuths", new { token, email = user.Email }, Request.Scheme);
-            //    var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
-            //    _emailService.SendEmail(message);
-            //    return StatusCode(StatusCodes.Status201Created);
-            //}
             return Ok(await _service.LoginAsync(dto));
         }
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SerenityHospital.Business.Dtos.RecipeDtos;
+using SerenityHospital.Business.Exceptions.Appoinments;
 using SerenityHospital.Business.Exceptions.Common;
 using SerenityHospital.Business.Exceptions.Recipes;
 using SerenityHospital.Business.Exceptions.Services;
@@ -50,6 +51,8 @@ public class RecipeService : IRecipeService
 
         if (await _repo.IsExistAsync(a => a.AppoinmentId == dto.AppoinmentId)) throw new ThisAppoinmentRecipeHasAlreadyExistException();
 
+
+
         var doctor = await _docManager.FindByIdAsync(dto.DoctorId);
         if (doctor is null || doctor.IsDeleted == true) throw new AppUserNotFoundException<Doctor>();
 
@@ -61,6 +64,8 @@ public class RecipeService : IRecipeService
         }
 
         var appoinment = await _appoinmentRepo.GetSingleAsync(a=>a.Id == dto.AppoinmentId);
+
+        if (appoinment.PatientId != dto.PatientId) throw new AppoinmentIsNotOwnPatientException();
 
         var today = DateTime.Now;
 

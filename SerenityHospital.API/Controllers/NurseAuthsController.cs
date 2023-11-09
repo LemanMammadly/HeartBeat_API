@@ -78,41 +78,12 @@ namespace SerenityHospital.API.Controllers
         {
             await _service.CreateAsync(dto);
             return StatusCode(StatusCodes.Status201Created);
-            //var user = await _userManager.FindByEmailAsync(dto.Email);
-            //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //var confirmationLink = Url.Action("ConfirmEmail", "NurseAuths", new { token, email = dto.Email }, Request.Scheme);
-            //var message = new Message(new string[] { dto.Email! }, "Confirmation email link", confirmationLink!);
-            //_emailService.SendEmail(message);
         }
 
-        //[HttpGet("ConfirmEmail")]
-        //public async Task<IActionResult> ConfirmEmail(string token, string email)
-        //{
-        //    var user = await _userManager.FindByEmailAsync(email);
-        //    if (user != null)
-        //    {
-        //        var result = await _userManager.ConfirmEmailAsync(user, token);
-        //        if (result.Succeeded)
-        //        {
-        //            return StatusCode(StatusCodes.Status200OK);
-        //        }
-        //    }
-        //    return StatusCode(StatusCodes.Status500InternalServerError);
-        //}
 
         [HttpPost("[action]")]
         public async Task<IActionResult> Login([FromForm] NurseLoginDto dto)
         {
-            //var user = await _userManager.FindByNameAsync(dto.UserName);
-
-            //if (user.EmailConfirmed == false)
-            //{
-            //    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //    var confirmationLink = Url.Action("ConfirmEmail", "NurseAuths", new { token, email = user.Email }, Request.Scheme);
-            //    var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
-            //    _emailService.SendEmail(message);
-            //    return StatusCode(StatusCodes.Status201Created);
-            //}
             return Ok(await _service.LoginAsync(dto));
         }
 

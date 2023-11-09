@@ -148,7 +148,7 @@ public class PatientService : IPatientService
         }
 
         if (user.Appoinments.Count() > 0) throw new PatientHasAppoinmentException();
-        if (user.Recipes.Count() > 0) throw new PatientHasAppoinmentException();
+        if (user.Recipes.Count() > 0) throw new PatientHasAppoinmentException("Patient Have Recipe");
 
         var result = await _userManager.DeleteAsync(user);
 

@@ -310,7 +310,7 @@ public class AppoinmentService : IAppoinmentService
 
         var conflictDoc = await _repo.IsExistAsync(a => a.AppoinmentAsDoctorId == dto.DoctorId &&
         (dto.AppoinmentDate <= a.AppoinmentDate.AddMinutes(a.Duration) &&
-            dto.AppoinmentDate >= a.AppoinmentDate));
+            dto.AppoinmentDate >= a.AppoinmentDate) && a.Id != id);
 
         if (conflictDoc)
             throw new ConflictingAppointmentException();
@@ -324,7 +324,7 @@ public class AppoinmentService : IAppoinmentService
 
         var conflicttime = await _repo.IsExistAsync
             (a => a.DoctorId == dto.DoctorId &&
-            ((dto.AppoinmentDate.AddMinutes(dto.Duration) >= a.AppoinmentDate) && a.Id != id));
+            ((dto.AppoinmentDate<=a.AppoinmentDate && dto.AppoinmentDate.AddMinutes(dto.Duration) >= a.AppoinmentDate) && a.Id != id));
 
 
         if (conflicttime) throw new ConflictingAppointmentException("Durations problem.Change time");
@@ -334,7 +334,7 @@ public class AppoinmentService : IAppoinmentService
         {
             var conflicttimedoctor = await _repo.IsExistAsync
                 (a => a.DoctorId == dto.AppoinmentAsDoctorId &&
-                ((dto.AppoinmentDate.AddMinutes(dto.Duration) >= a.AppoinmentDate) && a.Id != id));
+                ((dto.AppoinmentDate <= a.AppoinmentDate && dto.AppoinmentDate.AddMinutes(dto.Duration) >= a.AppoinmentDate) && a.Id != id));
 
             if (conflicttimedoctor) throw new ConflictingAppointmentException("Durations problem.Change time");
 

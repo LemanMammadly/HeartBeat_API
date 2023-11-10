@@ -65,7 +65,7 @@ public class RecipeService : IRecipeService
 
         var appoinment = await _appoinmentRepo.GetSingleAsync(a=>a.Id == dto.AppoinmentId);
 
-        if (appoinment.PatientId != dto.PatientId) throw new AppoinmentIsNotOwnPatientException();
+        if (appoinment.PatientId != dto.PatientId && appoinment.AppoinmentAsDoctorId != dto.PatientId) throw new AppoinmentIsNotOwnPatientException();
 
         var today = DateTime.Now;
 

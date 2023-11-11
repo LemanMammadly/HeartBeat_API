@@ -336,11 +336,9 @@ public class AppoinmentService : IAppoinmentService
                 (a => a.DoctorId == dto.AppoinmentAsDoctorId &&
                 ((dto.AppoinmentDate <= a.AppoinmentDate && dto.AppoinmentDate.AddMinutes(dto.Duration) >= a.AppoinmentDate) && a.Id != id));
 
-            if (conflicttimedoctor) throw new ConflictingAppointmentException("Durations problem.Change time");
+            if (conflicttimedoctor) throw new ConflictingAppointmentException("Durations problem.Please change time");
 
         }
-
-
 
         _mapper.Map(dto, appoinment);
         await _repo.SaveAsync();

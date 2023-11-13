@@ -369,6 +369,13 @@ public class PatientService : IPatientService
             Recipes = _mapper.Map<ICollection<RecipeListItemDto>>(user.Recipes),
             PatientHistories = _mapper.Map<ICollection<PatientHistoryListItemDto>>(user.PatientHistories)
         };
+
+        var appoinmentsToUpdate = userDto.Appoinments.Where(app => app.Status == AppoinmentStatus.Approved && app.AppoinmentDate <= DateTime.Now).ToList();
+        foreach (var app in appoinmentsToUpdate)
+        {
+            app.Status = AppoinmentStatus.Completed;
+        }
+
         return userDto;
     }
 }

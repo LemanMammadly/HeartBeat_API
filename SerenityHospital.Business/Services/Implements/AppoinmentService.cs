@@ -387,7 +387,19 @@ public class AppoinmentService : IAppoinmentService
 
         var appoinment = await _repo.FindAll(a => a.Doctor.UserName == doctor.UserName, "Doctor", "Patient", "Recipe",
                 "AppoinmentAsDoctor", "Doctor.Position", "Doctor.Department").ToListAsync();
+
         if (appoinment is null) throw new NotFoundException<Appoinment>();
+
+        foreach (var app in appoinment)
+        {
+            var currentDate = DateTime.Now;
+
+            if (app.Status == AppoinmentStatus.Approved && app.AppoinmentDate <= currentDate)
+            {
+                app.Status = AppoinmentStatus.Completed;
+            }
+        }
+     
         return _mapper.Map<ICollection<AppoinmentListItemDto>>(appoinment);
     }
 }

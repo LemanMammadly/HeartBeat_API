@@ -1,19 +1,21 @@
-﻿<Properties StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default" GitUserInfo="UsingMD">
+﻿<Properties GitUserInfo="UsingMD" StartupConfiguration="{E4CCBA39-21FC-4B25-879D-5C57141EA034}|Default">
+  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="SerenityHospital.Core/Enums/AppoinmentStatus.cs">
     <Files>
-      <File FileName="SerenityHospital.Business/Services/Implements/AppoinmentService.cs" Line="390" Column="1" />
+      <File FileName="SerenityHospital.Business/Services/Implements/AppoinmentService.cs" />
       <File FileName="SerenityHospital.Business/Services/Implements/RecipeService.cs" />
       <File FileName="SerenityHospital.Business/Dtos/RecipeDtos/RecipeListItemDto.cs" />
-      <File FileName="SerenityHospital.Business/Dtos/AppoinmentDtos/AppoinmentInfoDto.cs" Line="14" Column="28" />
-      <File FileName="SerenityHospital.Core/Enums/AppoinmentStatus.cs" Line="10" Column="1" />
-      <File FileName="SerenityHospital.Business/Services/Implements/PatientService.cs" Line="379" Column="24" />
-      <File FileName="SerenityHospital.Business/Dtos/AppoinmentDtos/AppoinmentListItemDto.cs" Line="17" Column="28" />
+      <File FileName="SerenityHospital.Business/Dtos/AppoinmentDtos/AppoinmentInfoDto.cs" />
+      <File FileName="SerenityHospital.Core/Enums/AppoinmentStatus.cs" Line="8" Column="13" />
+      <File FileName="SerenityHospital.Business/Services/Implements/PatientService.cs" />
+      <File FileName="SerenityHospital.Business/Dtos/AppoinmentDtos/AppoinmentListItemDto.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="SerenityHospital">
-            <Node name="SerenityHospital.API" expanded="True" />
+          <Node name="SerenityHospital" expanded="True">
             <Node name="SerenityHospital.Business" expanded="True">
               <Node name="Dtos" expanded="True">
                 <Node name="AppoinmentDtos" expanded="True" />
@@ -33,8 +35,5 @@
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.SerenityHospital.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

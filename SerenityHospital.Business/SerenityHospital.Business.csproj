@@ -53,6 +53,7 @@
     <None Remove="Dtos\PatientHistoryDtos\" />
     <None Remove="Exceptions\Confirms\" />
     <None Remove="Dtos\AdminDtos\" />
+    <None Remove="Dtos\ContactDtos\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dtos\" />
@@ -98,6 +99,7 @@
     <Folder Include="Dtos\PatientHistoryDtos\" />
     <Folder Include="Exceptions\Confirms\" />
     <Folder Include="Dtos\AdminDtos\" />
+    <Folder Include="Dtos\ContactDtos\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />

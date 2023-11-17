@@ -23,6 +23,7 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<PatientHistory> PatientHistories { get; set; }
     public DbSet<Admin> Admins { get; set; }
+    public DbSet<Contact> Contacts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

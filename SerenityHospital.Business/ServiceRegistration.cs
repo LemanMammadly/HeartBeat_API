@@ -43,6 +43,7 @@ public static class ServiceRegistration
         services.AddScoped<IRecipeService, RecipeService>();
         services.AddScoped<IPatientHistoryService, PatientHistoryService>();
         services.AddScoped<IAdminService, AdminService>();
+        services.AddScoped<IContactService, ContactService>();
     }
 }
 

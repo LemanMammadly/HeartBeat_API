@@ -28,6 +28,13 @@ namespace SerenityHospital.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllReadUnread()
+        {
+            return Ok(await _service.GetAllAsyncReadUnread());
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -41,7 +48,6 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpGet("[action]")]
         public async Task<IActionResult> Count()
         {

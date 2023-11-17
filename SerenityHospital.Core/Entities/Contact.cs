@@ -9,6 +9,7 @@ public class Contact:BaseEntity
     public string Phone { get; set; }
     public string Address { get; set; }
     public string Message { get; set; }
+    public bool IsRead { get; set; }
     public DateTime Date { get; set; }
 }
 

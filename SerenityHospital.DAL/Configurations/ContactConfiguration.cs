@@ -21,6 +21,8 @@ public class ContactConfiguration : IEntityTypeConfiguration<Contact>
             .IsRequired();
         builder.Property(c=>c.Date)
             .HasDefaultValueSql("DATEADD(hour, 4, GETUTCDATE())");
+        builder.Property(c => c.IsRead)
+            .HasDefaultValue(false);
     }
 }
 

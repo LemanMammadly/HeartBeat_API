@@ -43,14 +43,43 @@ public class ContactService : IContactService
 
     public async Task<IEnumerable<ContactListItemDto>> GetAllAsync()
     {
-        return _mapper.Map<IEnumerable<ContactListItemDto>>(await _repo.GetAll().ToListAsync());
+        var messages = _mapper.Map<IEnumerable<ContactListItemDto>>(await _repo.GetAll().ToListAsync());
+        foreach (var message in messages)
+        {
+            message.IsRead = true;
+        }
+        await _repo.SaveAsync();
+        return messages;
     }
+
+    public async Task<IEnumerable<ContactListItemDto>> GetAllAsyncReadUnread()
+    {
+        var allContacts = await _repo.GetAll().ToListAsync();
+        var allContactDtos = _mapper.Map<IEnumerable<ContactListItemDto>>(allContacts);
+
+        var seenContactIds = new HashSet<int>();
+
+        foreach (var contact in allContacts)
+        {
+            if (!seenContactIds.Contains(contact.Id))
+            {
+                contact.IsRead = true;
+                seenContactIds.Add(contact.Id);
+            }
+        }
+
+        await _repo.SaveAsync();
+
+        return allContactDtos;
+    }
+
 
     public async Task<ContactDetailItemDto> GetByIdAsync(int id)
     {
         if (id <= 0) throw new NegativeIdException<Contact>();
         var contact = await _repo.GetByIdAsync(id);
         if (contact == null) throw new NotFoundException<Contact>();
+        contact.IsRead = true;
         return _mapper.Map<ContactDetailItemDto>(contact);
     }
 }

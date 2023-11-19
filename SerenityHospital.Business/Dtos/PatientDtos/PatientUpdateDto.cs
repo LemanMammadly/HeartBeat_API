@@ -11,7 +11,6 @@ public record PatientUpdateDto
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
-    public string UserName { get; set; }
     public string Address { get; set; }
     public string PhoneNumber { get; set; }
     public int Age { get; set; }
@@ -52,15 +51,6 @@ public class PatientUpdateDtoValidator:AbstractValidator<PatientUpdateDto>
                return result.Success;
            })
                  .WithMessage("Please enter valid Patient email");
-        RuleFor(d => d.UserName)
-            .NotEmpty()
-                .WithMessage("Patient username dont be empty")
-            .NotNull()
-                .WithMessage("Patient username dont be null")
-           .MinimumLength(2)
-                .WithMessage("Patient username length must be greater than 2")
-           .MaximumLength(45)
-                .WithMessage("Patient username length must be less than 45");
         RuleFor(s => s.PhoneNumber)
             .NotEmpty()
                 .WithMessage("Phone number dont be empty")

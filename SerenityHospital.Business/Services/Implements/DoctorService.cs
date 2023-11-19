@@ -295,8 +295,8 @@ public class DoctorService : IDoctorService
 
         var user = await _userManager.FindByIdAsync(userId);
 
-        if (await _appUserManager.Users.AnyAsync(d => (d.UserName == dto.UserName && d.Id != userId) || (d.Email == dto.Email && d.Id != userId))) throw new AppUserIsAlreadyExistException<Doctor>();
-        if (await _userManager.Users.AnyAsync(d => (d.UserName == dto.UserName && d.Id != userId) || (d.Email == dto.Email && d.Id != userId))) throw new AppUserIsAlreadyExistException<Doctor>();
+        if (await _appUserManager.Users.AnyAsync(d => (d.Email == dto.Email && d.Id != userId))) throw new AppUserIsAlreadyExistException<Doctor>();
+        if (await _userManager.Users.AnyAsync(d =>  (d.Email == dto.Email && d.Id != userId))) throw new AppUserIsAlreadyExistException<Doctor>();
 
         if (dto.ImageFile != null)
         {

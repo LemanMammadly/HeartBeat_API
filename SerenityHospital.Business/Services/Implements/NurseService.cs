@@ -309,8 +309,8 @@ public class NurseService : INurseService
 
         var user = await _userManager.FindByIdAsync(userId);
 
-        if (await _userManager.Users.AnyAsync(u => (u.UserName == dto.UserName && u.Id != userId) || (u.Email == dto.Email && u.Id != userId))) throw new AppUserIsAlreadyExistException<Nurse>();
-        if (await _appUserManager.Users.AnyAsync(u => (u.UserName == dto.UserName && u.Id != userId) || (u.Email == dto.Email && u.Id != userId))) throw new AppUserIsAlreadyExistException<Nurse>();
+        if (await _userManager.Users.AnyAsync(u =>  (u.Email == dto.Email && u.Id != userId))) throw new AppUserIsAlreadyExistException<Nurse>();
+        if (await _appUserManager.Users.AnyAsync(u => (u.Email == dto.Email && u.Id != userId))) throw new AppUserIsAlreadyExistException<Nurse>();
 
         if(dto.ImageFile != null)
         {

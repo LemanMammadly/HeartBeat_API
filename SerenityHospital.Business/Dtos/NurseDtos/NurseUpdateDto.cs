@@ -11,7 +11,6 @@ public record NurseUpdateDto
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
-    public string UserName { get; set; }
     public int Age { get; set; }
     public Gender Gender { get; set; }
     public IFormFile? ImageFile { get; set; }
@@ -49,15 +48,6 @@ public class NurseUpdateDtoValidator:AbstractValidator<NurseUpdateDto>
                return result.Success;
            })
                  .WithMessage("Please enter valid Nurse email");
-        RuleFor(d => d.UserName)
-            .NotEmpty()
-                .WithMessage("Nurse username dont be empty")
-            .NotNull()
-                .WithMessage("Nurse username dont be null")
-           .MinimumLength(2)
-                .WithMessage("Nurse username length must be greater than 2")
-           .MaximumLength(45)
-                .WithMessage("Nurse username length must be less than 45");
         RuleFor(d => d.Age)
             .NotEmpty()
                 .WithMessage("Nurse ager dont be empty")

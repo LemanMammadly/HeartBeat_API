@@ -13,7 +13,7 @@ public class AppUserIsAlreadyExistException<T> : Exception, IBaseException where
 
     public AppUserIsAlreadyExistException()
     {
-        ErrorMessage = typeof(T).Name + " username email or phonenumber is already exist";
+        ErrorMessage = typeof(T).Name + " username or email is already exist";
     }
 
     public AppUserIsAlreadyExistException(string? message) : base(message)

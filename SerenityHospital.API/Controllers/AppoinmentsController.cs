@@ -76,7 +76,7 @@ namespace SerenityHospital.API.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Admin,Receptionist,Patient")]
+        [Authorize(Roles = "Admin,Receptionist,Patient,Doctor")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -44,6 +44,7 @@ public static class ServiceRegistration
         services.AddScoped<IPatientHistoryService, PatientHistoryService>();
         services.AddScoped<IAdminService, AdminService>();
         services.AddScoped<IContactService, ContactService>();
+        services.AddTransient<IBraintreeService, BraintreeService>();
     }
 }
 

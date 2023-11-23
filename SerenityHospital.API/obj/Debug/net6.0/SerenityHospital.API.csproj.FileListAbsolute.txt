@@ -118,3 +118,6 @@
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/obj/Debug/net6.0/ref/SerenityHospital.API.dll
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/obj/Debug/net6.0/SerenityHospital.API.pdb
 /Users/imac/Desktop/SerenityHospital/SerenityHospital.API/obj/Debug/net6.0/SerenityHospital.API.genruntimeconfig.cache
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Braintree.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/Microsoft.Extensions.Configuration.Binder.dll
+/Users/imac/Desktop/SerenityHospital/SerenityHospital.API/bin/Debug/net6.0/System.Xml.XPath.XmlDocument.dll

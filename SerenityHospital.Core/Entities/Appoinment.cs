@@ -21,3 +21,4 @@ public class Appoinment:BaseEntity
     public int? DepartmentId { get; set; }
 }
 
+

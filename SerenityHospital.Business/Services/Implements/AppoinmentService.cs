@@ -85,6 +85,27 @@ public class AppoinmentService : IAppoinmentService
         if (conflict)
             throw new ConflictingAppointmentException();
 
+
+        if(patient != null)
+        {
+            var conflicttime = await _repo.IsExistAsync
+            (a => a.PatientId == patient.Id &&
+            ((dto.AppoinmentDate <= a.AppoinmentDate && dto.AppoinmentDate.AddMinutes(20) >= a.AppoinmentDate)));
+
+            if (conflicttime) throw new ConflictingAppointmentException("Durations problem.Change time");
+        }
+
+        //test
+        if(appoinmentAsDoctor != null)
+        {
+            var conflicttimedoc = await _repo.IsExistAsync
+            (a => a.AppoinmentAsDoctorId == appoinmentAsDoctor.Id &&
+            ((dto.AppoinmentDate <= a.AppoinmentDate && dto.AppoinmentDate.AddMinutes(20) >= a.AppoinmentDate)));
+
+            if (conflicttimedoc) throw new ConflictingAppointmentException("Durations problem.Change time");
+        }
+
+
         var appoinment = _mapper.Map<Appoinment>(dto);
 
         if (patient != null)
